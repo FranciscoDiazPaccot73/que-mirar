@@ -1,0 +1,97 @@
+$purple: #B794F4;
+
+.container {
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  min-height: calc(100vh - 77px - 96px);
+  padding: 2em 2em 3em;
+  flex-direction: column;
+}
+
+.footer {
+  align-items: center;
+  border-top: 1px solid $purple;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  padding: 1em 0 2.5rem;
+  position: relative;
+
+  .dev {
+    bottom: 10px;
+    display: flex;
+    font-size: 8px;
+    position: absolute;
+    right: 16px;
+
+    a {
+      color: $purple;
+      margin-left: 4px;
+    }
+  }
+}
+
+.footer a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+
+  span {
+    margin-left: 6px;
+  }
+}
+
+.card {
+  height: 46px;
+  margin: 12px 0;
+  transition: height 250ms ease;
+  
+  &_opened {
+    height: 100px;
+    transition: height 250ms ease;
+  }
+  
+  &_header {
+    background-color: #121822;
+    display: flex;
+    height: 46px;
+    justify-content: space-between;
+    padding: 10px 16px;
+    width: 100%;
+  }
+}
+
+.poster {
+  max-height: 700px;
+  min-height: 400px;
+  position: relative;
+  width: 100%;
+
+  &_content {
+    padding: 8px 16px 12px;
+  }
+
+  &_release {
+    font-size: 12px;
+    filter: opacity(.6);
+    margin-left: 6px;
+  }
+
+  &_title {
+    align-items: center;
+    display: flex;
+    margin-bottom: 10px;
+  }
+
+  &_overview {
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 8;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+  }
+}
