@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.scss'
 
 import { useState, useContext } from 'react';
@@ -18,13 +17,14 @@ const Home: NextPage = () => {
   const [source, setSource] = useState('movie');
   const [isFirst, setFirst] = useState(true);
 
-  const handleTab = (tab: number) => {
+  const handleTab = async (tab: number) => {
     if (tab !== linkSelected) {
       const newSource = tab === 0 ? 'movie' : 'tv';
       setFirst(true);
       handleTabChange(tab);
       setSource(newSource)
-      getInfo(dispatch, newSource);
+      const res = await getInfo(dispatch, newSource);
+      if (!res) getInfo(dispatch, newSource);
     }
   }
 

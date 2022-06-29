@@ -8,16 +8,21 @@ export const isFetching = (dispatch: any, value: boolean) => {
 export const getInfo = async (dispatch: any, source: string) => {
   dispatch({ type: types.FETCHING, value: true });
   dispatch({ type: types.SET_CONTENT, content: null });
+  let itWorked = true;
 
   try {
     const { data } = await axios.get(`/api?source=${source}`)
 
     dispatch({ type: types.SET_CONTENT, content: data });
     dispatch({ type: types.ALREADY_RECOMENDED, recomendedContent: data.id });
-  } catch (err) {}
+  } catch (err) {
+    itWorked = false;
+  }
   finally {
     dispatch({ type: types.FETCHING, value: false });
   }
+
+  return itWorked;
 };
 
 export const getRecomendation = async (dispatch: any, source: string, recomended: Array<number>) => {
