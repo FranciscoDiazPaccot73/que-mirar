@@ -41,22 +41,19 @@ export default async function getRecomendation (
     let providerResponse: any = null;
     const notRepeatResult = results.filter((r: any) => !alreadyReco.includes(r.id.toString()));
     const getWatchProvider = async (elements: any) => {
-      const [{ id }, ...others] = elements || [{}];
+      const indexRandom = Math.floor(Math.random() * (elements.length - 2) + 1) || 0;
+      const { id } = elements[indexRandom] || {};
+      const others = elements.filter((elem: any) => elem.id !== id);
       if (!id) res.status(201).json({elements})
-      const [firstElement] = elements;
+      const firstElement = elements[indexRandom];
       if (alreadyReco.includes(id.toString())) {
         getWatchProvider(others);
-      } else {
-        const { data } = await axios.get(`${BASE_URL}/${source}/${id}/watch/providers?${baseQueryParams}`)
-        if (data.results?.AR && !alreadyReco.includes(id.toString())) {
-          providerResponse = data.results.AR
-          providerResponse.id = id;
-          providerResponse = { ...firstElement, ...providerResponse }
-        }
-  
-        if (!providerResponse) {
-          getWatchProvider(others);
-        }
+      }
+      const { data } = await axios.get(`${BASE_URL}/${source}/${id}/watch/providers?${baseQueryParams}`)
+      if (data.results?.AR && !alreadyReco.includes(id.toString())) {
+        providerResponse = data.results.AR
+        providerResponse.id = id;
+        providerResponse = { ...firstElement, ...providerResponse }
       }
 
       return providerResponse;
