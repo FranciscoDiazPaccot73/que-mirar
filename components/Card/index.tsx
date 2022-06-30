@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useQuery } from 'react-query'
-import { Box, Text, Skeleton, SkeletonText  } from '@chakra-ui/react'
+import { Box, Text, Skeleton, SkeletonText } from '@chakra-ui/react'
 import { StarIcon } from '@chakra-ui/icons';
 
 import { PageContext } from '../../context';
@@ -47,55 +47,57 @@ const Card = ({ source }: Props) => {
 
   return (
     <Box {...boxProps}>
-        {content ? (
-          <Link href={content?.link ?? '/'} passHref>
-            <div className={styles.poster}>
-              <Image
-                src={`${BASE_IMAGE_URL}${content.backdrop_path}`}
-                alt={content.title}
-                width='500px'
-                height='281px'
-              />
-              <div className={styles.poster_content}>
-                <Text className={styles.poster_title} fontSize="xl">
-                  <span>{content.title}{source === 'movie' ? <span className={styles.poster_release}>&bull; {content.release_date.slice(0, 4)}</span> : null}</span>
-                </Text>
-                <Box margin="12px 0" display='flex' mt='2' alignItems='center'>
-                  {Array(5).fill('').map((_, i) => (
-                      <StarIcon
-                        key={i}
-                        style={{ margin: '0 2px' }}
-                        color={i < Math.floor(content.vote_average / 2) ? 'purple' : 'gray'}
-                      />
-                    ))}
-                  <Box as='span' ml='2' color='gray.600' fontSize='sm'>
-                    {content.vote_count} reseñas
-                  </Box>
+      {content ? (
+        <Link href={content?.link ?? '/'} passHref>
+          <div className={styles.poster}>
+            <Image
+              src={`${BASE_IMAGE_URL}${content.backdrop_path}`}
+              alt={content.title}
+              width='500px'
+              height='281px'
+            />
+            <div className={styles.poster_content}>
+              <Text className={styles.poster_title} fontSize="xl">
+                <span>{content.title}{source === 'movie' ? <span className={styles.poster_release}>&bull; {content.release_date.slice(0, 4)}</span> : null}</span>
+              </Text>
+              <Box margin="12px 0" display='flex' mt='2' alignItems='center'>
+                {Array(5).fill('').map((_, i) => (
+                  <StarIcon
+                    key={i}
+                    style={{ margin: '0 2px' }}
+                    color={i < Math.floor(content.vote_average / 2) ? 'purple' : 'gray'}
+                  />
+                ))}
+                <Box as='span' ml='2' color='gray.600' fontSize='sm'>
+                  {content.vote_count} reseñas
                 </Box>
-                <Box maxHeight="168px" overflow="hidden" textOverflow="ellipsis">
-                  <Text className={styles.poster_overview} fontSize="sm">{content.overview}</Text>
-                </Box>
+              </Box>
+              <Box maxHeight="168px" overflow="hidden" textOverflow="ellipsis">
+                <Text className={styles.poster_overview} fontSize="sm">{content.overview}</Text>
+              </Box>
+              {content.providers?.length ? (
                 <Box display="flex" alignItems="center" marginTop="20px">
                   <Text fontSize="sm">Disponible en:</Text>
-                  {content.providers?.map((prov: any) =>
+                  {content.providers.map((prov: any) =>
                     <Box key={prov.id} overflow="hidden" borderRadius="6px" height="30px" margin='0 6px'>
                       <Image src={`${BASE_IMAGE_URL}${prov.logo_path}`} width="30px" height="30px" />
                     </Box>
                   )}
                 </Box>
-              </div>
+              ) : null}
             </div>
-          </Link>
-        ) : (
-          <Box width="100%">
-            <Skeleton height='182px' />
-            <div className={styles.poster_content}>
-              <Skeleton height='30px' />
-              <Skeleton height='21px' margin="8px 0 12px" />
-              <SkeletonText mt='4' noOfLines={4} spacing='4' />
-            </div>
-          </Box>
-        )}
+          </div>
+        </Link>
+      ) : (
+        <Box width="100%">
+          <Skeleton height='182px' />
+          <div className={styles.poster_content}>
+            <Skeleton height='30px' />
+            <Skeleton height='21px' margin="8px 0 12px" />
+            <SkeletonText mt='4' noOfLines={4} spacing='4' />
+          </div>
+        </Box>
+      )}
     </Box>
   )
 }

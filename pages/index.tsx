@@ -23,8 +23,7 @@ const Home: NextPage = () => {
       setFirst(true);
       handleTabChange(tab);
       setSource(newSource)
-      const res = await getInfo(dispatch, newSource);
-      if (!res) getInfo(dispatch, newSource);
+      await getInfo(dispatch, newSource);
     }
   }
 

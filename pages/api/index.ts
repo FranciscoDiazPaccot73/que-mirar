@@ -11,10 +11,10 @@ export default async function (
   const { source } = req.query;
   try {
     const apiKey = process.env.TMDB_API_KEY;
-    const pageRandom = Math.floor(Math.random() * 10 + 1) || '1';
+    const pageRandom = Math.floor(Math.random() * 4 + 1) || '1';
     const indexRandom = Math.floor(Math.random() * 17 + 1) || 0;
     const baseObj = {
-      language: 'ES',
+      language: 'es-AR',
       api_key: apiKey || '',
       page: pageRandom.toString(),
     }
@@ -33,17 +33,17 @@ export default async function (
     })
     const [{ data: providers }, { data: contentInfo }] = await Promise.all([getProviders, getContent]);
 
-    const { AR: provider } = providers.results;
+    const { AR: provider } = providers.results || providers.results.US;
 
+    result.overview = contentInfo.overview;
+    result.tagline = contentInfo.tagline;
+    result.title = contentInfo.title ?? contentInfo.name;
+    result.link = provider.link;
     if (provider?.flatrate) {
       result.providers = provider.flatrate;
-      result.link = provider.link;
-      result.overview = contentInfo.overview;
-      result.tagline = contentInfo.tagline;
-      result.title = contentInfo.title ?? contentInfo.name;
       res.status(200).json(result)
     }
-    res.status(404)
+    res.status(206).json(result)
   } catch (err) {
     res.status(500);
   }

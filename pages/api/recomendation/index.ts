@@ -15,7 +15,7 @@ export default async function getRecomendation (
     const MAX = source === 'movie' ? 25000 : 5000;
     const countGte = Math.floor(Math.random() * (MAX - MIN + 1) + MIN)
     const baseObj = {
-      language: 'ES',
+      language: 'es-AR',
       api_key: apiKey || '',
     };
     const discoverObj = {
@@ -63,16 +63,16 @@ export default async function getRecomendation (
 
     const { data: contentInfo } = await axios.get(`${BASE_URL}/${source}/${result.id}?${baseQueryParams}`)
 
-    if (providerResponse?.flatrate) {
-      result.providers = providerResponse.flatrate;
-      result.link = providerResponse.link;
-    }
     result.overview = contentInfo.overview;
     result.tagline = contentInfo.tagline;
     result.title = contentInfo.title ?? contentInfo.name;
-    res.status(200).json(result)
+    if (providerResponse?.flatrate) {
+      result.providers = providerResponse.flatrate;
+      result.link = providerResponse.link;
+      res.status(200).json(result)
+    }
+    res.status(206).json(result)
   } catch (err: any) {
-    console.log(err?.response?.data)
     res.status(500).json({});
   }
 }

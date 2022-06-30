@@ -11,12 +11,13 @@ export const getInfo = async (dispatch: any, source: string) => {
   let itWorked = true;
 
   try {
-    const { data } = await axios.get(`/api?source=${source}`)
+    const { data } = await axios.get(`/api?source=${source}`, { timeout: 5000 })
 
     dispatch({ type: types.SET_CONTENT, content: data });
     dispatch({ type: types.ALREADY_RECOMENDED, recomendedContent: data.id });
-  } catch (err) {
+  } catch (err: any) {
     itWorked = false;
+    if (err?.code === 'ECONNABORTED') getInfo(dispatch, source);
   }
   finally {
     dispatch({ type: types.FETCHING, value: false });
