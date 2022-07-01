@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import Image from 'next/image';
 import styles from '../styles/Home.module.scss'
 
 import { useState, useContext } from 'react';
@@ -7,6 +8,8 @@ import { useState, useContext } from 'react';
 import { Tabs, TabList, Tab, Text, Button, Box } from '@chakra-ui/react'
 import Filters from '../components/Filters';
 import Card from '../components/Card';
+
+import Logo from '../public/logo.webp';
 
 import { PageContext } from '../context';
 import { getInfo, getRecomendation, getProviders } from '../context/actions';
@@ -46,7 +49,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <header className={styles.header}>
-        Que puedo ver?
+        <Box margin="20px 0" width="100%" display="flex" alignItems="center" justifyContent="center">
+          <Image src={Logo} height="150px" width="150px" />
+        </Box>
         <Tabs defaultIndex={linkSelected} colorScheme="purple" size="lg" isFitted onChange={a => handleTab(a)}>
           <TabList>
             <Tab isSelected={linkSelected === 0}>Peliculas</Tab>
