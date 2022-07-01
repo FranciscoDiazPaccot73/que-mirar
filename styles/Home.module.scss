@@ -7,7 +7,7 @@ $purple: #B794F4;
 .main {
   flex: 1;
   min-height: calc(100vh - 77px - 96px);
-  padding: 2em 2em 3em;
+  padding: 1em 2em 3em;
   flex-direction: column;
 }
 
@@ -67,7 +67,7 @@ $purple: #B794F4;
 
 .poster {
   max-height: 700px;
-  min-height: 400px;
+  min-height: 450px;
   position: relative;
   width: 100%;
 

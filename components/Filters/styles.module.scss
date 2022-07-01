@@ -1,0 +1,39 @@
+$purple: #B794F4;
+$purpleTransparent: #b794f442;
+
+.filters {
+  &__all {
+    align-items: center;
+    background-color: $purpleTransparent;
+    border-radius: 8px;
+    border: 1px solid $purple;
+    display: flex;
+    height: 38px;
+    justify-content: center;
+    margin-right: 10px;
+    overflow: hidden;
+    width: 38px;
+
+    &_disabled {
+      border: none;
+      filter: grayscale(90%);
+    }
+  }
+
+  &__provider {
+    border-radius: 8px;
+    border: 1px solid $purple;
+    height: 35px;
+    margin-right: 10px;
+    overflow: hidden;
+    width: 35px;
+  }
+}
+
+.disabled {
+  border: none;
+
+  img {
+    filter: grayscale(90%);
+  }
+}

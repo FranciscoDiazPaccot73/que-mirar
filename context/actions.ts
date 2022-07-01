@@ -26,17 +26,34 @@ export const getInfo = async (dispatch: any, source: string) => {
   return itWorked;
 };
 
-export const getRecomendation = async (dispatch: any, source: string, recomended: Array<number>) => {
+export const getProviders = async (dispatch: any, source: string) => {
+  try {
+    const { data } = await axios.get(`/api/providers?source=${source}`, { timeout: 5000 })
+
+    dispatch({ type: types.SET_PROVIDERS, providers: data });
+  } catch (err) {}
+};
+
+export const getRecomendation = async (dispatch: any, source: string, recomended: Array<number>, prev: any, provider?: any) => {
   dispatch({ type: types.FETCHING, value: true });
   dispatch({ type: types.SET_CONTENT, content: null });
   
   try {
     const formated = recomended.join('|');
-    const { data } = await axios.get(`/api/recomendation?source=${source}&recomended=${formated}`)
+    const { data } = await axios.get(`/api/recomendation?source=${source}&recomended=${formated}&provider=${provider ?? 0}`, { timeout: 5000 })
 
     dispatch({ type: types.SET_CONTENT, content: data });
     dispatch({ type: types.ALREADY_RECOMENDED, recomendedContent: data.id });
-  } catch (err) {}
+    const prevContent = { ...data, source };
+    dispatch({ type: types.PREV_CONTENT, prevContent });
+  } catch (err) {
+    if (prev.source === source) {
+      const prevContent = prev ? { ...prev, source } : null;
+      dispatch({ type: types.SET_CONTENT, content: prevContent });
+    } else {
+      dispatch({ type: types.PREV_CONTENT, prevContent: null });
+    }
+  }
   finally {
     dispatch({ type: types.FETCHING, value: false });
   }
@@ -48,4 +65,8 @@ export const setContent = (dispatch: any, content: any) => {
 
 export const setRecomended = (dispatch: any, id: number) => {
   dispatch({ type: types.ALREADY_RECOMENDED, recomendedContent: id });
+};
+
+export const setProvider = (dispatch: any, id: number) => {
+  dispatch({ type: types.SET_SELECTED_PROVIDER, selectedProvider: id });
 };

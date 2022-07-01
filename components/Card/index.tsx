@@ -55,6 +55,8 @@ const Card = ({ source }: Props) => {
               alt={content.title}
               width='500px'
               height='281px'
+              placeholder='blur'
+              blurDataURL={`${BASE_IMAGE_URL}${content.backdrop_path}`}
             />
             <div className={styles.poster_content}>
               <Text className={styles.poster_title} fontSize="xl">
@@ -62,11 +64,12 @@ const Card = ({ source }: Props) => {
               </Text>
               <Box margin="12px 0" display='flex' mt='2' alignItems='center'>
                 {Array(5).fill('').map((_, i) => (
-                  <StarIcon
-                    key={i}
-                    style={{ margin: '0 2px' }}
-                    color={i < Math.floor(content.vote_average / 2) ? 'purple' : 'gray'}
-                  />
+                  <Box key={i}>
+                    <StarIcon
+                      style={{ margin: '0 2px' }}
+                      color={i < Math.floor(content.vote_average / 2) ? 'purple' : 'gray'}
+                    />
+                  </Box>
                 ))}
                 <Box as='span' ml='2' color='gray.600' fontSize='sm'>
                   {content.vote_count} reseñas
@@ -80,7 +83,7 @@ const Card = ({ source }: Props) => {
                   <Text fontSize="sm">Disponible en:</Text>
                   {content.providers.map((prov: any) =>
                     <Box key={prov.id} overflow="hidden" borderRadius="6px" height="30px" margin='0 6px'>
-                      <Image src={`${BASE_IMAGE_URL}${prov.logo_path}`} width="30px" height="30px" />
+                      <Image alt={prov.provider_name} src={`${BASE_IMAGE_URL}${prov.logo_path}`} width="30px" height="30px" />
                     </Box>
                   )}
                 </Box>

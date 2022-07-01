@@ -33,12 +33,14 @@ export default async function (
     })
     const [{ data: providers }, { data: contentInfo }] = await Promise.all([getProviders, getContent]);
 
-    const { AR: provider } = providers.results || providers.results.US;
+    const provider = providers.results.AR || providers.results.US;
 
     result.overview = contentInfo.overview;
     result.tagline = contentInfo.tagline;
     result.title = contentInfo.title ?? contentInfo.name;
-    result.link = provider.link;
+    if (provider) {
+      result.link = provider.link;
+    }
     if (provider?.flatrate) {
       result.providers = provider.flatrate;
       res.status(200).json(result)

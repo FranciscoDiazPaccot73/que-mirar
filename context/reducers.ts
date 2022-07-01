@@ -2,6 +2,9 @@ export const types = {
   FETCHING: 'FETCHING',
   SET_CONTENT: 'SET_CONTENT',
   ALREADY_RECOMENDED: 'ALREADY_RECOMENDED',
+  PREV_CONTENT: 'PREV_CONTENT',
+  SET_PROVIDERS: 'SET_PROVIDERS',
+  SET_SELECTED_PROVIDER: 'SET_SELECTED_PROVIDER',
 };
 
 export const init = (config: any) => {
@@ -17,6 +20,15 @@ export const reducer = (state: any, action: any) => {
     }
     case types.SET_CONTENT: {
       return {...state, content: action.content}
+    }
+    case types.PREV_CONTENT: {
+      return {...state, prevContent: action.prevContent}
+    }
+    case types.SET_PROVIDERS: {
+      return {...state, providers: action.providers}
+    }
+    case types.SET_SELECTED_PROVIDER: {
+      return {...state, selectedProvider: action.selectedProvider}
     }
     case types.ALREADY_RECOMENDED: {
       const { recomendedContent = [] } = state;

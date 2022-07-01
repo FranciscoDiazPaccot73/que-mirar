@@ -5,17 +5,22 @@ import styles from '../styles/Home.module.scss'
 import { useState, useContext } from 'react';
 
 import { Tabs, TabList, Tab, Text, Button, Box } from '@chakra-ui/react'
-
-import { PageContext } from '../context';
-import { getInfo, getRecomendation } from '../context/actions';
-
+import Filters from '../components/Filters';
 import Card from '../components/Card';
 
+import { PageContext } from '../context';
+import { getInfo, getRecomendation, getProviders } from '../context/actions';
+
+
 const Home: NextPage = () => {
-  const { dispatch, state: { fetching, recomendedContent = [] } } = useContext(PageContext);
+  const { dispatch, state: { selectedProvider = 0, fetching, recomendedContent = [], prevContent } } = useContext(PageContext);
   const [linkSelected, handleTabChange] = useState(0);
   const [source, setSource] = useState('movie');
   const [isFirst, setFirst] = useState(true);
+
+  const getPageProviders = async () => {
+    await getProviders(dispatch, source);
+  }
 
   const handleTab = async (tab: number) => {
     if (tab !== linkSelected) {
@@ -23,13 +28,14 @@ const Home: NextPage = () => {
       setFirst(true);
       handleTabChange(tab);
       setSource(newSource)
+      getPageProviders();
       await getInfo(dispatch, newSource);
     }
   }
 
   const nextRecomendation = () => {
     setFirst(false);
-    getRecomendation(dispatch, source, recomendedContent)
+    getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider)
   }
 
   return (
@@ -54,6 +60,7 @@ const Home: NextPage = () => {
         <Box margin="10px 0" width="100%" display="flex" justifyContent="flex-end">
           <Button onClick={nextRecomendation} disabled={fetching} size="sm" colorScheme='purple' variant='ghost'>Siguiente recomendación</Button>
         </Box>
+        <Filters source={source} />
       </main>
       <footer className={styles.footer}>
         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">

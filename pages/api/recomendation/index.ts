@@ -8,7 +8,7 @@ export default async function getRecomendation (
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { source, recomended, providers } = req.query;
+  const { source, recomended, provider } = req.query;
   try {
     const apiKey = process.env.TMDB_API_KEY;
     const MIN = 3000;
@@ -18,12 +18,14 @@ export default async function getRecomendation (
       language: 'es-AR',
       api_key: apiKey || '',
     };
+
+    const providerToRequest = provider && provider !== '0' ? provider.toString() : '119|619|531|384|300|337|8';
     const discoverObj = {
       ...baseObj,
       sort_by: 'vote_average.desc',
       "vote_count.gte": countGte.toString(),
       watch_region: "AR",
-      watch_provider: providers?.toString() ?? '119|619|531|384|300|337|8',
+      with_watch_provider: providerToRequest,
       include_adult: 'false',
     }
     const alreadyReco = (recomended as string).split('|');
@@ -40,18 +42,21 @@ export default async function getRecomendation (
     const { results } = data || {};
     let providerResponse: any = null;
     const notRepeatResult = results.filter((r: any) => !alreadyReco.includes(r.id.toString()));
+
     const getWatchProvider = async (elements: any) => {
       const indexRandom = Math.floor(Math.random() * (elements.length - 2) + 1) || 0;
-      const { id } = elements[indexRandom] || {};
-      const others = elements.filter((elem: any) => elem.id !== id);
-      if (!id) res.status(201).json({elements})
-      const firstElement = elements[indexRandom];
-      if (alreadyReco.includes(id.toString())) {
-        getWatchProvider(others);
+      const { id: firstId } = elements[indexRandom] || {};
+      let id = firstId;
+      let others = elements;
+      if (alreadyReco.includes(firstId.toString())) {
+        others = elements.filter((elem: any) => elem.id !== id);
+        const { id: newId } = others[indexRandom] || {};
+        id = newId;
       }
+      const firstElement = others[indexRandom];
       const { data } = await axios.get(`${BASE_URL}/${source}/${id}/watch/providers?${baseQueryParams}`)
       if (data.results?.AR && !alreadyReco.includes(id.toString())) {
-        providerResponse = data.results.AR
+        providerResponse = data.results.AR || data.results.US
         providerResponse.id = id;
         providerResponse = { ...firstElement, ...providerResponse }
       }
