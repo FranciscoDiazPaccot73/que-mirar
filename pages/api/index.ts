@@ -44,8 +44,9 @@ export default async function (
     if (provider?.flatrate) {
       result.providers = provider.flatrate;
       res.status(200).json(result)
+    } else {
+      res.status(206).json(result)
     }
-    res.status(206).json(result)
   } catch (err) {
     res.status(500);
   }

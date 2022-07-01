@@ -75,8 +75,9 @@ export default async function getRecomendation (
       result.providers = providerResponse.flatrate;
       result.link = providerResponse.link;
       res.status(200).json(result)
+    } else {
+      res.status(206).json(result)
     }
-    res.status(206).json(result)
   } catch (err: any) {
     res.status(500).json({});
   }
