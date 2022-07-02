@@ -38,6 +38,7 @@ export default async function (
     result.overview = contentInfo.overview;
     result.tagline = contentInfo.tagline;
     result.title = contentInfo.title ?? contentInfo.name;
+    result.genres = contentInfo.genres ?? [];
     if (provider) {
       result.link = provider.link;
     }

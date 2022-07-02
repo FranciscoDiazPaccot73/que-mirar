@@ -71,6 +71,7 @@ export default async function getRecomendation (
     result.overview = contentInfo.overview;
     result.tagline = contentInfo.tagline;
     result.title = contentInfo.title ?? contentInfo.name;
+    result.genres = contentInfo.genres ?? [];
     if (providerResponse?.flatrate) {
       result.providers = providerResponse.flatrate;
       result.link = providerResponse.link;
