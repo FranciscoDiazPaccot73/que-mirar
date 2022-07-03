@@ -34,7 +34,9 @@ const Desktop = ({ styles, source }: Props) => {
                 <Box display="flex" alignItems="center">{content.title}{source === 'movie' ? <span style={{ fontSize: "22px" }} className={styles.poster_release}>&bull; {content.release_date.slice(0, 4)}</span> : null}</Box>
               </Text>
               <Box display="flex">
-                <Box display="flex" alignItems="center">{content.genres?.map((genre: any) => <Text className={styles.genres} fontSize="12px" color="gray.200">{genre.name}</Text>)}</Box>
+                <Box display="flex" alignItems="center">
+                  {content.genres?.map((genre: any) => <Text key={genre.name} className={styles.genres} fontSize="12px" color="gray.200">{genre.name}</Text>)}
+                </Box>
               </Box>
               <Box margin="12px 0" display='flex' mt='2' alignItems='center'>
                 {Array(5).fill('').map((_, i) => (

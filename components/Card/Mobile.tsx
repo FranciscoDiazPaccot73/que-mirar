@@ -36,7 +36,7 @@ const Mobile = ({ styles, source }: Props) => {
                   {content.title}{source === 'movie' ?
                     <span className={styles.poster_release}>
                       &bull; {content.release_date.slice(0, 4)}
-                      <Box display="flex" alignItems="center">{content.genres?.map((genre: any) => <Text className={styles.genres} fontSize="12px" color="gray.200">{genre.name}</Text>)}</Box>
+                      <Box display="flex" alignItems="center">{content.genres?.map((genre: any) => <Text key={genre.name} className={styles.genres} fontSize="12px" color="gray.200">{genre.name}</Text>)}</Box>
                     </span> : null
                   }
                 </span>
