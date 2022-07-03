@@ -20,7 +20,7 @@ const Desktop = ({ styles, source, nextRecomendation }: Props) => {
   return (
     <>
     {content ? (
-        <Box position="relative" className={styles.poster} display="flex">
+        <Box position="relative" className={styles.poster} maxHeight="950px" display="flex">
           <Image
             src={`${BASE_IMAGE_URL}${content.poster_path}`}
             alt={content.title}
