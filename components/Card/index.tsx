@@ -13,9 +13,10 @@ import styles from '../../styles/Home.module.scss'
 interface Props {
   source: string,
   device: string|null,
+  nextRecomendation?: any,
 }
 
-const Card = ({ source, device }: Props) => {
+const Card = ({ source, device, nextRecomendation }: Props) => {
   const { dispatch } = useContext(PageContext);
   const { isLoading, error, data } = useQuery('repoData', () =>
     fetch(`/api?source=${source}`).then(res =>
@@ -54,7 +55,7 @@ const Card = ({ source, device }: Props) => {
 
   return (
     <Box {...boxProps}>
-      <Desktop styles={styles} source={source} />
+      <Desktop nextRecomendation={nextRecomendation} styles={styles} source={source} />
     </Box>
   )
 }
