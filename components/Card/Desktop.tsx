@@ -29,7 +29,7 @@ const Desktop = ({ styles, source, nextRecomendation }: Props) => {
             placeholder='blur'
             blurDataURL={`${BASE_IMAGE_URL}${content.poster_path}`}
           />
-          <Box width="75%" padding="30px 30px 74px">
+          <Box width="80%" padding="30px 30px 74px">
             <Text fontSize="28px">
               <Text display="flex" alignItems="center">{content.title}</Text>
             </Text>

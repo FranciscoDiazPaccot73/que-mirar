@@ -35,5 +35,9 @@ $purpleTransparent: #b794f442;
 
   img {
     filter: grayscale(90%);
+
+    &:hover {
+      filter: none;
+    }
   }
 }

@@ -25,7 +25,7 @@ export default async function getRecomendation (
       sort_by: 'vote_average.desc',
       "vote_count.gte": countGte.toString(),
       watch_region: "AR",
-      with_watch_provider: providerToRequest,
+      with_watch_providers: providerToRequest,
       include_adult: 'false',
     }
     const alreadyReco = (recomended as string).split('|');
