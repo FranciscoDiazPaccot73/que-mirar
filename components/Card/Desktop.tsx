@@ -67,7 +67,9 @@ const Desktop = ({ styles, source, nextRecomendation }: Props) => {
                   </Box>
                 )}
               </Box>
-            ) : null}
+            ) : (
+              <Text fontSize="sm">Puede que este contenido no este disponible en tu región</Text>
+            )}
           </Box>
           <Box
             position="absolute"
@@ -85,7 +87,7 @@ const Desktop = ({ styles, source, nextRecomendation }: Props) => {
               colorScheme='purple'
               variant='ghost'
             >
-              Siguiente recomendación
+              Ver siguiente recomendación
             </Button>
             {content.link ? (
               <Link href={content.link} passHref>
@@ -95,7 +97,7 @@ const Desktop = ({ styles, source, nextRecomendation }: Props) => {
                   colorScheme='purple'
                   marginLeft="16px"
                 >
-                  Ver
+                  ¡Quiero verla!
                 </Button>
               </Link>
             ) : null}

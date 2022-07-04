@@ -18,7 +18,7 @@ const Mobile = ({ source, nextRecomendation, device }: Props) => {
     <>
       <Card source={source} device={device} />
       <Box margin="10px 0" width="100%" display="flex" justifyContent="flex-end">
-        <Button onClick={nextRecomendation} disabled={fetching} size="sm" colorScheme='purple' variant='ghost'>Siguiente recomendación</Button>
+        <Button onClick={nextRecomendation} disabled={fetching} size="sm" colorScheme='purple' variant='ghost'>Ver siguiente recomendación</Button>
       </Box>
     </>
   )

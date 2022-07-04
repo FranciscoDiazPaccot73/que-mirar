@@ -9,7 +9,7 @@ const Mobile = ({ linkSelected, handleTab }: Props) => {
   return (
     <>
       <Box margin="14px 0 0" width="100%" display="flex" alignItems="center" justifyContent="center">
-        <Image src={Logo} priority height="125px" width="125px" />
+        <Image src={Logo} priority height="80" width="125px" />
       </Box>
       <Tabs defaultIndex={linkSelected} colorScheme="purple" size="lg" isFitted onChange={a => handleTab(a)}>
         <TabList>
