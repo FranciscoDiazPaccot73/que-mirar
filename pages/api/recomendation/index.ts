@@ -8,7 +8,7 @@ export default async function getRecomendation (
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { source, recomended, provider } = req.query;
+  const { source, recomended, provider, genre } = req.query;
   try {
     const apiKey = process.env.TMDB_API_KEY;
     const MIN = 3000;
@@ -20,6 +20,7 @@ export default async function getRecomendation (
     };
 
     const providerToRequest = provider && provider !== '0' ? provider.toString() : '119|619|531|384|300|337|8';
+    const genreToRequest = genre ? genre.toString() : '';
     const discoverObj = {
       ...baseObj,
       sort_by: 'vote_average.desc',
@@ -27,6 +28,7 @@ export default async function getRecomendation (
       watch_region: "AR",
       with_watch_providers: providerToRequest,
       include_adult: 'false',
+      with_genres: genreToRequest,
     }
     const alreadyReco = (recomended as string).split('|');
     const discoverQueryParams = new URLSearchParams(discoverObj);

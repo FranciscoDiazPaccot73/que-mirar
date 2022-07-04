@@ -1,73 +1,58 @@
 import { memo, useContext, useEffect } from 'react';
-import Image from 'next/image';
-import classNames from 'classnames';
 
-import { Box, Text, Skeleton } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
+import Providers from './Providers';
+import Genres from './Genres';
 
 import { PageContext } from '../../context';
-import { getProviders, getRecomendation, setProvider } from '../../context/actions';
-
-import styles from './styles.module.scss';
+import { getProviders, getRecomendation, setProvider, getGenres, setSelectedGenre } from '../../context/actions';
 
 interface Props {
   source: string,
   device: string|null,
 }
 
-const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
-
 const Filters = ({ source, device }: Props) => {
-  const { dispatch, state: { selectedProvider = 0, providers, fetching, recomendedContent = [], prevContent } } = useContext(PageContext);
-  const allFilters = classNames(styles.filters__all, selectedProvider !== 0 && styles.filters__all_disabled);
+  const { dispatch, state: { selectedProvider = 0, selectedGenre, fetching, recomendedContent = [], prevContent } } = useContext(PageContext);
 
   const getPageProviders = async () => {
     await getProviders(dispatch, source);
   }
 
+  const getPageGenres = async () => {
+    await getGenres(dispatch, source);
+  }
+
   useEffect(() => {
-    if (source) getPageProviders();
+    if (source) {
+      getPageProviders();
+      getPageGenres();
+    }
   }, []);
 
   const handleFilter = async (id: number) => {
     if (!fetching && id !== selectedProvider) {
       setProvider(dispatch, id)
-      await getRecomendation(dispatch, source, recomendedContent, prevContent, id)
+      await getRecomendation(dispatch, source, recomendedContent, prevContent, id, selectedGenre)
+    }
+  }
+
+  const handleGenre = async (id: number) => {
+    if (!fetching) {
+      if (id === selectedGenre) {
+        setSelectedGenre(dispatch, null)
+        await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider)
+      } else {
+        setSelectedGenre(dispatch, id)
+        await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, id)
+      }
     }
   }
 
   return (
     <Box  margin="30px 0 0">
-      <Text fontSize="10px">Se priorizará en tu búsqueda la plataforma de streaming que elijas</Text>
-      <Box
-        width="100%"
-        display="flex"
-        justifyContent={device === 'mobile' ? "center" : 'inherit'}
-        marginTop="12px"
-      >
-        {providers?.length ? (
-          <>
-            <Box cursor="pointer" onClick={() => handleFilter(0)} className={allFilters}>
-              <Text textAlign="center" fontSize="10px">TODAS</Text>
-            </Box>
-            {providers.map((prov: any) => {
-              const filtersClasses = classNames(styles.filters__provider, selectedProvider !== prov.provider_id && styles.disabled);
-
-              return (
-                <Box cursor="pointer" key={prov.provider_id} onClick={() => handleFilter(prov.provider_id)} className={filtersClasses}>
-                  <Image alt={prov.provider_name} src={`${BASE_IMAGE_URL}${prov.logo_path}`} height='40px' width="40px" />
-                </Box>
-              )
-            })}
-          </>
-        ) : (
-          <>
-            <Skeleton height='35px' width="35px" marginRight="10px" />
-            <Skeleton height='35px' width="35px" marginRight="10px" />
-            <Skeleton height='35px' width="35px" marginRight="10px" />
-            <Skeleton height='35px' width="35px" marginRight="10px" />
-          </>
-        )}
-      </Box>
+      <Providers device={device} handleFilter={handleFilter} />
+      <Genres handleGenre={handleGenre} />
     </Box>
   )
 }

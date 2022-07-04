@@ -1,13 +1,17 @@
 $purple: #B794F4;
 $purpleTransparent: #b794f442;
+$backgroundColor: #1a202c;
+$white: #fff;
 
 .filters {
   &__all {
     align-items: center;
-    background-color: $purpleTransparent;
+    background-color: $purple;
     border-radius: 8px;
     border: 1px solid $purple;
+    color: $backgroundColor;
     display: flex;
+    font-weight: 600;
     height: 38px;
     justify-content: center;
     margin-right: 10px;
@@ -15,8 +19,8 @@ $purpleTransparent: #b794f442;
     width: 38px;
 
     &_disabled {
-      border: none;
-      filter: grayscale(90%);
+      background-color: transparent;
+      color: $white;
     }
   }
 

@@ -4,6 +4,7 @@ import { Box } from '@chakra-ui/react'
 
 import Mobile from './Mobile';
 import Desktop from './Desktop';
+import NoContent from '../icons/NoData';
 
 import { PageContext } from '../../context';
 import { setContent, setRecomended, getInfo } from '../../context/actions';
@@ -17,7 +18,7 @@ interface Props {
 }
 
 const Card = ({ source, device, nextRecomendation }: Props) => {
-  const { dispatch } = useContext(PageContext);
+  const { dispatch, state: { noContent } } = useContext(PageContext);
   const { isLoading, error, data } = useQuery('repoData', () =>
     fetch(`/api?source=${source}`).then(res =>
       res.json()
@@ -43,6 +44,14 @@ const Card = ({ source, device, nextRecomendation }: Props) => {
     width: '100%',
     display: 'flex',
     minHeight: "400px",
+  }
+
+  if (noContent) {
+    return (
+      <Box {...boxProps} maxHeight="500px" padding="12px">
+        <NoContent height='500px' width='100%'/>
+      </Box>
+    )
   }
 
   if (device === 'mobile') {

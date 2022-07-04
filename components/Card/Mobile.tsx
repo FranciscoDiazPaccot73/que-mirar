@@ -43,7 +43,7 @@ const Mobile = ({ styles, source }: Props) => {
               </Text>
               <Box margin="12px 0" display='flex' mt='2' alignItems='center'>
                 {Array(5).fill('').map((_, i) => (
-                  <Box key={i}>
+                  <Box key={`mobile-star-${i}`}>
                     <StarIcon
                       style={{ margin: '0 2px' }}
                       color={i < Math.floor(content.vote_average / 2) ? 'purple' : 'gray'}
