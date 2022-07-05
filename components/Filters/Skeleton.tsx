@@ -5,7 +5,7 @@ type SkeletonType = {
 }
 
 const SkeletonFilter = ({ amount }: SkeletonType) => (
-  <>{Array(amount).fill('').map((_) => <Skeleton height='35px' width="80px" marginRight="10px" />)}</>
+  <>{Array(amount).fill('').map((_, index) => <Skeleton key={`filter-skeleton-${index}`} height='35px' width="80px" marginRight="10px" />)}</>
 )
 
 export default SkeletonFilter;
