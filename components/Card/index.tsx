@@ -48,8 +48,8 @@ const Card = ({ source, device, nextRecomendation }: Props) => {
 
   if (noContent) {
     return (
-      <Box {...boxProps} maxHeight="500px" padding="12px">
-        <NoContent height='500px' width='100%'/>
+      <Box {...boxProps} maxHeight="500px" padding="16px">
+        <NoContent height='400px' width='100%'/>
       </Box>
     )
   }

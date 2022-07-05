@@ -4,6 +4,7 @@ const nextConfig = {
   env: {
     TMDB_API_KEY: process.env.TMDB_API_KEY,
     GA_ID: process.env.GA_ID,
+    SCOPE: process.env.SCOPE,
   },
   images: {
     domains: ['image.tmdb.org'],

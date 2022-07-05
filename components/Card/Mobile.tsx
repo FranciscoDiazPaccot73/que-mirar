@@ -55,7 +55,7 @@ const Mobile = ({ styles, source }: Props) => {
                   {content.vote_count} reseñas
                 </Box>
               </Box>
-              <Box maxHeight="168px" overflow="hidden" textOverflow="ellipsis">
+              <Box maxHeight="250px" overflow="hidden" textOverflow="ellipsis">
                 <Text className={styles.poster_overview} fontSize="sm">{content.overview}</Text>
               </Box>
               {content.providers?.length ? (

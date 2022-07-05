@@ -10,7 +10,7 @@ const queryClient = new QueryClient()
 
 function MyApp({ Component, pageProps }: AppProps) {
   const trackingId = process.env.GA_ID ?? '';
-  ReactGA.initialize(trackingId);
+  if (process.env.NODE_ENV === 'production') ReactGA.initialize(trackingId);
 
   return (
     <QueryClientProvider client={queryClient}>

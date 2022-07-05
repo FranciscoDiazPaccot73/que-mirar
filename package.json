@@ -1,7 +1,13 @@
 {
-  "name": "que-mirar",
+  "name": "que-puedo-ver",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://quepuedover.online",
+  "author": {
+    "name": "Francisco Diaz Paccot",
+    "email": "fran.diazpaccot@gmail.com",
+    "url": "https://franciscodiazpaccot.dev/"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
