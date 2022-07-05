@@ -4,20 +4,20 @@ import { useContext } from "react";
 
 import { Box, Button, Text, Skeleton, SkeletonText } from '@chakra-ui/react'
 import { StarIcon } from '@chakra-ui/icons';
+import CardSkeleton from "./Skeleton";
 
 import { PageContext } from '../../context';
 import { trackEvent } from "../../utils/trackers";
 
-const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
+import styles from '../../styles/Home.module.scss'
 
 export interface Props {
-  styles: any,
   source: string,
-  nextRecomendation: any,
+  nextRecomendation?(): void,
 }
 
-const Desktop = ({ styles, source, nextRecomendation }: Props) => {
-  const { state: { content, fetching } } = useContext(PageContext);
+const Desktop = ({ source, nextRecomendation }: Props) => {
+  const { state: { content, fetching, BASE_IMAGE_URL } } = useContext(PageContext);
 
   return (
     <>
@@ -70,7 +70,7 @@ const Desktop = ({ styles, source, nextRecomendation }: Props) => {
                 )}
               </Box>
             ) : (
-              <Text fontSize="sm">Puede que este contenido no este disponible en tu región</Text>
+              <Text marginTop="24px" color="gray.500" fontWeight={600} fontSize="sm">Puede que este contenido no este disponible en tu región</Text>
             )}
           </Box>
           <Box
@@ -106,14 +106,7 @@ const Desktop = ({ styles, source, nextRecomendation }: Props) => {
           </Box>
         </Box>
       ) : (
-        <Box width="100%" display="flex">
-          <Skeleton height='100%' maxWidth="350px" width="100%" />
-          <Box width="75%" padding="30px 30px 64px">
-            <Skeleton height='30px' />
-            <Skeleton height='21px' margin="8px 0 12px" />
-            <SkeletonText mt='4' noOfLines={4} spacing='4' />
-          </Box>
-        </Box>
+        <CardSkeleton />
       )}
     </>
   )

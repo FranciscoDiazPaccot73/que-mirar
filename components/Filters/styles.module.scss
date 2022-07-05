@@ -1,7 +1,4 @@
-$purple: #B794F4;
-$purpleTransparent: #b794f442;
-$backgroundColor: #1a202c;
-$white: #fff;
+@import '../../styles/variables';
 
 .filters {
   &__all {
@@ -12,11 +9,11 @@ $white: #fff;
     color: $backgroundColor;
     display: flex;
     font-weight: 600;
-    height: 38px;
+    height: 36px;
     justify-content: center;
     margin-right: 10px;
     overflow: hidden;
-    width: 38px;
+    width: 36px;
 
     &_disabled {
       background-color: transparent;

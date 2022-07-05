@@ -2,7 +2,7 @@ import Card from '../Card';
 
 interface Props {
   source: string,
-  nextRecomendation: any,
+  nextRecomendation(): void,
   device: string|null,
 };
 

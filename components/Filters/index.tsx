@@ -14,6 +14,18 @@ interface Props {
   device: string|null,
 }
 
+type provider = {
+  display_priority: number,
+  logo_path: string,
+  provider_name: string,
+  provider_id: number
+}
+
+type genre = {
+  id: number,
+  name: string,
+}
+
 const Filters = ({ source, device }: Props) => {
   const { dispatch, state: { genres, providers, selectedProvider = 0, selectedGenre = 0, fetching, recomendedContent = [], prevContent } } = useContext(PageContext);
 
@@ -36,14 +48,14 @@ const Filters = ({ source, device }: Props) => {
     if (!fetching && id !== selectedProvider) {
       setProvider(dispatch, id)
       await getRecomendation(dispatch, source, recomendedContent, prevContent, id, selectedGenre)
-      const prov = providers.find((p: any) => p.provider_id === id);
+      const prov = providers.find((p: provider) => p.provider_id === id);
       trackEvent('PROVIDER', prov.provider_name)
     }
   }
 
   const handleGenre = async (id: number) => {
     if (!fetching) {
-      const genre = genres.find((g: any) => g.id === id);
+      const genre = genres.find((g: genre) => g.id === id);
       if (id !== selectedGenre) {
         setSelectedGenre(dispatch, id)
         if (id === 0) {

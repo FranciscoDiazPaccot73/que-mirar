@@ -1,20 +1,20 @@
 import React, { useEffect, useContext } from 'react'
 import { useQuery } from 'react-query'
+import dynamic from 'next/dynamic';
 import { Box } from '@chakra-ui/react'
 
-import Mobile from './Mobile';
-import Desktop from './Desktop';
 import NoContent from '../icons/NoData';
 
 import { PageContext } from '../../context';
 import { setContent, setRecomended, getInfo } from '../../context/actions';
 
-import styles from '../../styles/Home.module.scss'
+const Mobile = dynamic(() => import('./Mobile'));
+const Desktop = dynamic(() => import('./Desktop'));
 
 interface Props {
   source: string,
   device: string|null,
-  nextRecomendation?: any,
+  nextRecomendation?(): void,
 }
 
 const Card = ({ source, device, nextRecomendation }: Props) => {
@@ -46,7 +46,7 @@ const Card = ({ source, device, nextRecomendation }: Props) => {
     minHeight: "400px",
   }
 
-  if (noContent) {
+  if (noContent || !device) {
     return (
       <Box {...boxProps} maxHeight="500px" padding="16px">
         <NoContent height='400px' width='100%'/>
@@ -57,14 +57,14 @@ const Card = ({ source, device, nextRecomendation }: Props) => {
   if (device === 'mobile') {
     return (
       <Box {...boxProps}>
-        <Mobile styles={styles} source={source} />
+        <Mobile source={source} />
       </Box>
     )
   }
 
   return (
-    <Box {...boxProps}>
-      <Desktop nextRecomendation={nextRecomendation} styles={styles} source={source} />
+    <Box {...boxProps} minHeight="500px">
+      <Desktop nextRecomendation={nextRecomendation} source={source} />
     </Box>
   )
 }

@@ -2,21 +2,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { useContext } from "react";
 
-import { Box, Text, Skeleton, SkeletonText } from '@chakra-ui/react'
+import { Box, Text } from '@chakra-ui/react'
 import { StarIcon } from '@chakra-ui/icons';
+import CardSkeleton from "./Skeleton";
 
 import { trackEvent } from "../../utils/trackers";
 import { PageContext } from '../../context';
 
-const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
+import styles from '../../styles/Home.module.scss'
 
 export interface Props {
-  styles: any,
   source: string,
 }
 
-const Mobile = ({ styles, source }: Props) => {
-  const { state: { content } } = useContext(PageContext);
+const Mobile = ({ source }: Props) => {
+  const { state: { content, BASE_IMAGE_URL } } = useContext(PageContext);
 
   return (
     <>
@@ -72,14 +72,7 @@ const Mobile = ({ styles, source }: Props) => {
           </Box>
         </Link>
       ) : (
-        <Box width="100%">
-          <Skeleton height='182px' />
-          <Box className={styles.poster_content}>
-            <Skeleton height='30px' />
-            <Skeleton height='21px' margin="8px 0 12px" />
-            <SkeletonText mt='4' noOfLines={4} spacing='4' />
-          </Box>
-        </Box>
+        <CardSkeleton device="mobile" />
       )}
     </>
   )
