@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { Box, Text, Skeleton, SkeletonText } from '@chakra-ui/react'
 import { StarIcon } from '@chakra-ui/icons';
 
+import { trackEvent } from "../../utils/trackers";
 import { PageContext } from '../../context';
 
 const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
@@ -20,7 +21,7 @@ const Mobile = ({ styles, source }: Props) => {
   return (
     <>
     {content ? (
-        <Link href={content?.link ?? '/'} passHref>
+        <Link href={content?.link ?? '/'} passHref onClick={() => trackEvent('GENRE', content.title)}>
           <Box className={styles.poster}>
             <Image
               src={`${BASE_IMAGE_URL}${content.backdrop_path}`}

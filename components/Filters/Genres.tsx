@@ -18,12 +18,17 @@ const Genres = ({ handleGenre }: Props) => {
       {genres?.length ? (
         <Carrousel genres={genres} selected={selectedGenre} handleClick={handleGenre} />
       ) : (
-        <>
-          <Skeleton height='35px' width="35px" marginRight="10px" />
-          <Skeleton height='35px' width="35px" marginRight="10px" />
-          <Skeleton height='35px' width="35px" marginRight="10px" />
-          <Skeleton height='35px' width="35px" marginRight="10px" />
-        </>
+        <Box
+          width="100%"
+          display="flex"
+          justifyContent="center"
+          marginTop="12px"
+        >
+          <Skeleton height='35px' width="80px" marginRight="10px" />
+          <Skeleton height='35px' width="80px" marginRight="10px" />
+          <Skeleton height='35px' width="80px" marginRight="10px" />
+          <Skeleton height='35px' width="80px" marginRight="10px" />
+        </Box>
       )}
     </Box>
   )

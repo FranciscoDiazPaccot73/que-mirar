@@ -4,6 +4,8 @@ import { Box } from '@chakra-ui/react'
 import Providers from './Providers';
 import Genres from './Genres';
 
+import { trackEvent } from '../../utils/trackers';
+
 import { PageContext } from '../../context';
 import { getProviders, getRecomendation, setProvider, getGenres, setSelectedGenre } from '../../context/actions';
 
@@ -13,7 +15,7 @@ interface Props {
 }
 
 const Filters = ({ source, device }: Props) => {
-  const { dispatch, state: { selectedProvider = 0, selectedGenre, fetching, recomendedContent = [], prevContent } } = useContext(PageContext);
+  const { dispatch, state: { genres, providers, selectedProvider = 0, selectedGenre, fetching, recomendedContent = [], prevContent } } = useContext(PageContext);
 
   const getPageProviders = async () => {
     await getProviders(dispatch, source);
@@ -34,17 +36,22 @@ const Filters = ({ source, device }: Props) => {
     if (!fetching && id !== selectedProvider) {
       setProvider(dispatch, id)
       await getRecomendation(dispatch, source, recomendedContent, prevContent, id, selectedGenre)
+      const prov = providers.find((p: any) => p.provider_id === id);
+      trackEvent('PROVIDER', prov.provider_name)
     }
   }
 
   const handleGenre = async (id: number) => {
     if (!fetching) {
+      const genre = genres.find((g: any) => g.id === id);
       if (id === selectedGenre) {
         setSelectedGenre(dispatch, null)
         await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider)
+        trackEvent('GENRE', `${genre.name}-add`)
       } else {
         setSelectedGenre(dispatch, id)
         await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, id)
+        trackEvent('GENRE', `${genre.name}-remove`)
       }
     }
   }

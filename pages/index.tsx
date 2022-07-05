@@ -11,10 +11,10 @@ import Filters from '../components/Filters';
 import Layout from '../components/Layout';
 import Header from '../components/Header';
 
+import { trackView, trackEvent } from '../utils/trackers';
 
 import { PageContext } from '../context';
 import { getInfo, getRecomendation, getProviders, setProvider } from '../context/actions';
-
 
 const Home: NextPage = () => {
   const { dispatch, state: { noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent } } = useContext(PageContext);
@@ -29,6 +29,8 @@ const Home: NextPage = () => {
   useEffect(() => {
     const dev = isMobile ? 'mobile' : 'desktop';
     setDevice(dev);
+    trackView('/home');
+    trackEvent('DEVICE', dev)
   }, [])
 
   useEffect(() => {
@@ -77,6 +79,7 @@ const Home: NextPage = () => {
       setSource(newSource)
       setProvider(dispatch, 0);
       getPageProviders();
+      trackEvent('TAB', newSource)
       await getInfo(dispatch, newSource);
     }
   }
@@ -85,6 +88,7 @@ const Home: NextPage = () => {
     toast.closeAll();
     setFirst(false);
     getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre)
+    trackEvent('CLICK', 'recomendation')
   }
 
   return (
@@ -119,7 +123,7 @@ const Home: NextPage = () => {
           </a>
           <Text color='gray.400' textAlign="center" style={{ fontSize: '10px' }}>This product uses the TMDB API but is not endorsed or certified by TMDB.</Text>
         </Box>
-        <Box className={styles.dev}>
+        <Box className={styles.dev} onClick={() => trackEvent('CLICK', 'dev')}>
           Created by <a href='https://franciscodiazpaccot.dev' target="_blank" rel="noreferrer noopener">
           Francisco Diaz Paccot</a>
         </Box>
