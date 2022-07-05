@@ -12,6 +12,7 @@ const Desktop = ({ linkSelected, handleTab }: Props) => {
       width="100%"
       display="flex"
       margin="10px auto 16px"
+      padding="0 16px"
     >
       <Box marginRight="24px" width="140px" display="flex" alignItems="center" justifyContent="center">
         <Image src={Logo} priority height="130px" width="200px" />

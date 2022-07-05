@@ -3,10 +3,10 @@ import dynamic from 'next/dynamic'
 const Mobile = dynamic(() => import('../MobileView'))
 const Desktop = dynamic(() => import('../DesktopView'))
 
-interface Props {
+export interface Props {
   device: string|null,
   source: string,
-  nextRecomendation: any
+  nextRecomendation(): void
 }
 
 const Layout = (props: Props) => {

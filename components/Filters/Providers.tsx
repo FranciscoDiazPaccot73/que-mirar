@@ -1,7 +1,9 @@
 import { useContext } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames';
+
 import { Box, Text, Skeleton } from '@chakra-ui/react'
+import SkeletonFilter from './Skeleton';
 
 import { PageContext } from '../../context';
 
@@ -43,12 +45,7 @@ const Providers = ({ handleFilter, device }: Props) => {
             })}
           </>
         ) : (
-          <>
-            <Skeleton height='35px' width="35px" marginRight="10px" />
-            <Skeleton height='35px' width="35px" marginRight="10px" />
-            <Skeleton height='35px' width="35px" marginRight="10px" />
-            <Skeleton height='35px' width="35px" marginRight="10px" />
-          </>
+          <SkeletonFilter amount={4} />
         )}
       </Box>
     </Box>

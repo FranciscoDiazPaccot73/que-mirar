@@ -1,5 +1,7 @@
-import { types } from './reducers';
 import axios from 'axios';
+
+import { types } from './reducers';
+import { trackEvent } from '../utils/trackers';
 
 export const isFetching = (dispatch: any, value: boolean) => {
   dispatch({ type: types.FETCHING, value });
@@ -16,6 +18,7 @@ export const getInfo = async (dispatch: any, source: string) => {
     dispatch({ type: types.SET_CONTENT, content: data });
     dispatch({ type: types.ALREADY_RECOMENDED, recomendedContent: data.id });
   } catch (err: any) {
+    trackEvent('ERROR', 'getInfo')
     itWorked = false;
     if (err?.code === 'ECONNABORTED') getInfo(dispatch, source);
   }
@@ -31,7 +34,9 @@ export const getProviders = async (dispatch: any, source: string) => {
     const { data } = await axios.get(`/api/providers?source=${source}`, { timeout: 8000 })
 
     dispatch({ type: types.SET_PROVIDERS, providers: data });
-  } catch (err) {}
+  } catch (err) {
+    trackEvent('ERROR', 'getProviders')
+  }
 };
 
 export const getGenres = async (dispatch: any, source: string) => {
@@ -39,7 +44,9 @@ export const getGenres = async (dispatch: any, source: string) => {
     const { data } = await axios.get(`/api/genres?source=${source}`, { timeout: 8000 })
 
     dispatch({ type: types.SET_GENRES, genres: data });
-  } catch (err) {}
+  } catch (err) {
+    trackEvent('ERROR', 'getGenres')
+  }
 };
 
 export const getRecomendation = async (dispatch: any, source: string, recomended: Array<number>, prev: any, provider?: any, genre?: number) => {
@@ -63,6 +70,7 @@ export const getRecomendation = async (dispatch: any, source: string, recomended
       dispatch({ type: types.PREV_CONTENT, prevContent: null });
     }
     dispatch({ type: types.SET_NO_CONTENT, noContent: true });
+    trackEvent('ERROR', 'getRecomendation')
   }
   finally {
     dispatch({ type: types.FETCHING, value: false });

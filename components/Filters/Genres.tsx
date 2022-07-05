@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 
-import { Box, Text, Skeleton } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import Carrousel from "../Carousel";
+import SkeletonFilter from './Skeleton';
 
 import { PageContext } from '../../context';
 
@@ -25,10 +26,7 @@ const Genres = ({ handleGenre }: Props) => {
           justifyContent="center"
           marginTop="12px"
         >
-          <Skeleton height='35px' width="80px" marginRight="10px" />
-          <Skeleton height='35px' width="80px" marginRight="10px" />
-          <Skeleton height='35px' width="80px" marginRight="10px" />
-          <Skeleton height='35px' width="80px" marginRight="10px" />
+          <SkeletonFilter amount={4} />
         </Box>
       )}
     </Box>

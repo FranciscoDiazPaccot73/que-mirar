@@ -5,7 +5,7 @@ const Desktop = dynamic(() => import('./Desktop'));
 
 export interface Props {
   linkSelected: number|undefined,
-  handleTab: any,
+  handleTab(tab: number): Promise<void>,
   device?: string|null,
 }
 

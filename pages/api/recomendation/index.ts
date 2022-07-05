@@ -1,9 +1,8 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
+import axios from 'axios';
 
 import { calculateMaxVotes } from '../../../utils';
 
-const axios = require('axios');
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 export default async function getRecomendation (

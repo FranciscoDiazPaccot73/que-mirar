@@ -1,10 +1,7 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const axios = require('axios');
 const BASE_URL = 'https://api.themoviedb.org/3';
-
-const availableProviderId = [119, 619, 531, 384, 337, 8];
 
 export default async function (
   req: NextApiRequest,

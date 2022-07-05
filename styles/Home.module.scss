@@ -1,16 +1,17 @@
-$purple: #B794F4;
+@import './variables';
 
 .main {
   flex-direction: column;
   flex: 1;
   margin: 0 auto;
-  max-width: 850px;
+  max-width: 565px;
   min-height: calc(100vh - 77px - 96px);
   padding: 1em 2em 2em;
-
+  
   &_desktop {
+    max-width: 850px;
     min-height: calc(100vh - 96px - 80px);
-    padding: 1em 0 3em;
+    padding: 1em 1em 3em;
   }
 }
 
@@ -93,7 +94,7 @@ $purple: #B794F4;
   &_overview {
     overflow: hidden;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 12;
+    -webkit-line-clamp: 20;
     display: -webkit-box;
     text-overflow: ellipsis;
   }
