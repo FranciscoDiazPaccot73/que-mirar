@@ -21,7 +21,7 @@ const Mobile = ({ styles, source }: Props) => {
   return (
     <>
     {content ? (
-        <Link href={content?.link ?? '/'} passHref onClick={() => trackEvent('GENRE', content.title)}>
+        <Link href={content?.link ?? '/'} passHref onClick={() => trackEvent('MOVIE', content.title)}>
           <Box className={styles.poster}>
             <Image
               src={`${BASE_IMAGE_URL}${content.backdrop_path}`}

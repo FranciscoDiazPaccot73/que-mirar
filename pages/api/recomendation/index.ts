@@ -1,6 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 
+import { calculateMaxVotes } from '../../../utils';
+
 const axios = require('axios');
 const BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -11,8 +13,7 @@ export default async function getRecomendation (
   const { source, recomended, provider, genre } = req.query;
   try {
     const apiKey = process.env.TMDB_API_KEY;
-    const MIN = 3000;
-    const MAX = source === 'movie' ? 25000 : 5000;
+    const { MIN, MAX } = calculateMaxVotes({source, genre})
     const countGte = Math.floor(Math.random() * (MAX - MIN + 1) + MIN)
     const baseObj = {
       language: 'es-AR',

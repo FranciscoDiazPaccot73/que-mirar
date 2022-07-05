@@ -15,7 +15,7 @@ interface Props {
 }
 
 const Filters = ({ source, device }: Props) => {
-  const { dispatch, state: { genres, providers, selectedProvider = 0, selectedGenre, fetching, recomendedContent = [], prevContent } } = useContext(PageContext);
+  const { dispatch, state: { genres, providers, selectedProvider = 0, selectedGenre = 0, fetching, recomendedContent = [], prevContent } } = useContext(PageContext);
 
   const getPageProviders = async () => {
     await getProviders(dispatch, source);
@@ -44,14 +44,15 @@ const Filters = ({ source, device }: Props) => {
   const handleGenre = async (id: number) => {
     if (!fetching) {
       const genre = genres.find((g: any) => g.id === id);
-      if (id === selectedGenre) {
-        setSelectedGenre(dispatch, null)
-        await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider)
-        trackEvent('GENRE', `${genre.name}-add`)
-      } else {
+      if (id !== selectedGenre) {
         setSelectedGenre(dispatch, id)
-        await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, id)
-        trackEvent('GENRE', `${genre.name}-remove`)
+        if (id === 0) {
+          await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider)
+          trackEvent('GENRE', `all`)
+        } else {
+          await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, id)
+          trackEvent('GENRE', `${genre.name}`)
+        }
       }
     }
   }

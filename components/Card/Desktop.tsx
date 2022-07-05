@@ -6,6 +6,7 @@ import { Box, Button, Text, Skeleton, SkeletonText } from '@chakra-ui/react'
 import { StarIcon } from '@chakra-ui/icons';
 
 import { PageContext } from '../../context';
+import { trackEvent } from "../../utils/trackers";
 
 const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
 
@@ -17,6 +18,7 @@ export interface Props {
 
 const Desktop = ({ styles, source, nextRecomendation }: Props) => {
   const { state: { content, fetching } } = useContext(PageContext);
+
   return (
     <>
     {content ? (
@@ -90,7 +92,7 @@ const Desktop = ({ styles, source, nextRecomendation }: Props) => {
               Ver siguiente recomendación
             </Button>
             {content.link ? (
-              <Link href={content.link} passHref>
+              <Link href={content.link} passHref onClick={() => trackEvent('MOVIE', content.title)}>
                 <Button
                   disabled={fetching}
                   size="sm"
