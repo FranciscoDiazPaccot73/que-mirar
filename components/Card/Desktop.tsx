@@ -51,7 +51,7 @@ const Desktop = ({ source, nextRecomendation }: Props) => {
                 </Box>
               ))}
               <Box marginTop="3px" as='span' ml='2' color='gray.600' fontSize='sm'>
-                {content.vote_count} reseñas
+                {content.vote_count} reviews
               </Box>
             </Box>
             <Text margin="6px 0 12px" fontSize="14px" color="gray.400">

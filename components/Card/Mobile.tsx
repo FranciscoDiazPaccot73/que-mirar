@@ -52,7 +52,7 @@ const Mobile = ({ source }: Props) => {
                   </Box>
                 ))}
                 <Box as='span' ml='2' color='gray.600' fontSize='sm'>
-                  {content.vote_count} reseñas
+                  {content.vote_count} reviews
                 </Box>
               </Box>
               <Box maxHeight="250px" overflow="hidden" textOverflow="ellipsis">
