@@ -10,5 +10,5 @@ export const calculateMaxVotes = ({ source, genre }: votes) => {
     return { ...result, MAX: 5000 }
   }
 
-  return { ...result, MAX: 25000 }
+  return { ...result, MAX: 10000 }
 }
