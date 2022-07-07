@@ -70,7 +70,8 @@ export const getRecomendation = async (dispatch: any, source: string, recomended
       dispatch({ type: types.PREV_CONTENT, prevContent: null });
     }
     dispatch({ type: types.SET_NO_CONTENT, noContent: true });
-    trackEvent('ERROR', 'getRecomendation')
+    const trackWording = `getRecomendation-${source}-provider_${provider ?? 0}-genre_${genre ?? 'all'}`
+    trackEvent('ERROR', trackWording)
   }
   finally {
     dispatch({ type: types.FETCHING, value: false });
