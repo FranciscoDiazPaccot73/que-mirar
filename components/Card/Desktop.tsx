@@ -57,8 +57,8 @@ const Desktop = ({ source, nextRecomendation }: Props) => {
             <Text margin="6px 0 12px" fontSize="14px" color="gray.400">
               {content.tagline}
             </Text>
-            <Box maxHeight="250px" overflow="hidden" textOverflow="ellipsis">
-              <Text className={styles.poster_overview} fontSize="sm">{content.overview}</Text>
+            <Box>
+              <Text fontSize="sm" className={styles.poster_overview_desktop} title={content.overview}>{content.overview}</Text>
             </Box>
             {content.providers?.length ? (
               <Box display="flex" alignItems="center" marginTop="20px">

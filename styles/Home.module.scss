@@ -97,6 +97,14 @@
     -webkit-line-clamp: 20;
     display: -webkit-box;
     text-overflow: ellipsis;
+
+    &_desktop {
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 16;
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 }
 
