@@ -12,7 +12,7 @@ export default async function getRecomendation (
   const { source, recomended, provider, genre } = req.query;
   try {
     const apiKey = process.env.TMDB_API_KEY;
-    const { MIN, MAX } = calculateMaxVotes({source, genre})
+    const { MIN, MAX } = calculateMaxVotes({ source, genre })
     const countGte = Math.floor(Math.random() * (MAX - MIN + 1) + MIN)
     const baseObj = {
       language: 'es-AR',
@@ -37,7 +37,7 @@ export default async function getRecomendation (
     const { data: firstData } = await axios.get(`${BASE_URL}/discover/${source}?${discoverQueryParams}`)
     const { results: firstresponse } = firstData || {};
     const { total_pages } = firstresponse;
-    
+
     const pageRandom = Math.floor(Math.random() * (total_pages - 2) + 1) || '1';
     const newObj = new URLSearchParams({ ...discoverObj, page: pageRandom.toString() });
     const { data } = await axios.get(`${BASE_URL}/discover/${source}?${newObj}`)
