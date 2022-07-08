@@ -17,7 +17,7 @@ import { getDeviceTrackWording } from '../utils';
 import { trackView, trackEvent } from '../utils/trackers';
 
 import { PageContext } from '../context';
-import { getInfo, getRecomendation, getProviders, setProvider } from '../context/actions';
+import { getInfo, getRecomendation, getGenres, getProviders, setProvider, setSelectedGenre } from '../context/actions';
 
 const Home: NextPage = () => {
   const { dispatch, state: { noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent } } = useContext(PageContext);
@@ -71,8 +71,9 @@ const Home: NextPage = () => {
     }
   }, [device]);
 
-  const getPageProviders = async () => {
-    await getProviders(dispatch, source);
+  const getPageData = async (newSource: string) => {
+    await getProviders(dispatch, newSource);
+    await getGenres(dispatch, newSource);
   }
 
   const handleTab = async (tab: number) => {
@@ -82,7 +83,8 @@ const Home: NextPage = () => {
       handleTabChange(tab);
       setSource(newSource)
       setProvider(dispatch, 0);
-      getPageProviders();
+      setSelectedGenre(dispatch, 0);
+      getPageData(newSource);
       trackEvent('TAB', newSource)
       await getInfo(dispatch, newSource);
     }

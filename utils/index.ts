@@ -4,7 +4,7 @@ type votes = {
 }
 
 const unPopularGenres = ['99', '10770'];
-const unPopularTVGenres = ['37', '10768', '10763', '10762', '10764', '10766', '10767'];
+const unPopularTVGenres = ['37', '99', '10768', '10763', '10762', '10764', '10766', '10767'];
 export const excludedGenres = ['12', '28'];
 
 export const calculateMaxVotes = ({ source, genre }: votes) => {
