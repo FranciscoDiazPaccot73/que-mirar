@@ -13,6 +13,7 @@ import Header from '../components/Header';
 import Seo from '../components/Seo';
 import Footer from '../components/Footer';
 
+import { getDeviceTrackWording } from '../utils';
 import { trackView, trackEvent } from '../utils/trackers';
 
 import { PageContext } from '../context';
@@ -32,7 +33,8 @@ const Home: NextPage = () => {
     const dev = isMobile ? 'mobile' : 'desktop';
     setDevice(dev);
     trackView('/home');
-    trackEvent('DEVICE', dev)
+    const trackWording = getDeviceTrackWording(dev);
+    trackEvent('DEVICE', trackWording)
   }, [])
 
   useEffect(() => {

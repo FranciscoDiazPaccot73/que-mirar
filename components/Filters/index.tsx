@@ -72,7 +72,7 @@ const Filters = ({ source, device }: Props) => {
   return (
     <Box  margin="30px 0 0">
       <Providers device={device} handleFilter={handleFilter} />
-      <Genres handleGenre={handleGenre} />
+      <Genres source={source} handleGenre={handleGenre} />
     </Box>
   )
 }

@@ -8,9 +8,10 @@ import { PageContext } from '../../context';
 
 interface Props {
   handleGenre: any,
+  source: string,
 }
 
-const Genres = ({ handleGenre }: Props) => {
+const Genres = ({ handleGenre, source }: Props) => {
   const { state: { genres = [], selectedGenre = 0 } } = useContext(PageContext);
   const genresWithAll = genres.length ? [...new Set([{ id: 0, name: "TODOS" }, ...genres])] : []
 
@@ -18,7 +19,7 @@ const Genres = ({ handleGenre }: Props) => {
     <Box>
       <Text fontSize="12px">Filtrar por género</Text>
       {genres?.length ? (
-        <Carrousel genres={genresWithAll} selected={selectedGenre} handleClick={handleGenre} />
+        <Carrousel source={source} genres={genresWithAll} selected={selectedGenre} handleClick={handleGenre} />
       ) : (
         <Box
           width="100%"

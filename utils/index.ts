@@ -4,12 +4,21 @@ type votes = {
 }
 
 const unPopularGenres = ['99', '10770'];
+const unPopularTVGenres = ['37', '10768', '10763', '10762', '10764', '10766', '10767'];
+export const excludedGenres = ['12', '28'];
 
 export const calculateMaxVotes = ({ source, genre }: votes) => {
   let result = { MIN: 3000 };
 
-  if (unPopularGenres.includes(genre)) {
+  const isTvAndUnpopular = source === 'tv' && unPopularTVGenres.includes(genre);
+  const isMovieAndUnpopular = source === 'movie' && unPopularGenres.includes(genre);
+
+  if (isMovieAndUnpopular) {
     return { MIN: 750, MAX: 1000 }
+  }
+
+  if (isTvAndUnpopular) {
+    return { MIN: 0, MAX: 10 }
   }
 
   if (genre !== '' || source === 'tv') {
@@ -17,4 +26,14 @@ export const calculateMaxVotes = ({ source, genre }: votes) => {
   }
 
   return { ...result, MAX: 10000 }
+}
+
+export const getDeviceTrackWording = (device: string) => {
+  if (device === 'mobile') return device;
+
+  const screenSize = window.innerWidth;
+
+  const wording = screenSize < 750 ? `${device}-smallscreen-${screenSize}` : `${device}-${screenSize}`
+
+  return wording;
 }

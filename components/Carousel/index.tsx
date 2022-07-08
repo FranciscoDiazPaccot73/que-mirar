@@ -3,6 +3,8 @@ import classnames from 'classnames';
 
 import { Box, Text } from '@chakra-ui/react';
 
+import { excludedGenres } from '../../utils';
+
 import styles from './styles.module.scss';
 
 type Genre = {
@@ -14,9 +16,10 @@ interface Props {
   genres: Array<Genre>,
   selected: number|string,
   handleClick: Function,
+  source: string,
 }
 
-const Carrousel = ({ genres, selected, handleClick }: Props) => {
+const Carrousel = ({ genres, selected, handleClick, source }: Props) => {
   let isDown = false;
   let startX: any;
   let scrollLeft: any;
@@ -65,6 +68,8 @@ const Carrousel = ({ genres, selected, handleClick }: Props) => {
     <Box className={carrousel_container}>
       <Box className={carrousel} id="carrousel">
         {genres.map((genre: Genre, index: number) => {
+          if (source === 'tv' && excludedGenres.includes(genre.id.toString())) return null;
+
           const categoryClasses = classnames(category, `category-${index + 1}`,
             genre.id === selected && category_selected,
           );
