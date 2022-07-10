@@ -10,10 +10,10 @@ export default async function getRecomendation (
   res: NextApiResponse<any>
 ) {
   const { source, recomended, provider, genre } = req.query;
+  const { MIN, MAX } = calculateMaxVotes({ source, genre })
+  const countGte = Math.floor(Math.random() * (MAX - MIN + 1) + MIN)
   try {
     const apiKey = process.env.TMDB_API_KEY;
-    const { MIN, MAX } = calculateMaxVotes({ source, genre })
-    const countGte = Math.floor(Math.random() * (MAX - MIN + 1) + MIN)
     const baseObj = {
       language: 'es-AR',
       api_key: apiKey || '',
@@ -34,10 +34,19 @@ export default async function getRecomendation (
     const discoverQueryParams = new URLSearchParams(discoverObj);
     const baseQueryParams = new URLSearchParams(baseObj);
 
-    const { data: firstData } = await axios.get(`${BASE_URL}/discover/${source}?${discoverQueryParams}`)
-    const { results: firstresponse } = firstData || {};
-    const { total_pages } = firstresponse;
+    const initialRequest = async (params: any) => {
+      const { data: firstData } = await axios.get(`${BASE_URL}/discover/${source}?${params}`)
+      const { results: firstresponse } = firstData || {};
+      return firstresponse;
+    }
+    let firstresponse = await initialRequest(discoverQueryParams);
 
+    if (!firstresponse.length) {
+      firstresponse = await initialRequest({ ...discoverQueryParams, "vote_count.gte": 0 });
+    }
+
+    const { total_pages } = firstresponse;
+    
     const pageRandom = Math.floor(Math.random() * (total_pages - 2) + 1) || '1';
     const newObj = new URLSearchParams({ ...discoverObj, page: pageRandom.toString() });
     const { data } = await axios.get(`${BASE_URL}/discover/${source}?${newObj}`)
@@ -45,6 +54,8 @@ export default async function getRecomendation (
     let providerResponse: any = null;
     const notRepeatResult = results.filter((r: any) => !alreadyReco.includes(r.id.toString()));
 
+    if (!notRepeatResult.length) res.status(404).json({ noResult: "No encontramos mas contenido para tus filtros aplicados", search: countGte, type: "warning" })
+    
     const getWatchProvider = async (elements: any) => {
       const indexRandom = Math.floor(Math.random() * (elements.length - 2) + 1) || 0;
       const { id: firstId } = elements[indexRandom] || {};
@@ -82,6 +93,6 @@ export default async function getRecomendation (
       res.status(206).json(result)
     }
   } catch (err: any) {
-    res.status(500).json({});
+    res.status(500).json({ search: countGte });
   }
 }

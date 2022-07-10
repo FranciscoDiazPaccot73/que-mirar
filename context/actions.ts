@@ -52,7 +52,7 @@ export const getGenres = async (dispatch: any, source: string) => {
 export const getRecomendation = async (dispatch: any, source: string, recomended: Array<number>, prev: any, provider?: any, genre?: number) => {
   dispatch({ type: types.FETCHING, value: true });
   dispatch({ type: types.SET_CONTENT, content: null });
-  dispatch({ type: types.SET_NO_CONTENT, noContent: false });
+  dispatch({ type: types.SET_NO_CONTENT, noContent: null });
   
   try {
     const formated = recomended.join('|');
@@ -62,15 +62,27 @@ export const getRecomendation = async (dispatch: any, source: string, recomended
     dispatch({ type: types.ALREADY_RECOMENDED, recomendedContent: data.id });
     const prevContent = { ...data, source };
     dispatch({ type: types.PREV_CONTENT, prevContent });
-  } catch (err) {
-    if (prev?.source === source) {
-      const prevContent = prev ? { ...prev, source } : null;
-      dispatch({ type: types.SET_CONTENT, content: prevContent });
-    } else {
-      dispatch({ type: types.PREV_CONTENT, prevContent: null });
+  } catch (err: any) {
+    let noContentObj = {
+      message: "No hay contenido para tu búsqueda.",
+      type: "error"
     }
-    dispatch({ type: types.SET_NO_CONTENT, noContent: true });
-    const trackWording = `getRecomendation-${source}-provider_${provider ?? 0}-genre_${genre ?? 'all'}`
+    if (err?.response?.status === 404) {
+      noContentObj = {
+        message: err.response.data?.noResult ?? '',
+        type: "warning"
+      }
+    } else {
+      if (prev?.source === source) {
+        const prevContent = prev ? { ...prev, source } : null;
+        dispatch({ type: types.SET_CONTENT, content: prevContent });
+      } else {
+        dispatch({ type: types.PREV_CONTENT, prevContent: null });
+      }
+    }
+    dispatch({ type: types.SET_NO_CONTENT, noContent: noContentObj });
+    const searchParam = err?.response?.data?.search
+    const trackWording = `getRecomendation-${source}-provider_${provider ?? 0}-genre_${genre ?? 'all'}-gte_${searchParam}`
     trackEvent('ERROR', trackWording)
   }
   finally {

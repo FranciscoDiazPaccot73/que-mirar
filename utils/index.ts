@@ -14,7 +14,7 @@ export const calculateMaxVotes = ({ source, genre }: votes) => {
   const isMovieAndUnpopular = source === 'movie' && unPopularGenres.includes(genre);
 
   if (isMovieAndUnpopular) {
-    return { MIN: 750, MAX: 1000 }
+    return { MIN: 300, MAX: 500 }
   }
 
   if (isTvAndUnpopular) {

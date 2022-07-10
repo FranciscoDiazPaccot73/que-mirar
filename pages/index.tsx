@@ -41,9 +41,9 @@ const Home: NextPage = () => {
     if (noContent) {
       toast.closeAll();
       toast({
-        title: 'No hay contenido para tu búsqueda.',
-        description: "Prueba con una nueva combinación de filtros.",
-        status: 'error',
+        title: noContent.message,
+        description: noContent.message ? "Prueba con una nueva combinación de filtros." : null,
+        status: noContent.type,
         duration: 3000,
         isClosable: true,
         position: "top",
