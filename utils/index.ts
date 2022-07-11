@@ -4,7 +4,7 @@ type votes = {
 }
 
 const unPopularGenres = ['99', '10770'];
-const unPopularTVGenres = ['37', '99', '10768', '10763', '10762', '10764', '10766', '10767'];
+const unPopularTVGenres = ['37', '80', '35', '99', '10768', '10763', '10762', '10764', '10766', '10767'];
 export const excludedGenres = ['12', '28'];
 
 export const calculateMaxVotes = ({ source, genre }: votes) => {
@@ -22,7 +22,7 @@ export const calculateMaxVotes = ({ source, genre }: votes) => {
   }
 
   if (genre !== '' || source === 'tv') {
-    return { ...result, MAX: 5000 }
+    return { MIN: 1000, MAX: 3500 }
   }
 
   return { ...result, MAX: 10000 }

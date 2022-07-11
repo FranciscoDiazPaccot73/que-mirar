@@ -81,7 +81,7 @@ export const getRecomendation = async (dispatch: any, source: string, recomended
       }
     }
     dispatch({ type: types.SET_NO_CONTENT, noContent: noContentObj });
-    const searchParam = err?.response?.data?.search
+    const searchParam = err?.response?.data?.search && typeof err?.response?.data?.search === 'number' ? err?.response?.data?.search : 'error'
     const trackWording = `getRecomendation-${source}-provider_${provider ?? 0}-genre_${genre ?? 'all'}-gte_${searchParam}`
     trackEvent('ERROR', trackWording)
   }
