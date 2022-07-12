@@ -17,7 +17,7 @@ const ContentTitle = ({ isFirst, watchRegion, onChange }: Props) => (
         onChange={(e) => onChange(e.target.value)}
         value={watchRegion}
       >
-        {availableRegions.map((region: string) => <option value={region}>{region}</option>)}
+        {availableRegions.map((region: string) => <option key={region} value={region}>{region}</option>)}
       </Select>
     </Box>
   </Box>
