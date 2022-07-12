@@ -9,7 +9,7 @@ export default async function getRecomendation (
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { source, recomended, provider, genre } = req.query;
+  const { source, recomended, provider, genre, region } = req.query;
   const { MIN, MAX } = calculateMaxVotes({ source, genre })
   const countGte = Math.floor(Math.random() * (MAX - MIN + 1) + MIN)
   try {
@@ -25,7 +25,7 @@ export default async function getRecomendation (
       ...baseObj,
       sort_by: 'vote_average.desc',
       "vote_count.gte": countGte.toString(),
-      watch_region: "AR",
+      watch_region: region.toString(),
       with_watch_providers: providerToRequest,
       include_adult: 'false',
       with_genres: genreToRequest,
@@ -68,8 +68,9 @@ export default async function getRecomendation (
       }
       const firstElement = others[indexRandom];
       const { data } = await axios.get(`${BASE_URL}/${source}/${id}/watch/providers?${baseQueryParams}`)
-      if (data.results?.AR && !alreadyReco.includes(id.toString())) {
-        providerResponse = data.results.AR || data.results.US
+      const currentIndex = region.toString();
+      if (data.results && data.results[currentIndex] && !alreadyReco.includes(id.toString())) {
+        providerResponse = data.results[currentIndex] || data.results.US
         providerResponse.id = id;
         providerResponse = { ...firstElement, ...providerResponse }
       }

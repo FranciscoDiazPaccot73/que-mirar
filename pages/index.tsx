@@ -6,21 +6,27 @@ import { isMobile } from 'react-device-detect';
 
 import { useState, useContext, useEffect, useRef } from 'react';
 
-import { Text, useToast } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react'
 import Filters from '../components/Filters';
 import Layout from '../components/Layout';
 import Header from '../components/Header';
 import Seo from '../components/Seo';
 import Footer from '../components/Footer';
+import ContentTitle from '../components/ContentTitle';
 
 import { getDeviceTrackWording } from '../utils';
 import { trackView, trackEvent } from '../utils/trackers';
 
 import { PageContext } from '../context';
-import { getInfo, getRecomendation, getGenres, getProviders, setProvider, setSelectedGenre } from '../context/actions';
+import { setWatchRegion, getInfo, getRecomendation, getGenres, getProviders, setProvider, setSelectedGenre } from '../context/actions';
 
-const Home: NextPage = () => {
-  const { dispatch, state: { noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent } } = useContext(PageContext);
+type params = {
+  newSource: string,
+  newWatchRegion: string,
+}
+
+const Home: NextPage = ({ region, source: contextSource }: any) => {
+  const { dispatch, state: { watchRegion, noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent } } = useContext(PageContext);
   const [linkSelected, handleTabChange] = useState(0);
   const [device, setDevice] = useState<string|null>(null);
   const [source, setSource] = useState('movie');
@@ -28,6 +34,23 @@ const Home: NextPage = () => {
   const timestamp = useRef(new Date());
   const toast = useToast();
   const mainClasses = classNames(styles.main, device && device === 'desktop' && styles.main_desktop);
+
+  const updateParams = ({ newSource, newWatchRegion }: params) => {
+    const sourceParam = `?source=${newSource}`
+    const regionParam = `&region=${newWatchRegion}`
+    window.history.replaceState({}, '', `${sourceParam}${regionParam}`)
+  }
+
+  useEffect(() => {
+    if (contextSource && contextSource !== 'movie') {
+      handleTabChange(contextSource === 'tv' ? 1 : 0)
+      setSource(contextSource)
+    }
+
+    if (region) {
+      setWatchRegion(dispatch, region)
+    }
+  }, [contextSource, region]);
 
   useEffect(() => {
     const dev = isMobile ? 'mobile' : 'desktop';
@@ -87,14 +110,24 @@ const Home: NextPage = () => {
       getPageData(newSource);
       trackEvent('TAB', newSource)
       await getInfo(dispatch, newSource);
+      updateParams({ newSource, newWatchRegion: watchRegion })
     }
   }
 
   const nextRecomendation = () => {
     toast.closeAll();
     setFirst(false);
-    getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre)
+    getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, watchRegion)
     trackEvent('CLICK', 'recomendation')
+  }
+
+  const handleRegion = (newRegion: string) => {
+    setWatchRegion(dispatch, newRegion)
+    trackEvent('CLICK', `region-${newRegion}`)
+    toast.closeAll();
+    setFirst(false);
+    getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, newRegion)
+    updateParams({ newSource: source, newWatchRegion: newRegion })
   }
 
   return (
@@ -107,7 +140,7 @@ const Home: NextPage = () => {
       <Seo />
       <Header device={device} handleTab={handleTab} linkSelected={linkSelected} />
       <main className={mainClasses}>
-        <Text fontSize="xl" marginBottom="16px">{`${isFirst ? 'Tendencia de la semana' : 'Otras recomendaciones'}`}</Text>
+        <ContentTitle onChange={handleRegion} watchRegion={watchRegion ?? 'AR'} isFirst={isFirst}  />
         <Layout device={device} source={source} nextRecomendation={nextRecomendation} />
         <Filters source={source} device={device} />
       </main>

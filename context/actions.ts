@@ -49,14 +49,15 @@ export const getGenres = async (dispatch: any, source: string) => {
   }
 };
 
-export const getRecomendation = async (dispatch: any, source: string, recomended: Array<number>, prev: any, provider?: any, genre?: number) => {
+export const getRecomendation = async (dispatch: any, source: string, recomended: Array<number>, prev: any, provider?: any, genre?: number, watchRegion?: string) => {
   dispatch({ type: types.FETCHING, value: true });
   dispatch({ type: types.SET_CONTENT, content: null });
   dispatch({ type: types.SET_NO_CONTENT, noContent: null });
+
   
   try {
     const formated = recomended.join('|');
-    const { data } = await axios.get(`/api/recomendation?source=${source}&recomended=${formated}&provider=${provider ?? 0}${genre ? `&genre=${genre}` : ''}`, { timeout: 8000 })
+    const { data } = await axios.get(`/api/recomendation?source=${source}&recomended=${formated}&provider=${provider ?? 0}${genre ? `&genre=${genre}` : ''}&region=${watchRegion}`, { timeout: 8000 })
 
     dispatch({ type: types.SET_CONTENT, content: data });
     dispatch({ type: types.ALREADY_RECOMENDED, recomendedContent: data.id });
@@ -100,6 +101,10 @@ export const setRecomended = (dispatch: any, id: number) => {
 
 export const setProvider = (dispatch: any, id: number) => {
   dispatch({ type: types.SET_SELECTED_PROVIDER, selectedProvider: id });
+};
+
+export const setWatchRegion = (dispatch: any, value: string) => {
+  dispatch({ type: types.SET_WATCH_REGION, watchRegion: value });
 };
 
 export const setSelectedGenre = (dispatch: any, id: number|null) => {

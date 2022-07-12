@@ -5,7 +5,6 @@ import Logo from '../../public/logo.webp';
 import { Props } from './index'
 
 const Desktop = ({ linkSelected, handleTab }: Props) => {
-
   return (
     <Box
       maxWidth="850px"

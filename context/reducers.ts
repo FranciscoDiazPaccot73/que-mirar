@@ -8,6 +8,7 @@ export const types = {
   SET_SELECTED_PROVIDER: 'SET_SELECTED_PROVIDER',
   SET_SELECTED_GENRE: 'SET_SELECTED_GENRE',
   SET_NO_CONTENT: 'SET_NO_CONTENT',
+  SET_WATCH_REGION: 'SET_WATCH_REGION',
 };
 
 export const init = (config: any) => {
@@ -33,6 +34,9 @@ export const reducer = (state: any, action: any) => {
     }
     case types.SET_GENRES: {
       return {...state, genres: action.genres}
+    }
+    case types.SET_WATCH_REGION: {
+      return {...state, watchRegion: action.watchRegion}
     }
     case types.SET_SELECTED_PROVIDER: {
       return {...state, selectedProvider: action.selectedProvider}
