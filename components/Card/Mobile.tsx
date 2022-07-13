@@ -34,12 +34,11 @@ const Mobile = ({ source }: Props) => {
             <Box className={styles.poster_content}>
               <Text className={styles.poster_title} fontSize="xl">
                 <span>
-                  {content.title}{source === 'movie' ?
-                    <span className={styles.poster_release}>
-                      &bull; {content.release_date.slice(0, 4)}
-                      <Box display="flex" alignItems="center">{content.genres?.map((genre: any) => <Text key={genre.name} className={styles.genres} fontSize="12px" color="gray.200">{genre.name}</Text>)}</Box>
-                    </span> : null
-                  }
+                  {content.title}
+                  <span className={styles.poster_release}>
+                    {source === 'movie' ? <span>&bull; {content.release_date.slice(0, 4)}</span> : null}
+                    <Box display="flex" alignItems="center">{content.genres?.map((genre: any) => <Text key={genre.name} className={styles.genres} fontSize="12px" color="gray.200">{genre.name}</Text>)}</Box>
+                  </span>
                 </span>
               </Text>
               <Box margin="12px 0" display='flex' mt='2' alignItems='center'>
@@ -55,7 +54,7 @@ const Mobile = ({ source }: Props) => {
                   {content.vote_count} reviews
                 </Box>
               </Box>
-              <Box maxHeight="250px" overflow="hidden" textOverflow="ellipsis">
+              <Box overflow="hidden" textOverflow="ellipsis">
                 <Text className={styles.poster_overview} fontSize="sm">{content.overview}</Text>
               </Box>
               {content.providers?.length ? (
