@@ -27,7 +27,7 @@ type params = {
 
 const Home: NextPage = ({ region, source: contextSource }: any) => {
   const { dispatch, state: { watchRegion, noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent } } = useContext(PageContext);
-  const [linkSelected, handleTabChange] = useState(0);
+  const [linkSelected, handleTabChange] = useState(1);
   const [device, setDevice] = useState<string|null>(null);
   const [source, setSource] = useState('movie');
   const [isFirst, setFirst] = useState(true);

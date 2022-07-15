@@ -14,7 +14,7 @@ const Desktop = ({ linkSelected, handleTab }: Props) => {
       padding="0 16px"
     >
       <Box marginRight="24px" width="140px" display="flex" alignItems="center" justifyContent="center">
-        <Image src={Logo} priority height="130px" width="200px" />
+        <Image src={Logo} priority height={130} width={200} alt="Logo" />
       </Box>
       <Tabs defaultIndex={linkSelected} colorScheme="purple" size="lg" isFitted onChange={a => handleTab(a)}>
         <TabList>
