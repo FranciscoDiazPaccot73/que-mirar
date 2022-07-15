@@ -9,13 +9,13 @@ export const excludedGenres = ['12', '28'];
 export const availableRegions = ['AR', 'BO', 'BR', 'CL', 'CO', 'CR', 'DM', 'EC', 'ES', 'MX', 'PA', 'PE', 'PY', 'UY', 'VE']
 
 export const calculateMaxVotes = ({ source, genre }: votes) => {
-  let result = { MIN: 3000 };
+  let result = { MIN: 500 };
 
   const isTvAndUnpopular = source === 'tv' && unPopularTVGenres.includes(genre);
   const isMovieAndUnpopular = source === 'movie' && unPopularGenres.includes(genre);
 
   if (isMovieAndUnpopular) {
-    return { MIN: 300, MAX: 500 }
+    return { MIN: 100, MAX: 350 }
   }
 
   if (isTvAndUnpopular) {
@@ -23,10 +23,10 @@ export const calculateMaxVotes = ({ source, genre }: votes) => {
   }
 
   if (genre !== '' || source === 'tv') {
-    return { MIN: 1000, MAX: 3500 }
+    return { MIN: 400, MAX: 750 }
   }
 
-  return { ...result, MAX: 10000 }
+  return { ...result, MAX: 1000 }
 }
 
 export const getDeviceTrackWording = (device: string) => {
