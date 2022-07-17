@@ -8,6 +8,7 @@ import CardSkeleton from "./Skeleton";
 
 import { trackEvent } from "../../utils/trackers";
 import { PageContext } from '../../context';
+import { formatDuration } from "../../utils";
 
 import styles from '../../styles/Home.module.scss'
 
@@ -35,10 +36,8 @@ const Mobile = ({ source }: Props) => {
               <Text className={styles.poster_title} fontSize="xl">
                 <span>
                   {content.title}
-                  <span className={styles.poster_release}>
-                    {source === 'movie' ? <span>&bull; {content.release_date.slice(0, 4)}</span> : null}
-                    <Box display="flex" alignItems="center">{content.genres?.map((genre: any) => <Text key={genre.name} className={styles.genres} fontSize="12px" color="gray.200">{genre.name}</Text>)}</Box>
-                  </span>
+                  {source === 'movie' ? <Text style={{ fontSize: "12px" }} className={styles.poster_release}>{content.release_date.slice(0, 4)} &bull; {formatDuration(content.duration)}</Text> : null}
+                  <Box textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap" display="flex" alignItems="center">{content.genres?.map((genre: any) => <Text key={genre.name} className={styles.genres} fontSize="12px" color="gray.200">{genre.name}</Text>)}</Box>
                 </span>
               </Text>
               <Box margin="12px 0" display='flex' mt='2' alignItems='center'>

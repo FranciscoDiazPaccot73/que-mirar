@@ -9,13 +9,13 @@ export const excludedGenres = ['12', '28'];
 export const availableRegions = ['AR', 'BO', 'BR', 'CL', 'CO', 'CR', 'DM', 'EC', 'ES', 'MX', 'PA', 'PE', 'PY', 'UY', 'VE']
 
 export const calculateMaxVotes = ({ source, genre }: votes) => {
-  let result = { MIN: 500 };
+  let result = { MIN: 100 };
 
   const isTvAndUnpopular = source === 'tv' && unPopularTVGenres.includes(genre);
   const isMovieAndUnpopular = source === 'movie' && unPopularGenres.includes(genre);
 
   if (isMovieAndUnpopular) {
-    return { MIN: 100, MAX: 350 }
+    return { MIN: 25, MAX: 100 }
   }
 
   if (isTvAndUnpopular) {
@@ -23,10 +23,10 @@ export const calculateMaxVotes = ({ source, genre }: votes) => {
   }
 
   if (genre !== '' || source === 'tv') {
-    return { MIN: 400, MAX: 750 }
+    return { MIN: 100, MAX: 250 }
   }
 
-  return { ...result, MAX: 1000 }
+  return { ...result, MAX: 400 }
 }
 
 export const getDeviceTrackWording = (device: string) => {
@@ -37,4 +37,15 @@ export const getDeviceTrackWording = (device: string) => {
   const wording = screenSize < 750 ? `${device}-smallscreen-${screenSize}` : `${device}-${screenSize}`
 
   return wording;
+}
+
+export const formatDuration = (duration: number) => {
+  if (duration < 60) return  `${duration} min.`
+
+  const hours = (duration / 60);
+  const rhours = Math.floor(hours);
+  const minutes = (hours - rhours) * 60;
+  const rminutes = Math.round(minutes);
+
+  return `${rhours} h ${rminutes} min.`
 }

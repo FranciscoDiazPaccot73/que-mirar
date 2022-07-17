@@ -86,6 +86,7 @@ export default async function getRecomendation (
     result.tagline = contentInfo.tagline;
     result.title = contentInfo.title ?? contentInfo.name;
     result.genres = contentInfo.genres ?? [];
+    result.duration = contentInfo.runtime;
     if (providerResponse?.flatrate) {
       result.providers = providerResponse.flatrate;
       result.link = providerResponse.link;

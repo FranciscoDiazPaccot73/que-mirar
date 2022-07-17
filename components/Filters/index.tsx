@@ -27,7 +27,7 @@ type genre = {
 }
 
 const Filters = ({ source, device }: Props) => {
-  const { dispatch, state: { genres, providers, selectedProvider = 0, selectedGenre = 0, fetching, recomendedContent = [], prevContent } } = useContext(PageContext);
+  const { dispatch, state: { watchRegion, genres, providers, selectedProvider = 0, selectedGenre = 0, fetching, recomendedContent = [], prevContent } } = useContext(PageContext);
 
   const getPageProviders = async () => {
     await getProviders(dispatch, source);
@@ -47,7 +47,7 @@ const Filters = ({ source, device }: Props) => {
   const handleFilter = async (id: number) => {
     if (!fetching && id !== selectedProvider) {
       setProvider(dispatch, id)
-      await getRecomendation(dispatch, source, recomendedContent, prevContent, id, selectedGenre)
+      await getRecomendation(dispatch, source, recomendedContent, prevContent, id, selectedGenre, watchRegion)
       const prov = providers.find((p: provider) => p.provider_id === id);
       trackEvent('PROVIDER', prov.provider_name)
     }
@@ -59,10 +59,10 @@ const Filters = ({ source, device }: Props) => {
       if (id !== selectedGenre) {
         setSelectedGenre(dispatch, id)
         if (id === 0) {
-          await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider)
+          await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, null, watchRegion)
           trackEvent('GENRE', `all`)
         } else {
-          await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, id)
+          await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, id, watchRegion)
           trackEvent('GENRE', `${genre.name}`)
         }
       }

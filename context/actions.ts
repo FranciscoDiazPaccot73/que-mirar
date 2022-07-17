@@ -49,7 +49,7 @@ export const getGenres = async (dispatch: any, source: string) => {
   }
 };
 
-export const getRecomendation = async (dispatch: any, source: string, recomended: Array<number>, prev: any, provider?: any, genre?: number, watchRegion?: string) => {
+export const getRecomendation = async (dispatch: any, source: string, recomended: Array<number>, prev: any, provider?: any, genre?: number | null, watchRegion?: string) => {
   dispatch({ type: types.FETCHING, value: true });
   dispatch({ type: types.SET_CONTENT, content: null });
   dispatch({ type: types.SET_NO_CONTENT, noContent: null });

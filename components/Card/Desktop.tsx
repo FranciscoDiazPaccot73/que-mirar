@@ -2,12 +2,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useContext } from "react";
 
-import { Box, Button, Text, Skeleton, SkeletonText } from '@chakra-ui/react'
+import { Box, Button, Text } from '@chakra-ui/react'
 import { StarIcon } from '@chakra-ui/icons';
 import CardSkeleton from "./Skeleton";
 
 import { PageContext } from '../../context';
 import { trackEvent } from "../../utils/trackers";
+import { formatDuration } from "../../utils";
 
 import styles from '../../styles/Home.module.scss'
 
@@ -35,10 +36,10 @@ const Desktop = ({ source, nextRecomendation }: Props) => {
             <Text fontSize="28px">
               <Text display="flex" alignItems="center">{content.title}</Text>
             </Text>
-            <Box display="flex">
-              <Box display="flex" alignItems="center">
+            <Box>
+              {source === 'movie' ? <Text style={{ fontSize: "12px" }} className={styles.poster_release}>{content.release_date.slice(0, 4)} &bull; {formatDuration(content.duration)}</Text> : null}
+              <Box textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap" display="flex" alignItems="center">
                 {content.genres?.map((genre: any) => <Text key={genre.name} className={styles.genres} fontSize="12px" color="gray.200">{genre.name}</Text>)}
-                {source === 'movie' ? <span style={{ fontSize: "12px" }} className={styles.poster_release}>&bull; {content.release_date.slice(0, 4)}</span> : null}
               </Box>
             </Box>
             <Box margin="12px 0" display='flex' mt='2' alignItems='center'>
