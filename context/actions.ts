@@ -39,11 +39,31 @@ export const getProviders = async (dispatch: any, source: string) => {
   }
 };
 
+export const search = async (dispatch: any, source: string, query: string, region: string) => {
+  try {
+    const { data } = await axios.get(`/api/search?source=${source}&region=${region}&q=${query}`, { timeout: 8000 })
+
+    console.log(data)
+  } catch (err) {
+    trackEvent('ERROR', 'getProviders')
+  }
+};
+
 export const getGenres = async (dispatch: any, source: string) => {
   try {
     const { data } = await axios.get(`/api/genres?source=${source}`, { timeout: 8000 })
 
     dispatch({ type: types.SET_GENRES, genres: data });
+  } catch (err) {
+    trackEvent('ERROR', 'getGenres')
+  }
+};
+
+export const getSimilars = async (dispatch: any, source: string, id: string, region: string) => {
+  try {
+    const { data } = await axios.get(`/api/similar?source=${source}&id=${id}&region=${region}`, { timeout: 8000 })
+
+    dispatch({ type: types.SET_SIMILARS, similars: data });
   } catch (err) {
     trackEvent('ERROR', 'getGenres')
   }

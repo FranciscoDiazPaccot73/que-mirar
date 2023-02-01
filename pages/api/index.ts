@@ -11,7 +11,7 @@ export default async function (
   const { source } = req.query;
   try {
     const apiKey = process.env.TMDB_API_KEY;
-    const pageRandom = Math.floor(Math.random() * 4 + 1) || '1';
+    const pageRandom = Math.floor(Math.random() * 2 + 1) || '1';
     const indexRandom = Math.floor(Math.random() * 17 + 1) || 0;
     const baseObj = {
       language: 'es-AR',
