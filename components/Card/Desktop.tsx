@@ -19,13 +19,14 @@ export interface Props {
 
 const Desktop = ({ source, nextRecomendation }: Props) => {
   const { state: { content, fetching, BASE_IMAGE_URL } } = useContext(PageContext);
+  const imageUrl = content?.poster_path || content?.backdrop_path;
 
   return (
     <>
     {content ? (
         <Box position="relative" className={styles.poster} maxHeight="950px" display="flex">
           <Image
-            src={`${BASE_IMAGE_URL}${content.poster_path}`}
+            src={`${BASE_IMAGE_URL}${imageUrl}`}
             alt={content.title}
             width='500px'
             height='281px'

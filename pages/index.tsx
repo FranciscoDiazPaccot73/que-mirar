@@ -142,7 +142,7 @@ const Home: NextPage = ({ region, source: contextSource }: any) => {
       <main className={mainClasses}>
         <ContentTitle onChange={handleRegion} watchRegion={watchRegion ?? 'AR'} isFirst={isFirst}  />
         {/* <SearchBox source={source} region={watchRegion} /> */}
-        <Layout device={device} source={source} nextRecomendation={nextRecomendation} />
+        <Layout device={device} source={source} nextRecomendation={nextRecomendation} isFirst={isFirst} />
         <Filters source={source} device={device} />
       </main>
       <Footer />
