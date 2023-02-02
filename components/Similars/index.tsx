@@ -10,7 +10,7 @@ export interface Props {
 
 const Similars = ({ url, content, source }: Props) => {
   const deviceName = source === 'movie' ? "Peliculas" : "Series";
-  const [first, second, third, ...rest] = content.sort(() => Math.random() - 0.5);
+  const [first, second, third, ...rest] = content.sort((a: any, b: any) => b.popularity - a.popularity);
 
   return (
     <Box marginTop="20px">
