@@ -5,7 +5,7 @@ import { Box, Text } from '@chakra-ui/react'
 
 import { Props } from '.'
 
-import { getContent } from '../../context/actions';
+import { getContent, getSimilars } from '../../context/actions';
 import { PageContext } from '../../context';
 
 const ContentBox = ({ content, url, source }: Props) => {
@@ -30,7 +30,8 @@ const ContentBox = ({ content, url, source }: Props) => {
   const imageUrl = content.poster_path || content.backdrop_path;
 
   const handleLoadContent = async (id: any) => {
-    await getContent(dispatch, source, id, watchRegion);
+    const newContentId = await getContent(dispatch, source, id, watchRegion);
+    await getSimilars(dispatch, source, newContentId, watchRegion);
   }
 
   return (

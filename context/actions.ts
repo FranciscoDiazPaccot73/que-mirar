@@ -58,7 +58,7 @@ export const getGenres = async (dispatch: any, source: string) => {
   }
 };
 
-export const getSimilars = async (dispatch: any, source: string, id: string, region: string) => {
+export const getSimilars = async (dispatch: any, source: any, id: string, region: string) => {
   try {
     const { data } = await axios.get(`/api/similar?source=${source}&id=${id}&region=${region}`, { timeout: 8000 })
 
@@ -73,6 +73,7 @@ export const getContent = async (dispatch: any, source: any, id: string, region:
     const { data } = await axios.get(`/api/content?source=${source}&id=${id}&region=${region}`, { timeout: 8000 })
 
     dispatch({ type: types.SET_CONTENT, content: data });
+    return data.id;
   } catch (err) {
     trackEvent('ERROR', 'getGenres')
   }
