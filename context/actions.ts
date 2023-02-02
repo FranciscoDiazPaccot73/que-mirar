@@ -39,6 +39,15 @@ export const getProviders = async (dispatch: any, source: string) => {
   }
 };
 
+export const search = async (dispatch: any, source: string, query: string, region: string) => {
+  try {
+    const { data } = await axios.get(`/api/search?source=${source}&region=${region}&q=${query}`, { timeout: 8000 })
+
+  } catch (err) {
+    trackEvent('ERROR', 'getProviders')
+  }
+};
+
 export const getGenres = async (dispatch: any, source: string) => {
   try {
     const { data } = await axios.get(`/api/genres?source=${source}`, { timeout: 8000 })
@@ -49,10 +58,31 @@ export const getGenres = async (dispatch: any, source: string) => {
   }
 };
 
+export const getSimilars = async (dispatch: any, source: string, id: string, region: string) => {
+  try {
+    const { data } = await axios.get(`/api/similar?source=${source}&id=${id}&region=${region}`, { timeout: 8000 })
+
+    dispatch({ type: types.SET_SIMILARS, similars: data });
+  } catch (err) {
+    trackEvent('ERROR', 'getGenres')
+  }
+};
+
+export const getContent = async (dispatch: any, source: any, id: string, region: string) => {
+  try {
+    const { data } = await axios.get(`/api/content?source=${source}&id=${id}&region=${region}`, { timeout: 8000 })
+
+    dispatch({ type: types.SET_CONTENT, content: data });
+  } catch (err) {
+    trackEvent('ERROR', 'getGenres')
+  }
+};
+
 export const getRecomendation = async (dispatch: any, source: string, recomended: Array<number>, prev: any, provider?: any, genre?: number | null, watchRegion?: string) => {
   dispatch({ type: types.FETCHING, value: true });
   dispatch({ type: types.SET_CONTENT, content: null });
   dispatch({ type: types.SET_NO_CONTENT, noContent: null });
+  dispatch({ type: types.SET_SIMILARS, similars: null });
 
   
   try {

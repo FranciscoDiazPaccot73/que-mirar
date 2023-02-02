@@ -6,7 +6,7 @@ import loader from '../loader';
 export default class Document extends NextDocument {
   render() {
     return (
-      <Html lang='es' style={{ background: "#1a202c" }} >
+      <Html data-theme="dark" lang='es' style={{ background: "#1a202c" }} >
         <Head />
         <head>
           <style>

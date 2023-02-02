@@ -6,7 +6,8 @@ const Desktop = dynamic(() => import('../DesktopView'))
 export interface Props {
   device: string|null,
   source: string,
-  nextRecomendation(): void
+  nextRecomendation(): void,
+  isFirst: boolean,
 }
 
 const Layout = (props: Props) => {

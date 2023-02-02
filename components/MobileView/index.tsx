@@ -2,13 +2,14 @@ import { useContext } from 'react';
 
 import { Button, Box } from '@chakra-ui/react'
 import Card from '../Card';
+import Similars from '../Similars';
 
 import { PageContext } from '../../context';
 
 import { Props } from '../Layout';
 
-const Mobile = ({ source, nextRecomendation, device }: Props) => {
-  const { state: { fetching } } = useContext(PageContext);
+const Mobile = ({ source, nextRecomendation, device, isFirst }: Props) => {
+  const { state: { fetching, similars, BASE_IMAGE_URL } } = useContext(PageContext);
 
   return (
     <>
@@ -18,6 +19,7 @@ const Mobile = ({ source, nextRecomendation, device }: Props) => {
           Ver siguiente recomendación
         </Button>
       </Box>
+      {!isFirst && !fetching && similars ? <Similars url={BASE_IMAGE_URL} content={similars} source={source} /> : null}
     </>
   )
 }

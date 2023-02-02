@@ -13,12 +13,13 @@ import Header from '../components/Header';
 import Seo from '../components/Seo';
 import Footer from '../components/Footer';
 import ContentTitle from '../components/ContentTitle';
+// import SearchBox from '../components/Search';
 
 import { getDeviceTrackWording } from '../utils';
 import { trackView, trackEvent } from '../utils/trackers';
 
 import { PageContext } from '../context';
-import { setWatchRegion, getInfo, getRecomendation, getGenres, getProviders, setProvider, setSelectedGenre } from '../context/actions';
+import { setWatchRegion, getInfo, getRecomendation, getGenres, getProviders, setProvider, setSelectedGenre, getSimilars } from '../context/actions';
 
 type params = {
   newSource: string,
@@ -26,7 +27,7 @@ type params = {
 }
 
 const Home: NextPage = ({ region, source: contextSource }: any) => {
-  const { dispatch, state: { watchRegion, noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent } } = useContext(PageContext);
+  const { dispatch, state: { content, watchRegion, noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent } } = useContext(PageContext);
   const [linkSelected, handleTabChange] = useState(1);
   const [device, setDevice] = useState<string|null>(null);
   const [source, setSource] = useState('tv');
@@ -72,9 +73,7 @@ const Home: NextPage = ({ region, source: contextSource }: any) => {
         position: "top",
       })
     }
-  }, [noContent])
 
-  useEffect(() => {
     if (device && typeof window !== 'undefined') {
       const loader = document.getElementById('spinner');
       const body = document.getElementById('body');
@@ -92,7 +91,7 @@ const Home: NextPage = ({ region, source: contextSource }: any) => {
         }
       }
     }
-  }, [device]);
+  }, [noContent, device])
 
   const getPageData = async (newSource: string) => {
     await getProviders(dispatch, newSource);
@@ -114,19 +113,20 @@ const Home: NextPage = ({ region, source: contextSource }: any) => {
     }
   }
 
-  const nextRecomendation = () => {
+  const nextRecomendation = async () => {
     toast.closeAll();
     setFirst(false);
-    getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, watchRegion)
+    await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, watchRegion)
+    getSimilars(dispatch, source, content.id, watchRegion)
     trackEvent('CLICK', 'recomendation')
   }
 
-  const handleRegion = (newRegion: string) => {
+  const handleRegion = async (newRegion: string) => {
     setWatchRegion(dispatch, newRegion)
     trackEvent('CLICK', `region-${newRegion}`)
     toast.closeAll();
     setFirst(false);
-    getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, newRegion)
+    await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, newRegion)
     updateParams({ newSource: source, newWatchRegion: newRegion })
   }
 
@@ -141,7 +141,8 @@ const Home: NextPage = ({ region, source: contextSource }: any) => {
       <Header device={device} handleTab={handleTab} linkSelected={linkSelected} />
       <main className={mainClasses}>
         <ContentTitle onChange={handleRegion} watchRegion={watchRegion ?? 'AR'} isFirst={isFirst}  />
-        <Layout device={device} source={source} nextRecomendation={nextRecomendation} />
+        {/* <SearchBox source={source} region={watchRegion} /> */}
+        <Layout device={device} source={source} nextRecomendation={nextRecomendation} isFirst={isFirst} />
         <Filters source={source} device={device} />
       </main>
       <Footer />
