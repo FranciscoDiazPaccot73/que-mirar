@@ -1,10 +1,9 @@
 import type { NextPage } from 'next'
+import { useState, useContext, useEffect, useRef } from 'react';
 import Head from 'next/head'
 import styles from '../styles/Home.module.scss'
 import classNames from 'classnames';
 import { isMobile } from 'react-device-detect';
-
-import { useState, useContext, useEffect, useRef } from 'react';
 
 import { useToast } from '@chakra-ui/react'
 import Filters from '../components/Filters';
@@ -24,6 +23,7 @@ import { setWatchRegion, getInfo, getRecomendation, getGenres, getProviders, set
 type params = {
   newSource: string,
   newWatchRegion: string,
+  id?: string
 }
 
 const Home: NextPage = ({ region, source: contextSource }: any) => {
@@ -31,15 +31,18 @@ const Home: NextPage = ({ region, source: contextSource }: any) => {
   const [linkSelected, handleTabChange] = useState(1);
   const [device, setDevice] = useState<string|null>(null);
   const [source, setSource] = useState('tv');
+  const [contentId, setId] = useState<string|null>(null);
   const [isFirst, setFirst] = useState(true);
   const timestamp = useRef(new Date());
   const toast = useToast();
   const mainClasses = classNames(styles.main, device && device === 'desktop' && styles.main_desktop);
 
-  const updateParams = ({ newSource, newWatchRegion }: params) => {
+  const updateParams = ({ newSource, newWatchRegion, id }: params) => {
     const sourceParam = `?source=${newSource}`
     const regionParam = `&region=${newWatchRegion}`
-    window.history.replaceState({}, '', `${sourceParam}${regionParam}`)
+    const idParam = id ? `&id=${id}` : '';
+    if (id) setId(id)
+    window.history.replaceState({}, '', `${sourceParam}${regionParam}${idParam}`)
   }
 
   useEffect(() => {
@@ -59,6 +62,15 @@ const Home: NextPage = ({ region, source: contextSource }: any) => {
     trackView('/home');
     const trackWording = getDeviceTrackWording(dev);
     trackEvent('DEVICE', trackWording)
+    const params: any = new Proxy(new URLSearchParams(window.location.search), {
+      get: (searchParams, prop: any) => searchParams.get(prop),
+    });
+
+    if (params.source || params.region || params.id) {
+      setSource(params.source || 'tv');
+      setWatchRegion(dispatch, params.region || 'AR')
+      setId(params.id)
+    }
   }, [])
 
   useEffect(() => {
@@ -108,15 +120,16 @@ const Home: NextPage = ({ region, source: contextSource }: any) => {
       setSelectedGenre(dispatch, 0);
       getPageData(newSource);
       trackEvent('TAB', newSource)
-      await getInfo(dispatch, newSource);
-      updateParams({ newSource, newWatchRegion: watchRegion })
+      const newId = await getInfo(dispatch, newSource);
+      updateParams({ newSource, newWatchRegion: watchRegion, id: newId })
     }
   }
 
   const nextRecomendation = async () => {
     toast.closeAll();
     setFirst(false);
-    await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, watchRegion)
+    const newId = await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, watchRegion)
+    updateParams({ newSource: source, newWatchRegion: watchRegion, id: newId })
     getSimilars(dispatch, source, content.id, watchRegion)
     trackEvent('CLICK', 'recomendation')
   }
@@ -126,8 +139,9 @@ const Home: NextPage = ({ region, source: contextSource }: any) => {
     trackEvent('CLICK', `region-${newRegion}`)
     toast.closeAll();
     setFirst(false);
-    await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, newRegion)
-    updateParams({ newSource: source, newWatchRegion: newRegion })
+    const newId = await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, newRegion)
+    getSimilars(dispatch, source, content.id, watchRegion)
+    updateParams({ newSource: source, newWatchRegion: newRegion, id: newId })
   }
 
   return (
@@ -142,7 +156,7 @@ const Home: NextPage = ({ region, source: contextSource }: any) => {
       <main className={mainClasses}>
         <ContentTitle onChange={handleRegion} watchRegion={watchRegion ?? 'AR'} isFirst={isFirst}  />
         {/* <SearchBox source={source} region={watchRegion} /> */}
-        <Layout device={device} source={source} nextRecomendation={nextRecomendation} isFirst={isFirst} />
+        <Layout contentId={contentId} device={device} source={source} nextRecomendation={nextRecomendation} isFirst={isFirst} />
         <Filters source={source} device={device} />
       </main>
       <Footer />

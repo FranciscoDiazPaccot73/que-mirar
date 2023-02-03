@@ -8,6 +8,7 @@ export interface Props {
   source: string,
   nextRecomendation(): void,
   isFirst: boolean,
+  contentId?: string | null,
 }
 
 const Layout = (props: Props) => {

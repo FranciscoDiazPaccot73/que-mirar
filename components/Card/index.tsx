@@ -15,14 +15,18 @@ interface Props {
   source: string,
   device: string|null,
   nextRecomendation?(): void,
+  contentId?: string | null,
 }
 
-const Card = ({ source, device, nextRecomendation }: Props) => {
-  const { dispatch, state: { noContent } } = useContext(PageContext);
-  const { isLoading, error, data } = useQuery('repoData', () =>
-    fetch(`/api?source=${source}`).then(res =>
+const Card = ({ source, device, nextRecomendation, contentId }: Props) => {
+  const { dispatch, state: { noContent, watchRegion } } = useContext(PageContext);
+  const { isLoading, error, data } = useQuery('repoData', () => {
+    const url = contentId ? `/api/content?source=${source}&region=${watchRegion}&id=${contentId}` : `/api?source=${source}`
+  
+    return fetch(url).then(res =>
       res.json()
     )
+  }
   )
 
   useEffect(() => {

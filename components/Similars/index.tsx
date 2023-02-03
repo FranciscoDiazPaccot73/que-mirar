@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react'
+import { Box, Text, Button, useDisclosure } from '@chakra-ui/react'
 
 import ContentBox from './Box';
 
@@ -9,16 +9,24 @@ export interface Props {
 }
 
 const Similars = ({ url, content, source }: Props) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   const deviceName = source === 'movie' ? "Peliculas" : "Series";
   const [first, second, third, ...rest] = content.sort((a: any, b: any) => b.popularity - a.popularity);
 
+  const handleClick = () => isOpen ? onClose() : onOpen();
+
   return (
     <Box marginTop="20px">
-      <Text>{`${deviceName} similares`}</Text>
+      <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Text>{`${deviceName} similares`}</Text>
+        <Button fontSize="xs" variant='ghost' size="sm" onClick={handleClick}>{`${isOpen ? 'Ver menos' : 'Ver todo'}`}</Button>
+      </Box>
       <Box>
         <ContentBox content={first} url={url} source={source}  />
         <ContentBox content={second} url={url} source={source} />
         <ContentBox content={third} url={url} source={source} />
+        {isOpen ? <>{rest.map((data: any) => <ContentBox key={data.id} content={data} url={url} source={source} />)}</> : null}
       </Box>
     </Box>
   )

@@ -15,7 +15,7 @@ export default async function getRecomendation (
   try {
     const apiKey = process.env.TMDB_API_KEY;
     const baseObj = {
-      language: 'es-AR',
+      language: region === 'BR' ? 'pt-BR' : 'es-AR',
       api_key: apiKey || '',
     };
 

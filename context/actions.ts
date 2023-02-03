@@ -17,6 +17,8 @@ export const getInfo = async (dispatch: any, source: string) => {
 
     dispatch({ type: types.SET_CONTENT, content: data });
     dispatch({ type: types.ALREADY_RECOMENDED, recomendedContent: data.id });
+
+    return data.id
   } catch (err: any) {
     trackEvent('ERROR', 'getInfo')
     itWorked = false;
@@ -94,6 +96,8 @@ export const getRecomendation = async (dispatch: any, source: string, recomended
     dispatch({ type: types.ALREADY_RECOMENDED, recomendedContent: data.id });
     const prevContent = { ...data, source };
     dispatch({ type: types.PREV_CONTENT, prevContent });
+
+    return data.id
   } catch (err: any) {
     let noContentObj = {
       message: "No hay contenido para tu búsqueda.",
