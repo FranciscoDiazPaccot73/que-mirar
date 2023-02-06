@@ -19,7 +19,7 @@ const Desktop = ({ source, nextRecomendation, device, isFirst, contentId }: Prop
   return (
     <>
       <Card contentId={contentId} source={source} device={device} nextRecomendation={nextRecomendation} />
-      {!isFirst && !fetching && similars ? <Similars url={BASE_IMAGE_URL} content={similars} source={source} /> : null}
+      {!fetching && similars ? <Similars isFirst={isFirst} url={BASE_IMAGE_URL} content={similars} source={source} /> : null}
     </>
   )
 }

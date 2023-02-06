@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { Tabs, TabList, Tab, Box } from '@chakra-ui/react'
-import Logo from '../../public/logo.webp';
 
 import { Props } from './index'
 
@@ -14,7 +13,7 @@ const Desktop = ({ linkSelected, handleTab }: Props) => {
       padding="0 16px"
     >
       <Box marginRight="24px" width="140px" display="flex" alignItems="center" justifyContent="center">
-        <Image src={Logo} priority height={130} width={200} alt="Logo" />
+        <Image src="/logo.webp" priority height={130} width={200} alt="Logo" />
       </Box>
       <Tabs defaultIndex={linkSelected} colorScheme="purple" size="lg" isFitted onChange={a => handleTab(a)}>
         <TabList>

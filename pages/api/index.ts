@@ -33,6 +33,8 @@ export default async function (
     })
     const [{ data: providers }, { data: contentInfo }] = await Promise.all([getProviders, getContent]);
 
+    const rest = sortedResults.filter((info: any) => info.id !== result.id)
+
     const provider = providers.results.AR || providers.results.US;
 
     result.overview = contentInfo.overview;
@@ -45,9 +47,9 @@ export default async function (
     }
     if (provider?.flatrate) {
       result.providers = provider.flatrate;
-      res.status(200).json(result)
+      res.status(200).json({ result, rest })
     } else {
-      res.status(206).json(result)
+      res.status(206).json({ result, rest })
     }
   } catch (err) {
     res.status(500);

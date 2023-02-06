@@ -6,7 +6,7 @@ import { Box } from '@chakra-ui/react'
 import NoContent from '../icons/NoData';
 
 import { PageContext } from '../../context';
-import { setContent, setRecomended, getInfo } from '../../context/actions';
+import { setContent, setRecomended, getInfo, setSimilars } from '../../context/actions';
 
 const Mobile = dynamic(() => import('./Mobile'));
 const Desktop = dynamic(() => import('./Desktop'));
@@ -31,8 +31,9 @@ const Card = ({ source, device, nextRecomendation, contentId }: Props) => {
 
   useEffect(() => {
     if (data) {
-      setContent(dispatch, data)
-      setRecomended(dispatch, data.id)
+      setContent(dispatch, data?.result)
+      setRecomended(dispatch, data?.result.id)
+      setSimilars(dispatch, data?.rest)
     }
 
     if (error) {
