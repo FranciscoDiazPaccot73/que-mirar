@@ -19,7 +19,7 @@ const Mobile = ({ source, nextRecomendation, device, isFirst, contentId }: Props
           Ver siguiente recomendación
         </Button>
       </Box>
-      {!isFirst && !fetching && similars ? <Similars url={BASE_IMAGE_URL} content={similars} source={source} /> : null}
+      {!fetching && similars ? <Similars isFirst={isFirst} url={BASE_IMAGE_URL} content={similars} source={source} /> : null}
     </>
   )
 }
