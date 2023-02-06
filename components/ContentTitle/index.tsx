@@ -15,11 +15,19 @@ interface Props {
 }
 
 const ContentTitle = ({ isFirst, watchRegion, onChange, source, nextRecomendation, setFirst }: Props) => {
-  const { dispatch } = useContext(PageContext);
+  const { dispatch, state: { fetching } } = useContext(PageContext);
   
   const getTrending = () => {
-    getInfo(dispatch, source);
-    setFirst(true)
+    if (!isFirst && !fetching) {
+      getInfo(dispatch, source);
+      setFirst(true)
+    }
+  }
+
+  const handleGetRecomendation = () => {
+    if (isFirst && !fetching) {
+      nextRecomendation()
+    }
   }
   
   return (
@@ -37,7 +45,7 @@ const ContentTitle = ({ isFirst, watchRegion, onChange, source, nextRecomendatio
           variant={`${isFirst ? 'outline' : 'solid'}`}
           colorScheme='purple'
           size='xs'
-          onClick={nextRecomendation}
+          onClick={handleGetRecomendation}
         >
           {`${watchRegion === 'BR' ? 'Recomendações' : 'Recomendaciones'}`}
         </Button>
