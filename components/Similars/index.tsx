@@ -6,20 +6,22 @@ export interface Props {
   url: string,
   content: any,
   source?: string,
+  isFirst?: boolean,
 }
 
-const Similars = ({ url, content, source }: Props) => {
+const Similars = ({ url, content, source, isFirst }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const deviceName = source === 'movie' ? "Peliculas" : "Series";
   const [first, second, third, ...rest] = content.sort((a: any, b: any) => b.popularity - a.popularity);
+  const text = isFirst ? 'Otras tendencias' : `${deviceName} similares`;
 
   const handleClick = () => isOpen ? onClose() : onOpen();
 
   return (
     <Box marginTop="20px">
       <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Text>{`${deviceName} similares`}</Text>
+        <Text>{text}</Text>
         <Button fontSize="xs" variant='ghost' size="sm" onClick={handleClick}>{`${isOpen ? 'Ver menos' : 'Ver todo'}`}</Button>
       </Box>
       <Box>

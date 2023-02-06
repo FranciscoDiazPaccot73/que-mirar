@@ -15,8 +15,13 @@ export const getInfo = async (dispatch: any, source: string) => {
   try {
     const { data } = await axios.get(`/api?source=${source}`, { timeout: 8000 })
 
-    dispatch({ type: types.SET_CONTENT, content: data });
+    const { result, rest } = data;
+
+    console.log(result, rest)
+
+    dispatch({ type: types.SET_CONTENT, content: result });
     dispatch({ type: types.ALREADY_RECOMENDED, recomendedContent: data.id });
+    dispatch({ type: types.SET_SIMILARS, similars: rest });
 
     return data.id
   } catch (err: any) {
@@ -59,6 +64,10 @@ export const getGenres = async (dispatch: any, source: string) => {
     trackEvent('ERROR', 'getGenres')
   }
 };
+
+export const setSimilars = (dispatch: any, content: any) => {
+  dispatch({ type: types.SET_SIMILARS, similars: content });
+}
 
 export const getSimilars = async (dispatch: any, source: any, id: string, region: string) => {
   try {

@@ -154,7 +154,14 @@ const Home: NextPage = ({ region, source: contextSource }: any) => {
       <Seo />
       <Header device={device} handleTab={handleTab} linkSelected={linkSelected} />
       <main className={mainClasses}>
-        <ContentTitle onChange={handleRegion} watchRegion={watchRegion ?? 'AR'} isFirst={isFirst}  />
+        <ContentTitle
+          nextRecomendation={nextRecomendation}
+          source={source}
+          onChange={handleRegion}
+          watchRegion={watchRegion ?? 'AR'}
+          isFirst={isFirst}
+          setFirst={setFirst}
+        />
         {/* <SearchBox source={source} region={watchRegion} /> */}
         <Layout contentId={contentId} device={device} source={source} nextRecomendation={nextRecomendation} isFirst={isFirst} />
         <Filters source={source} device={device} />

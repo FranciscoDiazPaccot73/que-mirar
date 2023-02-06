@@ -1,6 +1,6 @@
 {
   "name": "que-puedo-ver",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "homepage": "https://quepuedover.online",
   "author": {
@@ -23,7 +23,7 @@
     "classnames": "^2.3.1",
     "framer-motion": "^6",
     "next": "12.1.6",
-    "node-sass": "^7.0.1",
+    "node-sass": "^8.0.0",
     "react": "18.2.0",
     "react-device-detect": "^2.2.2",
     "react-dom": "18.2.0",
