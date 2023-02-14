@@ -10,6 +10,7 @@ export const types = {
   SET_NO_CONTENT: 'SET_NO_CONTENT',
   SET_WATCH_REGION: 'SET_WATCH_REGION',
   SET_SIMILARS: 'SET_SIMILARS',
+  SET_SEARCH: 'SET_SEARCH',
 };
 
 export const init = (config: any) => {
@@ -50,6 +51,9 @@ export const reducer = (state: any, action: any) => {
     }
     case types.SET_SIMILARS: {
       return {...state, similars: action.similars}
+    }
+    case types.SET_SEARCH: {
+      return {...state, searchResult: action.search}
     }
     case types.ALREADY_RECOMENDED: {
       const { recomendedContent = [] } = state;

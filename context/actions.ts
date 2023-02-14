@@ -47,13 +47,22 @@ export const getProviders = async (dispatch: any, source: string) => {
 };
 
 export const search = async (dispatch: any, source: string, query: string, region: string) => {
+  dispatch({ type: types.FETCHING, value: true });
   try {
     const { data } = await axios.get(`/api/search?source=${source}&region=${region}&q=${query}`, { timeout: 8000 })
+    
+    dispatch({ type: types.SET_SEARCH, search: data });
 
   } catch (err) {
     trackEvent('ERROR', 'getProviders')
+  } finally {
+    dispatch({ type: types.FETCHING, value: false });
   }
 };
+
+export const resetSearch = (dispatch: any) => {
+  dispatch({ type: types.SET_SEARCH, search: null });
+}
 
 export const getGenres = async (dispatch: any, source: string) => {
   try {

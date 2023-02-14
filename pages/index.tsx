@@ -12,7 +12,6 @@ import Header from '../components/Header';
 import Seo from '../components/Seo';
 import Footer from '../components/Footer';
 import ContentTitle from '../components/ContentTitle';
-// import SearchBox from '../components/Search';
 
 import { getDeviceTrackWording } from '../utils';
 import { trackView, trackEvent } from '../utils/trackers';
@@ -162,7 +161,6 @@ const Home: NextPage = ({ region, source: contextSource }: any) => {
           isFirst={isFirst}
           setFirst={setFirst}
         />
-        {/* <SearchBox source={source} region={watchRegion} /> */}
         <Layout contentId={contentId} device={device} source={source} nextRecomendation={nextRecomendation} isFirst={isFirst} />
         <Filters source={source} device={device} />
       </main>

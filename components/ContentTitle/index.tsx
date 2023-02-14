@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import { Text, Box, Select, Button } from '@chakra-ui/react'
 
+import SearchBox from '../Search';
+
 import { PageContext } from '../../context';
 import { getInfo } from '../../context/actions'
 import { availableRegions } from '../../utils'
@@ -31,8 +33,22 @@ const ContentTitle = ({ isFirst, watchRegion, onChange, source, nextRecomendatio
   }
   
   return (
-    <Box display="flex" marginBottom="16px" justifyContent="space-between" alignItems="center">
-      <Box display="flex" gap="12px">
+    <Box display="flex" flexDirection="column" marginBottom="16px" justifyContent="space-between" alignItems="center">
+      <Box marginBottom='16px' width="100%" display="flex" justifyContent="space-between">
+        <SearchBox source={source} region={watchRegion} />
+        <Box width="75px" position="relative">
+          <Text position="absolute" top="-16px" fontSize="10px">Región</Text>
+          <Select
+            onChange={(e) => onChange(e.target.value)}
+            value={watchRegion}
+            size="sm"
+            colorScheme="purple.500"
+          >
+            {availableRegions.map((region: string) => <option key={region} value={region}>{region}</option>)}
+          </Select>
+        </Box>
+      </Box>
+      <Box display="flex" gap="12px" width="100%">
         <Button
           variant={`${isFirst ? 'solid' : 'outline'}`}
           colorScheme='purple'
@@ -49,17 +65,6 @@ const ContentTitle = ({ isFirst, watchRegion, onChange, source, nextRecomendatio
         >
           {`${watchRegion === 'BR' ? 'Recomendações' : 'Recomendaciones'}`}
         </Button>
-      </Box>
-      <Box width="75px" position="relative">
-        <Text position="absolute" top="-16px" fontSize="10px">Región</Text>
-        <Select
-          onChange={(e) => onChange(e.target.value)}
-          value={watchRegion}
-          size="sm"
-          colorScheme="purple.500"
-        >
-          {availableRegions.map((region: string) => <option key={region} value={region}>{region}</option>)}
-        </Select>
       </Box>
     </Box>
   )
