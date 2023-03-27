@@ -17,8 +17,6 @@ export const getInfo = async (dispatch: any, source: string) => {
 
     const { result, rest } = data;
 
-    console.log(result, rest)
-
     dispatch({ type: types.SET_CONTENT, content: result });
     dispatch({ type: types.ALREADY_RECOMENDED, recomendedContent: data.id });
     dispatch({ type: types.SET_SIMILARS, similars: rest });

@@ -15,9 +15,22 @@ import ContentTitle from '../components/ContentTitle';
 
 import { getDeviceTrackWording } from '../utils';
 import { trackView, trackEvent } from '../utils/trackers';
+import { getdata } from './api';
 
 import { PageContext } from '../context';
-import { setWatchRegion, getInfo, getRecomendation, getGenres, getProviders, setProvider, setSelectedGenre, getSimilars } from '../context/actions';
+import {
+  setWatchRegion,
+  getInfo,
+  getRecomendation,
+  getGenres,
+  getProviders,
+  setProvider,
+  setSelectedGenre,
+  getSimilars,
+  setContent,
+  setRecomended,
+  setSimilars,
+} from '../context/actions';
 
 type params = {
   newSource: string,
@@ -25,9 +38,9 @@ type params = {
   id?: string
 }
 
-const Home: NextPage = ({ region, source: contextSource }: any) => {
+const Home: NextPage = ({ region, source: contextSource, initialResult, initialRest, initialTab }: any) => {
   const { dispatch, state: { content, watchRegion, noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent } } = useContext(PageContext);
-  const [linkSelected, handleTabChange] = useState(1);
+  const [linkSelected, handleTabChange] = useState(initialTab);
   const [device, setDevice] = useState<string|null>(null);
   const [source, setSource] = useState('tv');
   const [contentId, setId] = useState<string|null>(null);
@@ -56,6 +69,9 @@ const Home: NextPage = ({ region, source: contextSource }: any) => {
   }, [contextSource, region]);
 
   useEffect(() => {
+    setContent(dispatch, initialResult)
+    setRecomended(dispatch, initialResult.id)
+    setSimilars(dispatch, initialRest)
     const dev = isMobile ? 'mobile' : 'desktop';
     setDevice(dev);
     trackView('/home');
@@ -167,6 +183,21 @@ const Home: NextPage = ({ region, source: contextSource }: any) => {
       <Footer />
     </div>
   )
+}
+
+export async function getServerSideProps({ query }: any) {
+  const { source = 'tv' } = query;
+  const initialTab = source === 'tv' ? 1 : 2;
+
+  const { result, rest } = await getdata({ source })
+
+  return {
+    props: {
+      initialResult: JSON.parse(JSON.stringify(result)),
+      initialRest: JSON.parse(JSON.stringify(rest)),
+      initialTab,
+    }
+  }
 }
 
 export default Home

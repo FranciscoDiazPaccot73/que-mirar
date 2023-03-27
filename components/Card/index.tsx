@@ -6,7 +6,6 @@ import { Box } from '@chakra-ui/react'
 import NoContent from '../icons/NoData';
 
 import { PageContext } from '../../context';
-import { setContent, setRecomended, getInfo, setSimilars } from '../../context/actions';
 
 const Mobile = dynamic(() => import('./Mobile'));
 const Desktop = dynamic(() => import('./Desktop'));
@@ -18,28 +17,8 @@ interface Props {
   contentId?: string | null,
 }
 
-const Card = ({ source, device, nextRecomendation, contentId }: Props) => {
-  const { dispatch, state: { noContent, watchRegion } } = useContext(PageContext);
-  const { isLoading, error, data } = useQuery('repoData', () => {
-    const url = contentId ? `/api/content?source=${source}&region=${watchRegion}&id=${contentId}` : `/api?source=${source}`
-  
-    return fetch(url).then(res =>
-      res.json()
-    )
-  }
-  )
-
-  useEffect(() => {
-    if (data) {
-      setContent(dispatch, data?.result)
-      setRecomended(dispatch, data?.result.id)
-      setSimilars(dispatch, data?.rest)
-    }
-
-    if (error) {
-      getInfo(dispatch, source);
-    }
-  }, [isLoading])
+const Card = ({ source, device, nextRecomendation }: Props) => {
+  const { state: { noContent } } = useContext(PageContext);
 
   const boxProps = {
     borderWidth: '1px',
