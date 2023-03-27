@@ -31,6 +31,7 @@ const Mobile = ({ source }: Props) => {
               height='281px'
               placeholder='blur'
               blurDataURL={`${BASE_IMAGE_URL}${content.backdrop_path}`}
+              priority
             />
             <Box className={styles.poster_content}>
               <Text className={styles.poster_title} fontSize="xl">

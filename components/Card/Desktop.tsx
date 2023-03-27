@@ -32,6 +32,7 @@ const Desktop = ({ source, nextRecomendation }: Props) => {
             height='281px'
             placeholder='blur'
             blurDataURL={`${BASE_IMAGE_URL}${content.poster_path}`}
+            priority
           />
           <Box width="80%" padding="30px 30px 74px">
             <Text fontSize="28px">
