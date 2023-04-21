@@ -13,7 +13,7 @@ const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
 
 interface Props {
   handleFilter: any,
-  device: string|null,
+  device?: string,
 }
 
 const Providers = ({ handleFilter, device }: Props) => {
@@ -39,7 +39,7 @@ const Providers = ({ handleFilter, device }: Props) => {
 
               return (
                 <Box cursor="pointer" key={prov.provider_id} onClick={() => handleFilter(prov.provider_id)} className={filtersClasses}>
-                  <Image alt={prov.provider_name} src={`${BASE_IMAGE_URL}${prov.logo_path}`} height='40px' width="40px" />
+                  <Image alt={prov.provider_name} src={`${BASE_IMAGE_URL}${prov.logo_path}`} height={40} width={40} />
                 </Box>
               )
             })}

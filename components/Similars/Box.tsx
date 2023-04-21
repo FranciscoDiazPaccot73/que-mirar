@@ -39,8 +39,8 @@ const ContentBox = ({ content, url, source }: Props) => {
       <Image
         src={`${url}${imageUrl}`}
         alt={content.title}
-        width='40px'
-        height='40px'
+        width={40}
+        height={40}
         placeholder='blur'
         blurDataURL={`${url}${content.poster_path}`}
       />

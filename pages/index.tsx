@@ -1,23 +1,21 @@
 import type { NextPage } from 'next'
 import { useState, useContext, useEffect, useRef } from 'react';
-import Head from 'next/head'
-import styles from '../styles/Home.module.scss'
 import classNames from 'classnames';
+
 import { isMobile } from 'react-device-detect';
 
-import { useToast } from '@chakra-ui/react'
-import Filters from '../components/Filters';
-import Layout from '../components/Layout';
-import Header from '../components/Header';
-import Seo from '../components/Seo';
-import Footer from '../components/Footer';
-import ContentTitle from '../components/ContentTitle';
+import Filters from '@components/Filters';
+import Layout from '@components/Layout';
+import Header from '@components/Header';
+import Seo from '@components/Seo';
+import Footer from '@components/Footer';
+import ContentTitle from '@components/ContentTitle';
 
-import { getDeviceTrackWording } from '../utils';
-import { trackView, trackEvent } from '../utils/trackers';
 import { getdata } from './api';
+import { getDeviceTrackWording, updateParams } from '@utils/index';
+import { trackView, trackEvent } from '@utils/trackers';
 
-import { PageContext } from '../context';
+import { PageContext } from '@store/index';
 import {
   setWatchRegion,
   getInfo,
@@ -30,32 +28,27 @@ import {
   setContent,
   setRecomended,
   setSimilars,
-} from '../context/actions';
+} from '@store/actions';
 
-type params = {
-  newSource: string,
-  newWatchRegion: string,
-  id?: string
+//import styles from '@styles/Home.module.scss'
+
+type HomeProps = {
+  region: string
+  source: string
+  initialTab: number
+  initialResult: any
+  initialRest: any
 }
 
-const Home: NextPage = ({ region, source: contextSource, initialResult, initialRest, initialTab }: any) => {
+const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResult, initialRest, initialTab }) => {
   const { dispatch, state: { content, watchRegion, noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent } } = useContext(PageContext);
   const [linkSelected, handleTabChange] = useState(initialTab);
-  const [device, setDevice] = useState<string|null>(null);
+  const [device, setDevice] = useState<string>();
   const [source, setSource] = useState('tv');
   const [contentId, setId] = useState<string|null>(null);
   const [isFirst, setFirst] = useState(true);
   const timestamp = useRef(new Date());
-  const toast = useToast();
-  const mainClasses = classNames(styles.main, device && device === 'desktop' && styles.main_desktop);
-
-  const updateParams = ({ newSource, newWatchRegion, id }: params) => {
-    const sourceParam = `?source=${newSource}`
-    const regionParam = `&region=${newWatchRegion}`
-    const idParam = id ? `&id=${id}` : '';
-    if (id) setId(id)
-    window.history.replaceState({}, '', `${sourceParam}${regionParam}${idParam}`)
-  }
+  // const mainClasses = classNames(styles.main, device && device === 'desktop' && styles.main_desktop);
 
   useEffect(() => {
     if (contextSource && contextSource !== 'movie') {
@@ -90,15 +83,6 @@ const Home: NextPage = ({ region, source: contextSource, initialResult, initialR
 
   useEffect(() => {
     if (noContent) {
-      toast.closeAll();
-      toast({
-        title: noContent.message,
-        description: noContent.message ? "Prueba con una nueva combinación de filtros." : null,
-        status: noContent.type,
-        duration: 3000,
-        isClosable: true,
-        position: "top",
-      })
     }
 
     if (device && typeof window !== 'undefined') {
@@ -141,7 +125,6 @@ const Home: NextPage = ({ region, source: contextSource, initialResult, initialR
   }
 
   const nextRecomendation = async () => {
-    toast.closeAll();
     setFirst(false);
     const newId = await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, watchRegion)
     updateParams({ newSource: source, newWatchRegion: watchRegion, id: newId })
@@ -152,7 +135,6 @@ const Home: NextPage = ({ region, source: contextSource, initialResult, initialR
   const handleRegion = async (newRegion: string) => {
     setWatchRegion(dispatch, newRegion)
     trackEvent('CLICK', `region-${newRegion}`)
-    toast.closeAll();
     setFirst(false);
     const newId = await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, newRegion)
     getSimilars(dispatch, source, content.id, watchRegion)
@@ -160,27 +142,24 @@ const Home: NextPage = ({ region, source: contextSource, initialResult, initialR
   }
 
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>¿Qué puedo ver?</title>
-        <meta name="description" content="Si no sabes que serie o pelicula empezar a ver, este es tu lugar" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div>
       <Seo />
       <Header device={device} handleTab={handleTab} linkSelected={linkSelected} />
-      <main className={mainClasses}>
-        <ContentTitle
-          nextRecomendation={nextRecomendation}
-          source={source}
-          onChange={handleRegion}
-          watchRegion={watchRegion ?? 'AR'}
-          isFirst={isFirst}
-          setFirst={setFirst}
-        />
-        <Layout contentId={contentId} device={device} source={source} nextRecomendation={nextRecomendation} isFirst={isFirst} />
-        <Filters source={source} device={device} />
-      </main>
-      <Footer />
+      {/*
+        <main className={mainClasses}>
+          <ContentTitle
+            nextRecomendation={nextRecomendation}
+            source={source}
+            onChange={handleRegion}
+            watchRegion={watchRegion ?? 'AR'}
+            isFirst={isFirst}
+            setFirst={setFirst}
+          />
+          <Layout contentId={contentId} device={device} source={source} nextRecomendation={nextRecomendation} isFirst={isFirst} />
+          <Filters source={source} device={device} />
+        </main>
+        <Footer />
+      */}
     </div>
   )
 }
@@ -196,6 +175,7 @@ export async function getServerSideProps({ query }: any) {
       initialResult: JSON.parse(JSON.stringify(result)),
       initialRest: JSON.parse(JSON.stringify(rest)),
       initialTab,
+      source,
     }
   }
 }

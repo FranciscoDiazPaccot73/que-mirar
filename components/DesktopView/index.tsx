@@ -8,7 +8,7 @@ import { PageContext } from '../../context';
 interface Props {
   source: string,
   nextRecomendation(): void,
-  device: string|null,
+  device?: string,
   isFirst: boolean,
   contentId?: string | null,
 };

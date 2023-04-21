@@ -1,13 +1,13 @@
 import Head from 'next/head'
 
-interface Props {
+interface SeoProps {
   description: string,
   title: string,
   logoUrl: string,
   url: string,
 }
 
-const Seo = ({ description, title, logoUrl, url }: Props) => {
+const Seo = ({ description, title, logoUrl, url }: SeoProps) => {
   return (
     <Head>
       <title>{title}</title>

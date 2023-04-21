@@ -1,5 +1,4 @@
-import React, { useEffect, useContext } from 'react'
-import { useQuery } from 'react-query'
+import { useContext } from 'react'
 import dynamic from 'next/dynamic';
 import { Box } from '@chakra-ui/react'
 
@@ -12,7 +11,7 @@ const Desktop = dynamic(() => import('./Desktop'));
 
 interface Props {
   source: string,
-  device: string|null,
+  device?: string,
   nextRecomendation?(): void,
   contentId?: string | null,
 }

@@ -28,8 +28,8 @@ const Desktop = ({ source, nextRecomendation }: Props) => {
           <Image
             src={`${BASE_IMAGE_URL}${imageUrl}`}
             alt={content.title}
-            width='500px'
-            height='281px'
+            width={500}
+            height={281}
             placeholder='blur'
             blurDataURL={`${BASE_IMAGE_URL}${content.poster_path}`}
             priority
@@ -68,7 +68,7 @@ const Desktop = ({ source, nextRecomendation }: Props) => {
                 <Text fontSize="sm">Disponible en:</Text>
                 {content.providers.map((prov: any) =>
                   <Box key={prov.id} overflow="hidden" borderRadius="6px" height="30px" margin='0 6px'>
-                    <Image alt={prov.provider_name} src={`${BASE_IMAGE_URL}${prov.logo_path}`} width="30px" height="30px" />
+                    <Image alt={prov.provider_name} src={`${BASE_IMAGE_URL}${prov.logo_path}`} width={30} height={30} />
                   </Box>
                 )}
               </Box>

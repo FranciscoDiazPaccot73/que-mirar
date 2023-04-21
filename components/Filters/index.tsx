@@ -11,7 +11,7 @@ import { getProviders, getRecomendation, setProvider, getGenres, setSelectedGenr
 
 interface Props {
   source: string,
-  device: string|null,
+  device?: string,
 }
 
 type provider = {

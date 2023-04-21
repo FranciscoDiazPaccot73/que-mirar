@@ -1,4 +1,3 @@
-import { ColorModeScript, Box } from '@chakra-ui/react'
 import NextDocument, { Html, Head, Main, NextScript } from 'next/document'
 
 import loader from '../loader';
@@ -14,10 +13,9 @@ export default class Document extends NextDocument {
           </style>
         </head>
         <body id="body" className="scroll-disabled">
-          <Box id="spinner">
-            <Box className='spinner' />
-          </Box>
-          <ColorModeScript initialColorMode="dark" />
+          <div id="spinner">
+            <div className='spinner' />
+          </div>
           <Main />
           <NextScript />
         </body>

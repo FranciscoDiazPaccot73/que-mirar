@@ -4,7 +4,7 @@ const Mobile = dynamic(() => import('../MobileView'))
 const Desktop = dynamic(() => import('../DesktopView'))
 
 export interface Props {
-  device: string|null,
+  device?: string,
   source: string,
   nextRecomendation(): void,
   isFirst: boolean,

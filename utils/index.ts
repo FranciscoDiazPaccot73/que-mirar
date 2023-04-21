@@ -49,3 +49,20 @@ export const formatDuration = (duration: number) => {
 
   return `${rhours} h ${rminutes} min.`
 }
+
+type Params = {
+  newSource: string
+  newWatchRegion: string
+  id?: string
+}
+
+export const updateParams = ({ newSource, newWatchRegion, id }: Params) => {
+  const sourceParam = `?source=${newSource}`
+  const regionParam = `&region=${newWatchRegion}`
+  const idParam = id ? `&id=${id}` : '';
+  // if (id) setId(id)
+  window.history.replaceState({}, '', `${sourceParam}${regionParam}${idParam}`)
+
+  if (id) return id;
+  return;
+}
