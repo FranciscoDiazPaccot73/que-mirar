@@ -1,107 +1,106 @@
-import Link from "next/link";
-import Image from "next/image";
-import { useContext } from "react";
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable react/require-default-props */
+import Link from 'next/link';
+import Image from 'next/image';
+import { useContext } from 'react';
 
-import { Box, Button, Text } from '@chakra-ui/react'
+import { Box, Button, Text } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
-import CardSkeleton from "./Skeleton";
+import CardSkeleton from './Skeleton';
 
 import { PageContext } from '../../context';
-import { trackEvent } from "../../utils/trackers";
-import { formatDuration } from "../../utils";
+import { trackEvent } from '../../utils/trackers';
+import { formatDuration } from '../../utils';
 
-import styles from '../../styles/Home.module.scss'
+import styles from '../../styles/Home.module.scss';
 
 export interface Props {
-  source: string,
-  nextRecomendation?(): void,
+  source: string;
+  nextRecomendation?(): void;
 }
 
 const Desktop = ({ source, nextRecomendation }: Props) => {
-  const { state: { content, fetching, BASE_IMAGE_URL } } = useContext(PageContext);
+  const {
+    state: { content, fetching, BASE_IMAGE_URL },
+  } = useContext(PageContext);
   const imageUrl = content?.poster_path || content?.backdrop_path;
 
   return (
     <>
-    {content ? (
-        <Box position="relative" className={styles.poster} maxHeight="950px" display="flex">
+      {content ? (
+        <Box className={styles.poster} display="flex" maxHeight="950px" position="relative">
           <Image
-            src={`${BASE_IMAGE_URL}${imageUrl}`}
-            alt={content.title}
-            width={500}
-            height={281}
-            placeholder='blur'
-            blurDataURL={`${BASE_IMAGE_URL}${content.poster_path}`}
             priority
+            alt={content.title}
+            blurDataURL={`${BASE_IMAGE_URL}${content.poster_path}`}
+            height={281}
+            placeholder="blur"
+            src={`${BASE_IMAGE_URL}${imageUrl}`}
+            width={500}
           />
-          <Box width="80%" padding="30px 30px 74px">
+          <Box padding="30px 30px 74px" width="80%">
             <Text fontSize="28px">
-              <Text display="flex" alignItems="center">{content.title}</Text>
+              <Text alignItems="center" display="flex">
+                {content.title}
+              </Text>
             </Text>
             <Box>
-              {source === 'movie' ? <Text style={{ fontSize: "12px" }} className={styles.poster_release}>{content.release_date.slice(0, 4)} &bull; {formatDuration(content.duration)}</Text> : null}
-              <Box textOverflow="ellipsis" overflow="hidden" whiteSpace="nowrap" display="flex" alignItems="center">
-                {content.genres?.map((genre: any) => <Text key={genre.name} className={styles.genres} fontSize="12px" color="gray.200">{genre.name}</Text>)}
+              {source === 'movie' ? (
+                <Text className={styles.poster_release} style={{ fontSize: '12px' }}>
+                  {content.release_date.slice(0, 4)} &bull; {formatDuration(content.duration)}
+                </Text>
+              ) : null}
+              <Box alignItems="center" display="flex" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+                {content.genres?.map((genre: any) => (
+                  <Text key={genre.name} className={styles.genres} color="gray.200" fontSize="12px">
+                    {genre.name}
+                  </Text>
+                ))}
               </Box>
             </Box>
-            <Box margin="12px 0" display='flex' mt='2' alignItems='center'>
-              {Array(5).fill('').map((_, i) => (
-                <Box key={`desktop-star-${i}`}>
-                  <StarIcon
-                    style={{ margin: '0 2px' }}
-                    color={i < Math.floor(content.vote_average / 2) ? 'purple' : 'gray'}
-                  />
-                </Box>
-              ))}
-              <Box marginTop="3px" as='span' ml='2' color='gray.600' fontSize='sm'>
+            <Box alignItems="center" display="flex" margin="12px 0" mt="2">
+              {Array(5)
+                .fill('')
+                .map((_, i) => (
+                  <Box key={`desktop-star-${i}`}>
+                    <StarIcon color={i < Math.floor(content.vote_average / 2) ? 'purple' : 'gray'} style={{ margin: '0 2px' }} />
+                  </Box>
+                ))}
+              <Box as="span" color="gray.600" fontSize="sm" marginTop="3px" ml="2">
                 {content.vote_count} reviews
               </Box>
             </Box>
-            <Text margin="6px 0 12px" fontSize="14px" color="gray.400">
+            <Text color="gray.400" fontSize="14px" margin="6px 0 12px">
               {content.tagline}
             </Text>
             <Box>
-              <Text fontSize="sm" className={styles.poster_overview_desktop} title={content.overview}>{content.overview}</Text>
+              <Text className={styles.poster_overview_desktop} fontSize="sm" title={content.overview}>
+                {content.overview}
+              </Text>
             </Box>
             {content.providers?.length ? (
-              <Box display="flex" alignItems="center" marginTop="20px">
+              <Box alignItems="center" display="flex" marginTop="20px">
                 <Text fontSize="sm">Disponible en:</Text>
-                {content.providers.map((prov: any) =>
-                  <Box key={prov.id} overflow="hidden" borderRadius="6px" height="30px" margin='0 6px'>
-                    <Image alt={prov.provider_name} src={`${BASE_IMAGE_URL}${prov.logo_path}`} width={30} height={30} />
+                {content.providers.map((prov: any) => (
+                  <Box key={prov.id} borderRadius="6px" height="30px" margin="0 6px" overflow="hidden">
+                    <Image alt={prov.provider_name} height={30} src={`${BASE_IMAGE_URL}${prov.logo_path}`} width={30} />
                   </Box>
-                )}
+                ))}
               </Box>
             ) : (
-              <Text marginTop="24px" color="gray.500" fontWeight={600} fontSize="sm">Puede que este contenido no este disponible en tu región</Text>
+              <Text color="gray.500" fontSize="sm" fontWeight={600} marginTop="24px">
+                Puede que este contenido no este disponible en tu región
+              </Text>
             )}
           </Box>
-          <Box
-            position="absolute"
-            margin="10px 0"
-            width="100%"
-            display="flex"
-            justifyContent="flex-end"
-            bottom="10px"
-            right="30px"
-          >
-            <Button
-              onClick={nextRecomendation}
-              disabled={fetching}
-              size="sm"
-              colorScheme='purple'
-              variant='ghost'
-            >
+          <Box bottom="10px" display="flex" justifyContent="flex-end" margin="10px 0" position="absolute" right="30px" width="100%">
+            <Button colorScheme="purple" disabled={fetching} size="sm" variant="ghost" onClick={nextRecomendation}>
               Ver siguiente recomendación
             </Button>
             {content.link ? (
-              <Link href={content.link} passHref onClick={() => trackEvent('MOVIE', content.title)}>
-                <Button
-                  disabled={fetching}
-                  size="sm"
-                  colorScheme='purple'
-                  marginLeft="16px"
-                >
+              <Link passHref href={content.link} onClick={() => trackEvent('MOVIE', content.title)}>
+                <Button colorScheme="purple" disabled={fetching} marginLeft="16px" size="sm">
                   ¡Quiero verla!
                 </Button>
               </Link>
@@ -112,7 +111,7 @@ const Desktop = ({ source, nextRecomendation }: Props) => {
         <CardSkeleton />
       )}
     </>
-  )
-}
+  );
+};
 
 export default Desktop;

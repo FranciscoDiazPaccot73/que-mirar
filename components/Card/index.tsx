@@ -1,6 +1,7 @@
-import { useContext } from 'react'
+/* eslint-disable react/require-default-props */
+import { useContext } from 'react';
 import dynamic from 'next/dynamic';
-import { Box } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react';
 
 import NoContent from '../icons/NoData';
 
@@ -10,14 +11,16 @@ const Mobile = dynamic(() => import('./Mobile'));
 const Desktop = dynamic(() => import('./Desktop'));
 
 interface Props {
-  source: string,
-  device?: string,
-  nextRecomendation?(): void,
-  contentId?: string | null,
+  source: string;
+  device?: string;
+  nextRecomendation?(): void;
+  contentId?: string | null;
 }
 
 const Card = ({ source, device, nextRecomendation }: Props) => {
-  const { state: { noContent } } = useContext(PageContext);
+  const {
+    state: { noContent },
+  } = useContext(PageContext);
 
   const boxProps = {
     borderWidth: '1px',
@@ -26,15 +29,15 @@ const Card = ({ source, device, nextRecomendation }: Props) => {
     borderColor: 'purple.500',
     width: '100%',
     display: 'flex',
-    minHeight: "400px",
-  }
+    minHeight: '400px',
+  };
 
   if (noContent || !device) {
     return (
       <Box {...boxProps} maxHeight="500px" padding="16px">
-        <NoContent height='400px' width='100%'/>
+        <NoContent height="400px" width="100%" />
       </Box>
-    )
+    );
   }
 
   if (device === 'mobile') {
@@ -42,14 +45,14 @@ const Card = ({ source, device, nextRecomendation }: Props) => {
       <Box {...boxProps}>
         <Mobile source={source} />
       </Box>
-    )
+    );
   }
 
   return (
     <Box {...boxProps} minHeight="500px">
       <Desktop nextRecomendation={nextRecomendation} source={source} />
     </Box>
-  )
-}
+  );
+};
 
 export default Card;

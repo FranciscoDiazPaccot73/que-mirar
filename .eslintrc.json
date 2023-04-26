@@ -19,6 +19,8 @@
     "react-hooks"
   ],
   "rules": {
+    "react/function-component-definition": "off",
+    "react/jsx-props-no-spreading": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -64,25 +66,6 @@
         "args": "after-used",
         "argsIgnorePattern": "^_.*?$",
         "ignoreRestSiblings": false
-      }
-    ],
-    "import/order": [
-      "warn",
-      {
-        "allowSeparatedGroups": true,
-        "groups": ["builtin", "external", "index", "internal", "object", "parent", "sibling", "type"],
-        "ignoreCase": true,
-        "ignoreDeclarationSort": true,
-        "ignoreMemberSort": false,
-        "memberSyntaxSortOrder": ["all", "single", "multiple", "none"],
-        "newlines-between": "always",
-        "pathGroups": [
-          {
-            "group": "external",
-            "pattern": "~/**",
-            "position": "after"
-          }
-        ]
       }
     ],
     "react/jsx-sort-props": [
