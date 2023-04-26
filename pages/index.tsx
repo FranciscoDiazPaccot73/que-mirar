@@ -4,8 +4,8 @@ import { useState, useContext, useEffect, useRef } from 'react';
 
 // import Filters from '@components/Filters';
 // import Layout from '@components/Layout';
-// import Footer from '@components/Footer';
 // import ContentTitle from '@components/ContentTitle';
+import Footer from '@components/Footer';
 import Header from '@components/Header';
 import Seo from '@components/Seo';
 
@@ -157,8 +157,8 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
           <Layout contentId={contentId} device={device} source={source} nextRecomendation={nextRecomendation} isFirst={isFirst} />
           <Filters source={source} device={device} />
         </main>
-        <Footer />
       */}
+      <Footer />
     </div>
   );
 };
