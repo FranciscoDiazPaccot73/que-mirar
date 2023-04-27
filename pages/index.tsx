@@ -48,7 +48,6 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
   const [contentId, setId] = useState<string | null>(null);
   const [isFirst, setFirst] = useState(true);
   const timestamp = useRef(new Date());
-  // const mainClasses = classNames(styles.main, device && device === 'desktop' && styles.main_desktop);
 
   console.log(source, contentId, isFirst);
 
@@ -140,12 +139,14 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
     updateParams({ newSource: source, newWatchRegion: newRegion, id: newId });
   }; */
 
+  // const mainClasses = classNames(styles.main, device && device === 'desktop' && styles.main_desktop);
+
   return (
     <div>
       <Seo />
       <Header handleTab={handleTab} linkSelected={linkSelected} />
-      {/*
-        <main className={mainClasses}>
+      <main className="flex flex-1 flex-col mx-auto max-w-[565px] min-h-main pt-6 pb-8 px-8 md:max-w-[850px] md:min-h-main-desktop md:px-4 md:pt-4 md:pb-12">
+        {/*
           <ContentTitle
             nextRecomendation={nextRecomendation}
             source={source}
@@ -156,8 +157,8 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
           />
           <Layout contentId={contentId} device={device} source={source} nextRecomendation={nextRecomendation} isFirst={isFirst} />
           <Filters source={source} device={device} />
-        </main>
-      */}
+        */}
+      </main>
       <Footer />
     </div>
   );

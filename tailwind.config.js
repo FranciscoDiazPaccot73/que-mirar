@@ -4,6 +4,10 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      minHeight: {
+        main: 'calc(100vh - 173px)',
+        'main-desktop': 'calc(100vh - 176px)',
+      },
       colors: {
         purple: '#B794F4',
       },

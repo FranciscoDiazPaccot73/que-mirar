@@ -1,64 +1,15 @@
 @import './variables';
 
-.main {
-  flex-direction: column;
-  flex: 1;
-  margin: 0 auto;
-  max-width: 565px;
-  min-height: calc(100vh - 77px - 96px);
-  padding: 1.5em 2em 2em;
-  
-  &_desktop {
-    max-width: 850px;
-    min-height: calc(100vh - 96px - 80px);
-    padding: 1em 1em 3em;
-  }
-}
-
-.footer {
-  align-items: center;
-  border-top: 1px solid $purple;
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  padding: 1em 0 2.5rem;
-  position: relative;
-
-  .dev {
-    bottom: 10px;
-    display: flex;
-    font-size: 8px;
-    position: absolute;
-    right: 16px;
-
-    a {
-      color: $purple;
-      margin-left: 4px;
-    }
-  }
-}
-
-.footer a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-
-  span {
-    margin-left: 6px;
-  }
-}
-
 .card {
   height: 46px;
   margin: 12px 0;
   transition: height 250ms ease;
-  
+
   &_opened {
     height: 100px;
     transition: height 250ms ease;
   }
-  
+
   &_header {
     background-color: #121822;
     display: flex;
@@ -110,7 +61,7 @@
 
 .genres {
   margin-right: 4px;
-  
+
   &::after {
     content: ",";
   }
@@ -123,4 +74,3 @@
     }
   }
 }
-
