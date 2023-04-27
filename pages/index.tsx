@@ -4,7 +4,7 @@ import { useState, useContext, useEffect, useRef } from 'react';
 
 // import Filters from '@components/Filters';
 // import Layout from '@components/Layout';
-// import ContentTitle from '@components/ContentTitle';
+import ContentTitle from '@components/ContentTitle';
 import Footer from '@components/Footer';
 import Header from '@components/Header';
 import Seo from '@components/Seo';
@@ -146,15 +146,15 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
       <Seo />
       <Header handleTab={handleTab} linkSelected={linkSelected} />
       <main className="flex flex-1 flex-col mx-auto max-w-[565px] min-h-main pt-6 pb-8 px-8 md:max-w-[850px] md:min-h-main-desktop md:px-4 md:pt-4 md:pb-12">
+        <ContentTitle
+          isFirst={isFirst}
+          // nextRecomendation={nextRecomendation}
+          setFirst={setFirst}
+          source={source}
+          watchRegion={watchRegion ?? 'AR'}
+          // onChange={handleRegion}
+        />
         {/*
-          <ContentTitle
-            nextRecomendation={nextRecomendation}
-            source={source}
-            onChange={handleRegion}
-            watchRegion={watchRegion ?? 'AR'}
-            isFirst={isFirst}
-            setFirst={setFirst}
-          />
           <Layout contentId={contentId} device={device} source={source} nextRecomendation={nextRecomendation} isFirst={isFirst} />
           <Filters source={source} device={device} />
         */}

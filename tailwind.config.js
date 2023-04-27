@@ -10,6 +10,7 @@ module.exports = {
       },
       colors: {
         purple: '#B794F4',
+        secondary: '#313b4e',
       },
       borderColor: {
         purple: '#B794F4',
