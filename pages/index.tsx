@@ -3,7 +3,7 @@ import { useState, useContext, useEffect, useRef } from 'react';
 // import classNames from 'classnames';
 
 // import Filters from '@components/Filters';
-// import Layout from '@components/Layout';
+import Layout from '@components/Layout';
 import ContentTitle from '@components/ContentTitle';
 import Footer from '@components/Footer';
 import Header from '@components/Header';
@@ -46,7 +46,7 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
   const [isFirst, setFirst] = useState(true);
   const timestamp = useRef(new Date());
 
-  console.log(source, contentId, isFirst);
+  console.log(source, contentId, isFirst, "MAIN RENDER", initialResult);
 
   useEffect(() => {
     if (contextSource && contextSource !== 'movie') {
@@ -147,8 +147,8 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
           watchRegion={watchRegion ?? 'AR'}
           onChange={handleRegion}
         />
+        <Layout contentId={contentId} source={source} nextRecomendation={nextRecomendation} isFirst={isFirst} />
         {/*
-          <Layout contentId={contentId} device={device} source={source} nextRecomendation={nextRecomendation} isFirst={isFirst} />
           <Filters source={source} device={device} />
         */}
       </main>
