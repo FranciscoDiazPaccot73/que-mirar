@@ -15,19 +15,17 @@ import { PageContext } from '@store/index';
 import {
   setWatchRegion,
   getInfo,
-  // getRecomendation,
+  getRecomendation,
   getGenres,
   getProviders,
   setProvider,
   setSelectedGenre,
-  // getSimilars,
+  getSimilars,
   setContent,
   setRecomended,
   setSimilars,
 } from '@store/actions';
 import { getdata } from './api';
-
-// import styles from '@styles/Home.module.scss'
 
 type HomeProps = {
   region: string;
@@ -40,8 +38,7 @@ type HomeProps = {
 const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResult, initialRest, initialTab }) => {
   const {
     dispatch,
-    // state: { content, watchRegion, noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent },
-    state: { watchRegion, noContent },
+    state: { content, watchRegion, noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent },
   } = useContext(PageContext);
   const [linkSelected, handleTabChange] = useState(initialTab);
   const [source, setSource] = useState('tv');
@@ -119,27 +116,23 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
       updateParams({ newSource, newWatchRegion: watchRegion, id: newId });
     }
   };
-  /*
+
   const nextRecomendation = async () => {
     setFirst(false);
     const newId = await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, watchRegion);
 
     updateParams({ newSource: source, newWatchRegion: watchRegion, id: newId });
     getSimilars(dispatch, source, content.id, watchRegion);
-    trackEvent('CLICK', 'recomendation');
   };
 
   const handleRegion = async (newRegion: string) => {
     setWatchRegion(dispatch, newRegion);
-    trackEvent('CLICK', `region-${newRegion}`);
     setFirst(false);
     const newId = await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, newRegion);
 
     getSimilars(dispatch, source, content.id, watchRegion);
     updateParams({ newSource: source, newWatchRegion: newRegion, id: newId });
-  }; */
-
-  // const mainClasses = classNames(styles.main, device && device === 'desktop' && styles.main_desktop);
+  };
 
   return (
     <div>
@@ -148,11 +141,11 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
       <main className="flex flex-1 flex-col mx-auto max-w-[565px] min-h-main pt-6 pb-8 px-8 md:max-w-[850px] md:min-h-main-desktop md:px-4 md:pt-4 md:pb-12">
         <ContentTitle
           isFirst={isFirst}
-          // nextRecomendation={nextRecomendation}
+          nextRecomendation={nextRecomendation}
           setFirst={setFirst}
           source={source}
           watchRegion={watchRegion ?? 'AR'}
-          // onChange={handleRegion}
+          onChange={handleRegion}
         />
         {/*
           <Layout contentId={contentId} device={device} source={source} nextRecomendation={nextRecomendation} isFirst={isFirst} />
