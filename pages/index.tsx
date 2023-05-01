@@ -13,7 +13,7 @@ import { updateParams } from '@utils/index';
 
 import {
   getGenres,
-  getInfo, getInitialRecomendations, getProviders,
+  getInfo, getInitialRecomendations, getNextRecomendationCached, getProviders,
   getRecomendation,
   getSimilars, resetValues, setContent,
   setProvider,
@@ -40,12 +40,9 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
   } = useContext(PageContext);
   const [linkSelected, handleTabChange] = useState(initialTab);
   const [source, setSource] = useState('tv');
-  const [contentId, setId] = useState<string | null>(null);
   const [isFirst, setFirst] = useState(true);
   const timestamp = useRef(new Date());
   const firstRunFinished = useRef(false);
-
-  console.log(contentId, 'NEXT RECOMEND',  nextRecomendations)
 
   useEffect(() => {
     if (contextSource && contextSource !== 'movie') {
@@ -70,7 +67,6 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
     if (params.source || params.region || params.id) {
       setSource(params.source || 'tv');
       setWatchRegion(dispatch, params.region || 'AR');
-      setId(params.id);
     }
     
     if (!firstRunFinished.current) {
@@ -127,17 +123,21 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
   const nextRecomendation = async () => {
     resetValues(dispatch)
     setFirst(false);
-    const newId = await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, watchRegion);
-
+    const [next] = nextRecomendations;
+    const newId = await getNextRecomendationCached(dispatch, source, next.id, next, watchRegion);
+    
     updateParams({ newSource: source, newWatchRegion: watchRegion, id: newId });
-    getSimilars(dispatch, source, content.id, watchRegion);
+    getSimilars(dispatch, source, newId, watchRegion);
+    getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, watchRegion);
   };
 
   const handleRegion = async (newRegion: string) => {
     resetValues(dispatch)
     setWatchRegion(dispatch, newRegion);
     setFirst(false);
-    const newId = await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, newRegion);
+    const newId = await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, newRegion, true);
+
+    getInitialRecomendations(dispatch, source, selectedProvider, watchRegion, selectedGenre);
 
     getSimilars(dispatch, source, content.id, watchRegion);
     updateParams({ newSource: source, newWatchRegion: newRegion, id: newId });
@@ -166,7 +166,7 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
 
 export async function getServerSideProps({ query }: any) {
   const { source = 'tv' } = query;
-  const initialTab = source === 'tv' ? 1 : 2;
+  const initialTab = source === 'tv' ? 1 : 0;
 
   const { result, rest } = await getdata({ source });
 

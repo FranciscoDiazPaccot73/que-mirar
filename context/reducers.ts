@@ -36,9 +36,9 @@ export const reducer = (state: any, action: any) => {
 
       const currentRecomendations = [...nextRecomendations];
 
-      currentRecomendations.shift();
+      if (currentRecomendations.length) currentRecomendations.shift();
 
-      const newRecomendations = [...currentRecomendations, nextRecomendations];
+      const newRecomendations = [...currentRecomendations, action.nextRecomendations];
 
       return { ...state, nextRecomendations: newRecomendations };
     }

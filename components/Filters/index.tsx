@@ -4,7 +4,7 @@ import Genres from './Genres';
 import Providers from './Providers';
 
 import { PageContext } from '../../context';
-import { getGenres, getProviders, getRecomendation, setProvider, setSelectedGenre } from '../../context/actions';
+import { getGenres, getInitialRecomendations, getProviders, getRecomendation, setProvider, setSelectedGenre } from '../../context/actions';
 
 interface FilterProps {
   source: string;
@@ -13,7 +13,7 @@ interface FilterProps {
 const Filters: FC<FilterProps> = ({ source }) => {
   const {
     dispatch,
-    state: { watchRegion, selectedProvider = 0, selectedGenre = 0, fetching, recomendedContent = [], prevContent },
+    state: { watchRegion = 'AR', selectedProvider = 0, selectedGenre = 0, fetching, recomendedContent = [], prevContent },
   } = useContext(PageContext);
   const firstRun = useRef(true);
 
@@ -36,7 +36,9 @@ const Filters: FC<FilterProps> = ({ source }) => {
   const handleFilter = async (id: number) => {
     if (!fetching && id !== selectedProvider) {
       setProvider(dispatch, id);
-      await getRecomendation(dispatch, source, recomendedContent, prevContent, id, selectedGenre, watchRegion);
+      window.scrollTo(0, 0);
+      await getRecomendation(dispatch, source, recomendedContent, prevContent, id, selectedGenre, watchRegion, true);
+      getInitialRecomendations(dispatch, source, id, watchRegion, selectedGenre);
     }
   };
 
@@ -44,10 +46,13 @@ const Filters: FC<FilterProps> = ({ source }) => {
     if (!fetching) {
       if (id !== selectedGenre) {
         setSelectedGenre(dispatch, id);
+        window.scrollTo(0, 0);
         if (id === 0) {
-          await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, null, watchRegion);
+          await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, null, watchRegion, true);
+          getInitialRecomendations(dispatch, source, selectedProvider, watchRegion);
         } else {
-          await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, id, watchRegion);
+          await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, id, watchRegion, true);
+          getInitialRecomendations(dispatch, source, selectedProvider, watchRegion, id);
         }
       }
     }

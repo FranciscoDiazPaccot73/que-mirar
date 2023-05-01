@@ -17,7 +17,7 @@ export default async function getInitialRecomendations(req: NextApiRequest, res:
     };
 
     const providerToRequest = provider && provider !== '0' ? provider.toString() : '119|619|531|384|300|337|8';
-    const genreToRequest = genre ? genre.toString() : '';
+    const genreToRequest = genre && genre !== '0' ? genre.toString() : '';
     const discoverObj = {
       ...baseObj,
       sort_by: 'vote_average.desc',
@@ -42,7 +42,7 @@ export default async function getInitialRecomendations(req: NextApiRequest, res:
 
     const { totalPages } = firstresponse;
 
-    const pageRandom = Math.floor(Math.random() * (totalPages - 2) + 1) || '1';
+    const pageRandom = Math.abs(Math.floor(Math.random() * (totalPages - 2) + 1)) || '1';
     const newObj = new URLSearchParams({ ...discoverObj, page: pageRandom.toString() });
     const { data } = await axios.get(`${BASE_URL}/discover/${source}?${newObj}`);
     const { results } = data || {};
@@ -82,6 +82,7 @@ export default async function getInitialRecomendations(req: NextApiRequest, res:
 
     res.status(200).json(result);
   } catch (err: any) {
+    console.log(err);
     res.status(500).json({ search: countGte });
   }
 }

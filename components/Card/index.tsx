@@ -9,7 +9,6 @@ import { PageContext } from '../../context';
 interface Props {
   source: string;
   nextRecomendation?: () => void;
-  // contentId?: string | null;
 }
 
 const Card = ({ source, nextRecomendation }: Props) => {

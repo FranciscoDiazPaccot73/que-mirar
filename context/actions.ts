@@ -3,6 +3,8 @@ import axios from 'axios';
 import { trackEvent } from '../utils/trackers';
 import { types } from './reducers';
 
+const timeout = 20000;
+
 export const isFetching = (dispatch: any, value: boolean) => {
   dispatch({ type: types.FETCHING, value });
 };
@@ -13,7 +15,7 @@ export const getInfo = async (dispatch: any, source: string) => {
   let itWorked = true;
 
   try {
-    const { data } = await axios.get(`/api?source=${source}`, { timeout: 8000 });
+    const { data } = await axios.get(`/api?source=${source}`, { timeout });
 
     const { result, rest } = data;
 
@@ -35,7 +37,7 @@ export const getInfo = async (dispatch: any, source: string) => {
 
 export const getProviders = async (dispatch: any, source: string) => {
   try {
-    const { data } = await axios.get(`/api/providers?source=${source}`, { timeout: 8000 });
+    const { data } = await axios.get(`/api/providers?source=${source}`, { timeout });
 
     dispatch({ type: types.SET_PROVIDERS, providers: data });
   } catch (err) {
@@ -46,7 +48,7 @@ export const getProviders = async (dispatch: any, source: string) => {
 export const search = async (dispatch: any, source: string, query: string, region: string) => {
   dispatch({ type: types.FETCHING, value: true });
   try {
-    const { data } = await axios.get(`/api/search?source=${source}&region=${region}&q=${query}`, { timeout: 8000 });
+    const { data } = await axios.get(`/api/search?source=${source}&region=${region}&q=${query}`, { timeout });
 
     dispatch({ type: types.SET_SEARCH, search: data });
   } catch (err) {
@@ -62,7 +64,7 @@ export const resetSearch = (dispatch: any) => {
 
 export const getGenres = async (dispatch: any, source: string) => {
   try {
-    const { data } = await axios.get(`/api/genres?source=${source}`, { timeout: 8000 });
+    const { data } = await axios.get(`/api/genres?source=${source}`, { timeout });
 
     dispatch({ type: types.SET_GENRES, genres: data });
   } catch (err) {
@@ -76,7 +78,7 @@ export const setSimilars = (dispatch: any, content: any) => {
 
 export const getSimilars = async (dispatch: any, source: any, id: string, region: string) => {
   try {
-    const { data } = await axios.get(`/api/similar?source=${source}&id=${id}&region=${region}`, { timeout: 8000 });
+    const { data } = await axios.get(`/api/similar?source=${source}&id=${id}&region=${region ?? 'AR'}`, { timeout });
 
     dispatch({ type: types.SET_SIMILARS, similars: data });
   } catch (err) {
@@ -87,7 +89,7 @@ export const getSimilars = async (dispatch: any, source: any, id: string, region
 export const getContent = async (dispatch: any, source: any, id: string, region: string) => {
   isFetching(dispatch, true);
   try {
-    const { data } = await axios.get(`/api/content?source=${source}&id=${id}&region=${region}`, { timeout: 8000 });
+    const { data } = await axios.get(`/api/content?source=${source}&id=${id}&region=${region ?? 'AR'}`, { timeout });
 
     dispatch({ type: types.SET_CONTENT, content: data });
 
@@ -111,29 +113,46 @@ export const resetValues = (dispatch: any) => {
   dispatch({ type: types.SET_SIMILARS, similars: null });
 };
 
-export const getInitialRecomendations = async (dispatch: any, source: string, provider?: any, watchRegion?: string) => {
+export const getInitialRecomendations = async (dispatch: any, source: string, provider?: any, watchRegion?: string, genre?: number) => {
+  isFetching(dispatch, true);
   try {
-    const { data } = await axios.get(`/api/recomendation-initial?source=${source}&provider=${provider ?? 0}&region=${watchRegion}`, {
-      timeout: 10000,
-    });
+    const { data } = await axios.get(
+      `/api/recomendation-initial?source=${source}&provider=${provider ?? 0}&region=${watchRegion}&genre=${genre ?? ''}`,
+      {
+        timeout,
+      },
+    );
 
     dispatch({ type: types.SET_INITIAL_RECOMENDATIONS, nextRecomendations: data });
   } catch (err: any) {
     console.log(err);
+  } finally {
+    isFetching(dispatch, false);
   }
 };
 
 export const getNextRecomendationCached = async (dispatch: any, source: string, id: number, baseContent: any, watchRegion?: string) => {
+  dispatch({ type: types.FETCHING, value: true });
+  resetValues(dispatch);
+
   try {
     const { data } = await axios.get(`/api/recomendation-next?source=${source}&id=${id}&region=${watchRegion}`, {
-      timeout: 8000,
+      timeout,
     });
 
-    const newContent = { ...baseContent, data };
+    const providers = baseContent.flatrate;
+
+    const newContent = { ...baseContent, ...data, providers };
 
     dispatch({ type: types.SET_CONTENT, content: newContent });
+
+    return data.id;
   } catch (err: any) {
     console.log(err);
+
+    return '';
+  } finally {
+    dispatch({ type: types.FETCHING, value: false });
   }
 };
 
@@ -145,20 +164,23 @@ export const getRecomendation = async (
   provider?: any,
   genre?: number | null,
   watchRegion?: string,
+  saveContent?: boolean,
 ) => {
-  dispatch({ type: types.FETCHING, value: true });
-  resetValues(dispatch);
-
   try {
+    dispatch({ type: types.FETCHING, value: true });
+    if (saveContent) {
+      resetValues(dispatch);
+    }
     const formated = recomended.join('|');
     const { data } = await axios.get(
       `/api/recomendation?source=${source}&recomended=${formated}&provider=${provider ?? 0}${
         genre ? `&genre=${genre}` : ''
       }&region=${watchRegion}`,
-      { timeout: 10000 },
+      { timeout },
     );
 
-    dispatch({ type: types.SET_CONTENT, content: data });
+    if (saveContent) dispatch({ type: types.SET_CONTENT, content: data });
+    dispatch({ type: types.SET_NEXT_RECOMENDATIONS, nextRecomendations: data });
     dispatch({ type: types.ALREADY_RECOMENDED, recomendedContent: data.id });
     const prevContent = { ...data, source };
 
@@ -201,7 +223,6 @@ export const setContent = (dispatch: any, content: any) => {
 };
 
 export const setRecomended = (dispatch: any, id: number) => {
-  console.log('ACTION', id);
   dispatch({ type: types.ALREADY_RECOMENDED, recomendedContent: id });
 };
 

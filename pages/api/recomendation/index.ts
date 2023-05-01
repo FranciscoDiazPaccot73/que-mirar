@@ -99,6 +99,7 @@ export default async function getRecomendation(req: NextApiRequest, res: NextApi
       res.status(206).json(result);
     }
   } catch (err: any) {
+    console.log(err);
     res.status(500).json({ search: countGte });
   }
 }

@@ -55,7 +55,13 @@ const SearchBox = ({ source, region }: Props) => {
 
   return (
     <div>
-      <Button color="gray" icon={<div />} label="Buscar" variant="outline" onClick={() => setIsOpen(true)} />
+      <Button
+        color="gray"
+        icon={<img alt="Open search modal" src="/search.svg" />}
+        label="Buscar"
+        variant="outline"
+        onClick={() => setIsOpen(true)}
+      />
       <AnimatePresence>
         {isOpen && (
           <div className="z-20 fixed h-modal w-full flex justify-center top-0 left-0">
