@@ -2,14 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './variables';
+
 .overview {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 20;
   display: -webkit-box;
 }
 
+.carrousel_active {
+  background: #ffffff4d;
+  cursor: grabbing;
+  transform: scale(1);
+}
+
 @media(min-width: 768px) {
   .overview {
     -webkit-line-clamp: 16;
+  }
+
+  .scrollbar {
+    /* width */
+    &::-webkit-scrollbar {
+      height: 1px;
+    }
+    
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: transparent; 
+    }
+    
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: $purple; 
+      border-radius: 20px;
+    }
   }
 }

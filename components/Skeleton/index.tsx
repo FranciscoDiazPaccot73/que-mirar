@@ -20,6 +20,26 @@ const Skeleton: FC<SkeletonProps> = ({ type }) => {
     )
   }
 
+  if (type === 'providers') {
+    return (
+      <div className="pt-2 pb-3 flex">
+        {Array(7).fill('').map((_, index) => (
+          <div key={`filter-skeleton-${index}`} className="bg-skeleton h-9 w-9 rounded-md animate-pulse mr-3" />
+        ))}
+      </div>
+    )
+  }
+
+  if (type === 'genres') {
+    return (
+      <div className="pt-2 pb-3 flex">
+        {Array(3).fill('').map((_, index) => (
+          <div key={`filter-skeleton-${index}`} className="bg-skeleton h-6 w-20 rounded-md animate-pulse mr-3" />
+        ))}
+      </div>
+    )
+  }
+
   return null;
 }
 

@@ -2,7 +2,7 @@ import { FC, useContext } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames';
 
-import SkeletonFilter from './Skeleton';
+import Skeleton from '../Skeleton';
 
 import { PageContext } from '../../context';
 
@@ -39,9 +39,7 @@ const Providers: FC<ProvidersProps> = ({ handleFilter }) => {
               )
             })}
           </>
-        ) : (
-          <SkeletonFilter amount={4} />
-        )}
+        ) : <Skeleton type='providers' />}
       </div>
     </div>
   )

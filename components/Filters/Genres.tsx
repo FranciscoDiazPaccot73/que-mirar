@@ -1,36 +1,30 @@
-import { useContext } from 'react';
+import { useContext, FC } from 'react';
 
-import { Box, Text } from "@chakra-ui/react";
 import Carrousel from "../Carousel";
-import SkeletonFilter from './Skeleton';
+import Skeleton from '../Skeleton';
 
 import { PageContext } from '../../context';
 
-interface Props {
-  handleGenre: any,
+type GenreProps = {
+  handleGenre: (id: number) => void,
   source: string,
 }
 
-const Genres = ({ handleGenre, source }: Props) => {
+const Genres: FC<GenreProps> = ({ handleGenre, source }) => {
   const { state: { genres = [], selectedGenre = 0 } } = useContext(PageContext);
-  const genresWithAll = genres.length ? [...new Set([{ id: 0, name: "TODOS" }, ...genres])] : []
+  const genresWithAll = genres.length ? [{ id: 0, name: "TODOS" }, ...genres] : []
 
   return (
-    <Box>
-      <Text fontSize="12px">Filtrar por género</Text>
+    <div>
+      <p className='text-xs text-white opacity-90'>Filtrar por género</p>
       {genres?.length ? (
         <Carrousel source={source} genres={genresWithAll} selected={selectedGenre} handleClick={handleGenre} />
       ) : (
-        <Box
-          width="100%"
-          display="flex"
-          justifyContent="center"
-          marginTop="12px"
-        >
-          <SkeletonFilter amount={4} />
-        </Box>
+        <div className='w-full flex mt-3 pl-4'>
+          <Skeleton type='genres' />
+        </div>
       )}
-    </Box>
+    </div>
   )
 }
 

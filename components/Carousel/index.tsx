@@ -1,11 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import classnames from 'classnames';
 
-import { Box, Text } from '@chakra-ui/react';
-
 import { excludedGenres } from '../../utils';
-
-import styles from './styles.module.scss';
 
 type Genre = {
   id: number|string,
@@ -19,22 +15,17 @@ interface Props {
   source: string,
 }
 
+// TODO types
+
 const Carrousel = ({ genres, selected, handleClick, source }: Props) => {
+  const sliderRef = useRef(null)
   let isDown = false;
   let startX: any;
   let scrollLeft: any;
   const scrollSize = 100;
-
-  const {
-    carrousel_container,
-    carrousel,
-    carrousel_active,
-    category,
-    category_selected,
-  } = styles;
   
   useEffect(() => {
-    const slider: any = document.getElementById('carrousel');
+    const slider: any = sliderRef.current;
     const genresIds = genres.map((g: Genre) => g.id);
     const selectedPosition = genresIds.indexOf(selected);
 
@@ -42,17 +33,17 @@ const Carrousel = ({ genres, selected, handleClick, source }: Props) => {
       slider.scrollLeft = scrollSize * selectedPosition;
       slider.addEventListener('mousedown', (e: any) => {
         isDown = true;
-        slider.classList.add(carrousel_active);
+        slider.classList.add('carrousel_active');
         startX = e.pageX - slider.offsetLeft;
         scrollLeft = slider.scrollLeft;
       });
       slider.addEventListener('mouseleave', () => {
         isDown = false;
-        slider.classList.remove(carrousel_active);
+        slider.classList.remove('carrousel_active');
       });
       slider.addEventListener('mouseup', () => {
         isDown = false;
-        slider.classList.remove(carrousel_active);
+        slider.classList.remove('carrousel_active');
       });
       slider.addEventListener('mousemove', (e: any) => {
         if(!isDown) return;
@@ -65,23 +56,27 @@ const Carrousel = ({ genres, selected, handleClick, source }: Props) => {
   }, []);
 
   return (
-    <Box className={carrousel_container}>
-      <Box className={carrousel} id="carrousel">
-        {genres.map((genre: Genre, index: number) => {
-          if (source === 'tv' && excludedGenres.includes(genre.id.toString())) return null;
+    <div
+      className="cursor-pointer overflow-y-hidden overflow-x-scroll relative scale-95 transition-all whitespace-nowrap w-full will-change-transform select-none scrollbar"
+      ref={sliderRef}
+    >
+      {genres.map((genre: Genre, index: number) => {
+        if (source === 'tv' && excludedGenres.includes(genre.id.toString())) return null;
 
-          const categoryClasses = classnames(category, `category-${index + 1}`,
-            genre.id === selected && category_selected,
-          );
+        const categoryClasses = classnames(
+          "rounded-md border border-purple inline-block my-3 mx-2 min-h-[24px] min-w-[60px] first-of-type:ml-1 last-of-type:mr-1 md:hover:bg-purple",
+          `category-${index + 1}`, {
+          "bg-purple text-filter-color text-semibold": genre.id === selected
+        });
+        const textClasses = classnames('text-center text-xs py-1 px-2', genre.id === selected ? 'text-black' : 'text-white md:hover:text-filter-color')
 
-          return (
-            <Box onClick={() => handleClick(genre.id)} key={`genre-${genre.id}`} className={categoryClasses}>
-              <Text textAlign="center" fontSize="12px">{genre?.name.toUpperCase()}</Text>
-            </Box>
-          )
-        })}
-      </Box>
-    </Box>
+        return (
+          <div onClick={() => handleClick(genre.id)} key={`genre-${genre.id}`} className={categoryClasses}>
+            <p className={textClasses}>{genre?.name.toUpperCase()}</p>
+          </div>
+        )
+      })}
+    </div>
   )
 }
 
