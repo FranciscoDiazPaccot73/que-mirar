@@ -4,6 +4,9 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      grayscale: {
+        90: '90%'
+      },
       minHeight: {
         main: 'calc(100vh - 173px)',
         'main-desktop': 'calc(100vh - 176px)',
@@ -16,6 +19,7 @@ module.exports = {
       },
       colors: {
         'skeleton': '#53535e50',
+        'filter-color': '#1a202c',
         purple: '#B794F4',
         secondary: '#313b4e',
         'purple-hover': '#9766ed',
