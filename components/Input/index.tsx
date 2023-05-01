@@ -8,7 +8,7 @@ type InputProps = {
 
 const Input: FC<InputProps> = ({ onChange, placeholder, onKeyUp }) => (
   <input
-    className="h-10 w-input-40 pl-4 pr-16 overflow-hidden rounded-md bg-main-bg text-white"
+    className="h-10 w-input-40 pl-4 pr-16 overflow-hidden rounded-md bg-main-bg text-white outline-none"
     id="search-input"
     placeholder={placeholder}
     onChange={onChange}

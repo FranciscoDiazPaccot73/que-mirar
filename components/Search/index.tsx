@@ -92,7 +92,7 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
                   <Button customClass="ml-3" disabled={fetching} h="10" label="Buscar" onClick={handleSearch} />
                 </div>
                 {searchResult?.length ? (
-                  <section className="overflow-y-auto max-h-modal-dialog">
+                  <section className="overflow-y-auto max-h-modal-dialog pb-12">
                     <div className="relative overflow-hidden h-auto w-full flex flex-col gap-4">
                       {searchResult.map((result: ContentInterface) => (
                         <article key={result.id} className="h-[70px]" onClick={resetModal}>

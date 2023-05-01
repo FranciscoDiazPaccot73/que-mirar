@@ -36,7 +36,7 @@ const ContentBox: FC<ContentBoxProps> = ({ content, url, source }) => {
 
   return (
     <div className={boxClasses} title={overview ?? title} onClick={handleLoadContent}>
-      <Image alt={title} blurDataURL={`${url}${poster}`} height={60} placeholder="blur" src={`${url}${imageUrl}`} width={40} />
+      <Image alt={overview ?? title} blurDataURL={`${url}${poster}`} height={60} placeholder="blur" src={`${url}${imageUrl}`} width={40} />
       <p className="text-sm">{name || title}</p>
       {vote ? (
         <p className="text-xs text-slate-400 ml-auto flex">
