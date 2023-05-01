@@ -1,102 +1,126 @@
-import { useState, useEffect, useContext, useRef } from "react";
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+import { FC, useContext, useEffect, useState } from 'react';
 
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  Button,
-  Input,
-  Box,
-  useDisclosure,
-} from '@chakra-ui/react'
-import { SearchIcon } from "@chakra-ui/icons";
+import { AnimatePresence, motion } from 'framer-motion';
 
-import ContentBox from "../Similars/Box";
+import { PageContext } from '@/context';
+import { resetSearch, search } from '@/context/actions';
+import { ContentInterface } from '@/pages/types';
 
-import { PageContext } from '../../context';
-import { search, resetSearch } from '../../context/actions';
+import Button from '../Button';
+import Input from '../Input';
+import ContentBox from '../Similars/Box';
 
-interface Props {
-  source: string,
-  region: string,
-}
+type SearchBoxProps = {
+  source: string;
+  region: string;
+};
 
-const SearchBox = ({ source, region }: Props) => {
+const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
+  const {
+    state: { fetching, searchResult, BASE_IMAGE_URL },
+    dispatch,
+  } = useContext(PageContext);
   const [inputValue, setInputValue] = useState('');
-  const inputRef = useRef(null);
-  const { state: { fetching, searchResult, BASE_IMAGE_URL }, dispatch } = useContext(PageContext);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    setInputValue('')
-  }, [source, region])
+    const inputElement = document.getElementById('search-input');
+
+    if (isOpen && inputElement) inputElement.focus();
+  }, [isOpen]);
+
+  const resetModal = () => {
+    setIsOpen(false);
+    setInputValue('');
+    resetSearch(dispatch);
+  };
 
   const handleSearch = async () => {
     if (inputValue && inputValue !== '') {
-      await search(dispatch, source, inputValue, region)
+      await search(dispatch, source, inputValue, region);
     }
-  }
-
-  const handleModalClose = () => {
-    onClose();
-    resetSearch(dispatch);
-  }
+  };
 
   const handleInputChange = (e: any) => {
+    setInputValue(e.target?.value);
+  };
+
+  const handleKeyUp = (e: { key: string }) => {
     if (e.key === 'Enter') {
       handleSearch();
-    } else {
-      setInputValue(e.target?.value)
     }
-  }
+  };
 
   return (
     <div>
       <Button
-        size="sm"
-        onClick={onOpen}
-        leftIcon={<SearchIcon />}
+        color="gray"
+        icon={<img alt="Open search modal" src="/search.svg" />}
+        label="Buscar"
         variant="outline"
-      >
-        Buscar
-      </Button>
-      <Modal initialFocusRef={inputRef} colorScheme="purple" isOpen={isOpen} onClose={onClose} size="full">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader display="flex" alignItems="center" gap="8px">
-            <SearchIcon /> {`Buscar ${source === 'tv' ? 'serie' : 'pelicula'}`}
-          </ModalHeader>
-          <ModalCloseButton onClick={handleModalClose} />
-          <ModalBody>
-            <Box display="flex">
-              <Input
-                ref={inputRef}
-                onChange={handleInputChange}
-                colorScheme="pink"
-                placeholder={`Nomrbe de la ${source === 'tv' ? 'serie' : 'pelicula'}`}
-                size='sm'
-              />
-              <Button disabled={fetching} onClick={handleSearch} size="sm" colorScheme='purple' ml={3}>
-                Buscar
-              </Button>
-            </Box>
-            {searchResult?.length ? (
-              <Box>
-                {searchResult.map((result: any) => (
-                  <Box key={result.id} onClick={handleModalClose}>
-                    <ContentBox content={result} url={BASE_IMAGE_URL} source={source}  />
-                  </Box>
-                ))}
-              </Box>
-            ) : null}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+        onClick={() => setIsOpen(true)}
+      />
+      <AnimatePresence>
+        {isOpen && (
+          <div className="z-20 fixed h-modal w-full flex justify-center top-0 left-0">
+            <motion.div
+              animate={{
+                y: 0,
+                opacity: 1,
+              }}
+              className="absolute t-0 z-10 p-7 h-full w-full max-w-xs rounded my-7 shadow-md bg-modal md:max-w-4xl"
+              exit={{
+                y: -50,
+                opacity: 0,
+              }}
+              initial={{ y: 50, opacity: 0 }}
+              transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
+            >
+              <div className="absolute bottom-0 left-0 z-20 bg-gradient-to-t from-modal via-modal h-14 w-full" />
+              <button
+                aria-label="Close modal"
+                className="absolute top-0 right-0 -mt-4 -mr-4 bg-light-modal text-white border border-slate-600 bg-modal h-8 w-8 block mb-2 rounded-full"
+                onClick={resetModal}
+              >
+                &times;
+              </button>
+              <div className="relative overflow-hidden h-auto w-full">
+                <p className="font-bold text-xl mb-3 text-white">{`Buscar ${source === 'tv' ? 'serie' : 'pelicula'}`}</p>
+                <div className="w-full mt-5 flex items-center mb-6">
+                  <Input placeholder="Buscar por nombre" onChange={handleInputChange} onKeyUp={handleKeyUp} />
+                  <Button customClass="ml-3" disabled={fetching} h="10" label="Buscar" onClick={handleSearch} />
+                </div>
+                {searchResult?.length ? (
+                  <section className="overflow-y-auto max-h-modal-dialog pb-12">
+                    <div className="relative overflow-hidden h-auto w-full flex flex-col gap-4">
+                      {searchResult.map((result: ContentInterface) => (
+                        <article key={result.id} className="h-[70px]" onClick={resetModal}>
+                          <ContentBox content={result} source={source} url={BASE_IMAGE_URL} />
+                        </article>
+                      ))}
+                    </div>
+                  </section>
+                ) : null}
+              </div>
+            </motion.div>
+            <motion.div
+              animate={{
+                opacity: 1,
+              }}
+              className="bg-transparent fixed h-full w-full flex items-center justify-center top-0 left-0"
+              exit={{
+                opacity: 0,
+              }}
+              initial={{ opacity: 0 }}
+              transition={{ type: 'spring', bounce: 0, duration: 0.2 }}
+              onClick={resetModal}
+            />
+          </div>
+        )}
+      </AnimatePresence>
     </div>
-  )
-}
+  );
+};
 
 export default SearchBox;

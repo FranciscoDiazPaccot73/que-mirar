@@ -1,52 +1,55 @@
-import { useContext } from "react";
+import { FC, useContext } from 'react';
 
-import Image from "next/image";
-import { Box, Text } from '@chakra-ui/react'
+import Image from 'next/image';
 
-import { Props } from '.'
+import { PageContext } from '@/context';
+import { getContent, getSimilars, setSimilarToContent } from '@/context/actions';
+import { ContentInterface } from '@/pages/types';
 
-import { getContent, getSimilars } from '../../context/actions';
-import { PageContext } from '../../context';
+type ContentBoxProps = {
+  url: string;
+  content: ContentInterface;
+  source?: string;
+};
 
-const ContentBox = ({ content, url, source }: Props) => {
-  const { dispatch, state: { watchRegion } } = useContext(PageContext);
-
-  const boxProps = {
-    borderWidth: '1px',
-    borderRadius: 'lg',
-    overflow: 'hidden',
-    borderColor: 'purple.500',
-    width: '100%',
-    display: 'flex',
-    alignItems: "center",
-    gap: "14px",
-    padding: "8px",
-    marginTop: "16px",
-    cursor: "pointer",
-  }
+const ContentBox: FC<ContentBoxProps> = ({ content, url, source }) => {
+  const {
+    dispatch,
+    state: { watchRegion },
+  } = useContext(PageContext);
 
   if (!content) return null;
 
-  const imageUrl = content.poster_path || content.backdrop_path;
+  const { id, name, title, poster_path: poster, vote_average: vote, backdrop_path: backdropPath, overview } = content;
+  const boxClasses = 'h-full rounded rounded-md overflow-hidden border border-purple flex items-center gap-2 px-2 py-1 cursor-pointer';
 
-  const handleLoadContent = async (id: any) => {
-    const newContentId = await getContent(dispatch, source, id, watchRegion);
-    await getSimilars(dispatch, source, newContentId, watchRegion);
-  }
+  const imageUrl = poster || backdropPath;
+
+  const handleLoadContent = async () => {
+    if (id) {
+      window.scrollTo(0, 0);
+      setSimilarToContent(dispatch, content);
+      await getContent(dispatch, source ?? 'tv', id, watchRegion);
+      await getSimilars(dispatch, source ?? 'tv', id, watchRegion);
+    }
+  };
 
   return (
-    <Box {...boxProps} onClick={() => handleLoadContent(content.id)}>
-      <Image
-        src={`${url}${imageUrl}`}
-        alt={content.title}
-        width='40px'
-        height='40px'
-        placeholder='blur'
-        blurDataURL={`${url}${content.poster_path}`}
-      />
-      <Text marginTop="-6px" fontSize="small">{content.name || content.title}</Text>
-    </Box>
-  )
-}
+    <div className={boxClasses} title={overview ?? title} onClick={handleLoadContent}>
+      <Image alt={overview ?? title} blurDataURL={`${url}${poster}`} height={60} placeholder="blur" src={`${url}${imageUrl}`} width={40} />
+      <p className="text-sm">{name || title}</p>
+      {vote ? (
+        <p className="text-xs text-slate-400 ml-auto flex">
+          {vote.toFixed(2)}
+          <span className="hidden md:block">/10</span>
+        </p>
+      ) : null}
+    </div>
+  );
+};
+
+ContentBox.defaultProps = {
+  source: '',
+};
 
 export default ContentBox;
