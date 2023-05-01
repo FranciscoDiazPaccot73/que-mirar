@@ -15,6 +15,7 @@ module.exports = {
         modal: "calc(100% - 50px)"
       },
       colors: {
+        'skeleton': '#53535e50',
         purple: '#B794F4',
         secondary: '#313b4e',
         'purple-hover': '#9766ed',

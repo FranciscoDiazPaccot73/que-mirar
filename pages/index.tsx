@@ -38,7 +38,7 @@ type HomeProps = {
 const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResult, initialRest, initialTab }) => {
   const {
     dispatch,
-    state: { content, watchRegion, noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent },
+    state: { content, watchRegion = 'AR', noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent },
   } = useContext(PageContext);
   const [linkSelected, handleTabChange] = useState(initialTab);
   const [source, setSource] = useState('tv');
@@ -118,6 +118,7 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
   };
 
   const nextRecomendation = async () => {
+    console.log('Llegamos hasta aca?')
     setFirst(false);
     const newId = await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, watchRegion);
 

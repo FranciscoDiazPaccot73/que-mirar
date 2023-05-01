@@ -17,9 +17,9 @@ const Layout: FC<LayoutProps> = ({ source, nextRecomendation, isFirst, contentId
 
   return (
     <>
-      <Card source={source} contentId={contentId} />
-      <div className="w-full flex justify-end my-3">
-        <Button onClick={nextRecomendation} disabled={fetching}variant='transparent' label="Ver siguiente recomendación" />
+      <Card source={source} contentId={contentId} nextRecomendation={nextRecomendation} />
+      <div className="w-full flex justify-end my-3 text-purple md:hidden">
+        <Button size='sm' onClick={nextRecomendation} disabled={fetching}variant='transparent' label="Ver siguiente recomendación" />
       </div>
       {/*!fetching && similars ? <Similars isFirst={isFirst} url={BASE_IMAGE_URL} content={similars} source={source} /> : null*/}
     </>

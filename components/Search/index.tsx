@@ -51,7 +51,7 @@ const SearchBox = ({ source, region }: Props) => {
 
   return (
     <div>
-      <Button label="Buscar" onClick={() => setIsOpen(true)} icon={<SearchIcon />} variant="outline" />
+      <Button label="Buscar" onClick={() => setIsOpen(true)} icon={<SearchIcon />} variant="outline" color='gray' />
       <AnimatePresence>
         {isOpen && (
           <div className="z-20 fixed h-modal w-full flex justify-center top-0 left-0">

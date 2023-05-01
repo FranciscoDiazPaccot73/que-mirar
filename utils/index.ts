@@ -50,6 +50,19 @@ export const formatDuration = (duration: number) => {
   return `${rhours} h ${rminutes} min.`
 }
 
+export const formatGenresText = (genres: any) => {
+  if (!genres) return undefined;
+
+  let text = '';
+  genres.forEach((genre: any) => {
+    text += `${genre.name}, `
+  });
+
+  text = text.slice(0, text.length - 2);
+
+  return text;
+}
+
 type Params = {
   newSource: string
   newWatchRegion: string

@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.overview {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 20;
+  display: -webkit-box;
+}
+
+@media(min-width: 768px) {
+  .overview {
+    -webkit-line-clamp: 16;
+  }
+}
