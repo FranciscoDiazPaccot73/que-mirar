@@ -23,4 +23,6 @@ export interface ContentInterface {
   duration?: number;
   video?: boolean;
   name?: string;
+  link?: string;
+  providers?: string;
 }

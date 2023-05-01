@@ -76,7 +76,7 @@ export const getGenres = async (dispatch: any, source: string) => {
   }
 };
 
-export const setSimilars = (dispatch: any, content: ContentInterface) => {
+export const setSimilars = (dispatch: any, content: ContentInterface[]) => {
   dispatch({ type: types.SET_SIMILARS, similars: content });
 };
 
@@ -117,7 +117,13 @@ export const resetValues = (dispatch: any) => {
   dispatch({ type: types.SET_SIMILARS, similars: null });
 };
 
-export const getInitialRecomendations = async (dispatch: any, source: string, provider?: string, watchRegion?: string, genre?: number) => {
+export const getInitialRecomendations = async (
+  dispatch: any,
+  source: string,
+  provider?: string | number,
+  watchRegion?: string,
+  genre?: number,
+) => {
   isFetching(dispatch, true);
   try {
     const { data } = await axios.get(

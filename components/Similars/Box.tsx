@@ -29,8 +29,8 @@ const ContentBox: FC<ContentBoxProps> = ({ content, url, source }) => {
     if (id) {
       window.scrollTo(0, 0);
       setSimilarToContent(dispatch, content);
-      await getContent(dispatch, source, id, watchRegion);
-      await getSimilars(dispatch, source, id, watchRegion);
+      await getContent(dispatch, source ?? 'tv', id, watchRegion);
+      await getSimilars(dispatch, source ?? 'tv', id, watchRegion);
     }
   };
 
