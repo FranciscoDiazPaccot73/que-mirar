@@ -49,6 +49,9 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
   const handleKeyUp = (e: { key: string }) => {
     if (e.key === 'Enter') {
       handleSearch();
+      const inputElement = document.getElementById('search-input');
+
+      if (inputElement) inputElement.blur();
     }
   };
 
