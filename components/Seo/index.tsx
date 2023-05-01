@@ -1,41 +1,41 @@
-import Head from 'next/head'
+import Head from 'next/head';
 
-interface Props {
-  description: string,
-  title: string,
-  logoUrl: string,
-  url: string,
+interface SeoProps {
+  description?: string;
+  title?: string;
+  logoUrl?: string;
+  url?: string;
 }
 
-const Seo = ({ description, title, logoUrl, url }: Props) => {
+const Seo = ({ description, title, logoUrl, url }: SeoProps) => {
   return (
     <Head>
       <title>{title}</title>
-      <meta name="description" content={description} />
-      <meta property="og:type" content="website" />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:site_name" content={title} />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:creator" content="@Pancho_xor" />
-      <meta property="twitter:title" content={title} />
-      <meta property="twitter:description" content={description} />
-      <meta property="twitter:image" content={logoUrl} />
-      <meta property='og:title' content={title} />
-      <meta property='og:image' content={logoUrl} />
-      <meta property='og:description' content={description} />
-      <meta property='og:url' content={url} />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
-      <link rel="icon" href="/favicon.ico" />
+      <meta content={description} name="description" />
+      <meta content="website" property="og:type" />
+      <meta content={title} property="og:title" />
+      <meta content={description} property="og:description" />
+      <meta content={title} property="og:site_name" />
+      <meta content="summary" property="twitter:card" />
+      <meta content="@Pancho_xor" property="twitter:creator" />
+      <meta content={title} property="twitter:title" />
+      <meta content={description} property="twitter:description" />
+      <meta content={logoUrl} property="twitter:image" />
+      <meta content={title} property="og:title" />
+      <meta content={logoUrl} property="og:image" />
+      <meta content={description} property="og:description" />
+      <meta content={url} property="og:url" />
+      <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+      <link href="/favicon.ico" rel="icon" />
     </Head>
-  )
-}
+  );
+};
 
 Seo.defaultProps = {
-  description: "Si no sabes que serie o pelicula empezar a ver, este es tu lugar",
-  title: "¿Qué puedo ver?",
-  logoUrl: "https://i.ibb.co/yhYsNjq/que-puedo-ver-4.png",
-  url: "https://quepuedover.online",
-}
+  description: 'Si no sabes que serie o pelicula empezar a ver, este es tu lugar',
+  title: '¿Qué puedo ver?',
+  logoUrl: 'https://i.ibb.co/yhYsNjq/que-puedo-ver-4.png',
+  url: 'https://quepuedover.online',
+};
 
 export default Seo;

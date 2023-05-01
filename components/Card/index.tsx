@@ -1,56 +1,34 @@
-import React, { useEffect, useContext } from 'react'
-import { useQuery } from 'react-query'
-import dynamic from 'next/dynamic';
-import { Box } from '@chakra-ui/react'
+import { FC, useContext } from 'react';
 
+import classNames from 'classnames';
 import NoContent from '../icons/NoData';
+import Content from './Content';
 
 import { PageContext } from '../../context';
 
-const Mobile = dynamic(() => import('./Mobile'));
-const Desktop = dynamic(() => import('./Desktop'));
+type CardProps = {
+  source: string;
+  nextRecomendation?: () => void;
+};
 
-interface Props {
-  source: string,
-  device: string|null,
-  nextRecomendation?(): void,
-  contentId?: string | null,
-}
+const Card: FC<CardProps> = ({ source, nextRecomendation }) => {
+  const {
+    state: { noContent },
+  } = useContext(PageContext);
 
-const Card = ({ source, device, nextRecomendation }: Props) => {
-  const { state: { noContent } } = useContext(PageContext);
-
-  const boxProps = {
-    borderWidth: '1px',
-    borderRadius: 'lg',
-    overflow: 'hidden',
-    borderColor: 'purple.500',
-    width: '100%',
-    display: 'flex',
-    minHeight: "400px",
-  }
-
-  if (noContent || !device) {
-    return (
-      <Box {...boxProps} maxHeight="500px" padding="16px">
-        <NoContent height='400px' width='100%'/>
-      </Box>
-    )
-  }
-
-  if (device === 'mobile') {
-    return (
-      <Box {...boxProps}>
-        <Mobile source={source} />
-      </Box>
-    )
-  }
+  const cardClasses = classNames('rounded rounded-md border border-purple w-full flex min-h-[400px] md:min-h-[500px]', {
+    'max-h-[500px] p-4': noContent,
+  });
 
   return (
-    <Box {...boxProps} minHeight="500px">
-      <Desktop nextRecomendation={nextRecomendation} source={source} />
-    </Box>
-  )
-}
+    <div className={cardClasses}>
+      {noContent ? <NoContent height="400px" width="100%" /> : <Content nextRecomendation={nextRecomendation} source={source} />}
+    </div>
+  );
+};
+
+Card.defaultProps = {
+  nextRecomendation: () => {},
+};
 
 export default Card;
