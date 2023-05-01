@@ -20,6 +20,7 @@ const Button: FC<ButtonProps> = ({ variant = 'solid', onClick, label, icon, disa
     "text-black bg-purple md:hover:bg-purple-hover": variant === 'solid',
     "bg-transparent border": variant === 'outline',
     "text-purple md:hover:bg-purple-12": variant === 'transparent',
+    "text-white opacity-90": variant === 'transparent' && color === 'gray',
     "text-purple border-purple md:hover:bg-purple-12": variant === 'outline' && color === 'purple',
     "border-white border-opacity-30 md:hover:border-opacity-40": variant === 'outline' && color === 'gray',
   })

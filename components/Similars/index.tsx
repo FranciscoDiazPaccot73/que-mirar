@@ -1,6 +1,7 @@
-import { Box, Text, Button, useDisclosure } from '@chakra-ui/react'
+import { useState } from 'react';
 
 import ContentBox from './Box';
+import Button from '../Button';
 
 export interface Props {
   url: string,
@@ -10,27 +11,27 @@ export interface Props {
 }
 
 const Similars = ({ url, content, source, isFirst }: Props) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const deviceName = source === 'movie' ? "Peliculas" : "Series";
   const [first, second, third, ...rest] = content.sort((a: any, b: any) => b.popularity - a.popularity);
   const text = isFirst ? 'Otras tendencias' : `${deviceName} similares`;
 
-  const handleClick = () => isOpen ? onClose() : onOpen();
+  const handleClick = () => setIsOpen(prevState => !prevState);
 
   return (
-    <Box marginTop="20px">
-      <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Text>{text}</Text>
-        <Button fontSize="xs" variant='ghost' size="sm" onClick={handleClick}>{`${isOpen ? 'Ver menos' : 'Ver todo'}`}</Button>
-      </Box>
-      <Box>
+    <div className='mt-5'>
+      <div className='flex items-center justify-between my-4'>
+        <p className='text-white opacity-90'>{text}</p>
+        <Button size="sm" color='gray' variant='transparent' onClick={handleClick} label={`${isOpen ? 'Ver menos' : 'Ver todo'}`} />
+      </div>
+      <div className='flex flex-col gap-4 text-white'>
         <ContentBox content={first} url={url} source={source}  />
         <ContentBox content={second} url={url} source={source} />
         <ContentBox content={third} url={url} source={source} />
         {isOpen ? <>{rest.map((data: any) => <ContentBox key={data.id} content={data} url={url} source={source} />)}</> : null}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
 
