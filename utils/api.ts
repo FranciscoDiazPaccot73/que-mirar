@@ -1,3 +1,5 @@
+import { ContentInterface } from '@/pages/types';
+
 export const getBaseInfoForFetch = () => {
   const apiKey = process.env.TMDB_API_KEY;
   const randomPage = Math.floor(Math.random() * 2 + 1) || '1';
@@ -13,7 +15,7 @@ export const getBaseInfoForFetch = () => {
   return { randomIndex, baseQueryParams };
 };
 
-export const getResultsFormatted = (results: any, randomIndex: number) => {
+export const getResultsFormatted = (results: ContentInterface[], randomIndex: number) => {
   const sortedResults = results.sort((a: any, b: any) => b.vote_average - a.vote_average && b.vote_count - a.vote_count);
   const contentToShow = sortedResults[randomIndex] ?? {};
   const [firstResult] = sortedResults;

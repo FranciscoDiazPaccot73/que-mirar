@@ -1,23 +1,22 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-import { useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
+
+import { PageContext } from '@/context';
+import { resetSearch, search } from '@/context/actions';
+import { ContentInterface } from '@/pages/types';
 
 import Button from '../Button';
 import Input from '../Input';
 import ContentBox from '../Similars/Box';
 
-import { PageContext } from '../../context';
-import { resetSearch, search } from '../../context/actions';
-
-interface Props {
+type SearchBoxProps = {
   source: string;
   region: string;
-}
+};
 
-// TODO types icon
-
-const SearchBox = ({ source, region }: Props) => {
+const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
   const {
     state: { fetching, searchResult, BASE_IMAGE_URL },
     dispatch,
@@ -47,7 +46,7 @@ const SearchBox = ({ source, region }: Props) => {
     setInputValue(e.target?.value);
   };
 
-  const handleKeyUp = (e: any) => {
+  const handleKeyUp = (e: { key: string }) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
@@ -95,7 +94,7 @@ const SearchBox = ({ source, region }: Props) => {
                 {searchResult?.length ? (
                   <section className="overflow-y-auto max-h-modal-dialog">
                     <div className="relative overflow-hidden h-auto w-full flex flex-col gap-4">
-                      {searchResult.map((result: any) => (
+                      {searchResult.map((result: ContentInterface) => (
                         <article key={result.id} className="h-[70px]" onClick={resetModal}>
                           <ContentBox content={result} source={source} url={BASE_IMAGE_URL} />
                         </article>

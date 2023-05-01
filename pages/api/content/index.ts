@@ -13,10 +13,6 @@ export default async function getContent(req: NextApiRequest, res: NextApiRespon
     };
     const baseQueryParams = new URLSearchParams(baseObj);
 
-    // const { data: contentInfo } = await axios.get(`${BASE_URL}/${source}/${id}?${baseQueryParams}`);
-
-    // const { data } = await axios.get(`${BASE_URL}/${source}/${id}/watch/providers?${baseQueryParams}`);
-
     const [{ data: contentInfo }, { data }] = await Promise.all([
       axios.get(`${BASE_URL}/${source}/${id}?${baseQueryParams}`),
       axios.get(`${BASE_URL}/${source}/${id}/watch/providers?${baseQueryParams}`),

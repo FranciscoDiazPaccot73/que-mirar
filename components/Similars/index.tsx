@@ -1,20 +1,22 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
+
+import { ContentInterface } from '@/pages/types';
 
 import Button from '../Button';
 import ContentBox from './Box';
 
-interface Props {
+type SimilarsProps = {
   url: string;
-  content: any;
+  content: ContentInterface[];
   source?: string;
   isFirst?: boolean;
-}
+};
 
-const Similars = ({ url, content, source, isFirst }: Props) => {
+const Similars: FC<SimilarsProps> = ({ url, content, source, isFirst }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const deviceName = source === 'movie' ? 'Peliculas' : 'Series';
-  const [first, second, third, ...rest] = content.sort((a: any, b: any) => b.popularity - a.popularity);
+  const [first, second, third, ...rest] = content.sort((a: ContentInterface, b: ContentInterface) => b.popularity - a.popularity);
   const text = isFirst ? 'Otras tendencias' : `${deviceName} similares`;
 
   const handleClick = () => setIsOpen((prevState) => !prevState);
@@ -31,7 +33,7 @@ const Similars = ({ url, content, source, isFirst }: Props) => {
         <ContentBox content={third} source={source} url={url} />
         {isOpen ? (
           <>
-            {rest.map((data: any) => (
+            {rest.map((data: ContentInterface) => (
               <ContentBox key={data.id} content={data} source={source} url={url} />
             ))}
           </>

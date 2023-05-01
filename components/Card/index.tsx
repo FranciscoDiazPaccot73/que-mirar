@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { FC, useContext } from 'react';
 
 import classNames from 'classnames';
 import NoContent from '../icons/NoData';
@@ -6,12 +6,12 @@ import Content from './Content';
 
 import { PageContext } from '../../context';
 
-interface Props {
+type CardProps = {
   source: string;
   nextRecomendation?: () => void;
-}
+};
 
-const Card = ({ source, nextRecomendation }: Props) => {
+const Card: FC<CardProps> = ({ source, nextRecomendation }) => {
   const {
     state: { noContent },
   } = useContext(PageContext);

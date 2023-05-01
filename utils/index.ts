@@ -1,6 +1,8 @@
+import { GenresTypes } from '@/pages/types';
+
 type votes = {
   source: any;
-  genre?: any;
+  genre: any;
 };
 
 const unPopularGenres = ['99', '10770'];
@@ -65,12 +67,12 @@ export const formatDuration = (duration: number) => {
   return `${rhours} h ${rminutes} min.`;
 };
 
-export const formatGenresText = (genres: any) => {
+export const formatGenresText = (genres: GenresTypes[]) => {
   if (!genres) return undefined;
 
   let text = '';
 
-  genres.forEach((genre: any) => {
+  genres.forEach((genre: GenresTypes) => {
     text += `${genre.name}, `;
   });
 
@@ -90,7 +92,6 @@ export const updateParams = ({ newSource, newWatchRegion, id }: Params) => {
   const regionParam = `&region=${newWatchRegion}`;
   const idParam = id ? `&id=${id}` : '';
 
-  // if (id) setId(id)
   window.history.replaceState({}, '', `${sourceParam}${regionParam}${idParam}`);
 
   if (id) return id;

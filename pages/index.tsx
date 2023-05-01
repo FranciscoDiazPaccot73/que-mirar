@@ -25,23 +25,24 @@ import {
 import { PageContext } from '@store/index';
 import { getdata } from './api';
 
+import { ContentInterface } from './types';
+
 type HomeProps = {
   region: string;
   source: string;
   initialTab: number;
-  initialResult: any;
-  initialRest: any;
+  initialResult: ContentInterface;
+  initialRest: ContentInterface[];
 };
 
 const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResult, initialRest, initialTab }) => {
   const {
     dispatch,
-    state: { content, watchRegion = 'AR', noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent, nextRecomendations },
+    state: { content, watchRegion = 'AR', selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent, nextRecomendations },
   } = useContext(PageContext);
   const [linkSelected, handleTabChange] = useState(initialTab);
   const [source, setSource] = useState('tv');
   const [isFirst, setFirst] = useState(true);
-  const timestamp = useRef(new Date());
   const firstRunFinished = useRef(false);
 
   useEffect(() => {
@@ -74,27 +75,6 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
       getInitialRecomendations(dispatch, params.source ?? 'tv', 0, params.region ?? 'AR')
     }
   }, []);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const loader = document.getElementById('spinner');
-      const body = document.getElementById('body');
-
-      if (loader && body) {
-        const diffTimes = new Date().getTime() - timestamp.current.getTime();
-
-        if (diffTimes < 250) {
-          setTimeout(() => {
-            loader.style.display = 'none';
-            body.classList.remove('scroll-disabled');
-          }, 500);
-        } else {
-          loader.style.display = 'none';
-          body.classList.remove('scroll-disabled');
-        }
-      }
-    }
-  }, [noContent]);
 
   const getPageData = async (newSource: string) => {
     await getProviders(dispatch, newSource);

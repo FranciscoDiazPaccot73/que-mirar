@@ -16,8 +16,6 @@ type ContentTitleProps = {
   nextRecomendation?: () => void;
 };
 
-// TODO types
-
 const ContentTitle: FC<ContentTitleProps> = ({ isFirst, watchRegion, onChange = () => {}, source, nextRecomendation, setFirst }) => {
   const {
     dispatch,

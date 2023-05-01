@@ -1,7 +1,12 @@
+import { ProviderType } from '@/components/Filters/Providers';
+import { ContentInterface } from '@/pages/types';
 import axios from 'axios';
 
-import { trackEvent } from '../utils/trackers';
 import { types } from './reducers';
+
+interface BaseContentInterface extends ContentInterface {
+  flatrate: ProviderType;
+}
 
 const timeout = 20000;
 
@@ -25,7 +30,6 @@ export const getInfo = async (dispatch: any, source: string) => {
 
     return data.id;
   } catch (err: any) {
-    trackEvent('ERROR', 'getInfo');
     itWorked = false;
     if (err?.code === 'ECONNABORTED') getInfo(dispatch, source);
   } finally {
@@ -41,7 +45,7 @@ export const getProviders = async (dispatch: any, source: string) => {
 
     dispatch({ type: types.SET_PROVIDERS, providers: data });
   } catch (err) {
-    trackEvent('ERROR', 'getProviders');
+    console.log(err);
   }
 };
 
@@ -52,7 +56,7 @@ export const search = async (dispatch: any, source: string, query: string, regio
 
     dispatch({ type: types.SET_SEARCH, search: data });
   } catch (err) {
-    trackEvent('ERROR', 'getProviders');
+    console.log(err);
   } finally {
     dispatch({ type: types.FETCHING, value: false });
   }
@@ -68,25 +72,25 @@ export const getGenres = async (dispatch: any, source: string) => {
 
     dispatch({ type: types.SET_GENRES, genres: data });
   } catch (err) {
-    trackEvent('ERROR', 'getGenres');
+    console.log(err);
   }
 };
 
-export const setSimilars = (dispatch: any, content: any) => {
+export const setSimilars = (dispatch: any, content: ContentInterface) => {
   dispatch({ type: types.SET_SIMILARS, similars: content });
 };
 
-export const getSimilars = async (dispatch: any, source: any, id: string, region: string) => {
+export const getSimilars = async (dispatch: any, source: string, id: number, region: string) => {
   try {
     const { data } = await axios.get(`/api/similar?source=${source}&id=${id}&region=${region ?? 'AR'}`, { timeout });
 
     dispatch({ type: types.SET_SIMILARS, similars: data });
   } catch (err) {
-    trackEvent('ERROR', 'getGenres');
+    console.log(err);
   }
 };
 
-export const getContent = async (dispatch: any, source: any, id: string, region: string) => {
+export const getContent = async (dispatch: any, source: string, id: number, region: string) => {
   isFetching(dispatch, true);
   try {
     const { data } = await axios.get(`/api/content?source=${source}&id=${id}&region=${region ?? 'AR'}`, { timeout });
@@ -95,7 +99,7 @@ export const getContent = async (dispatch: any, source: any, id: string, region:
 
     return data.id;
   } catch (err) {
-    trackEvent('ERROR', 'getGenres');
+    console.log(err);
 
     return '';
   } finally {
@@ -103,7 +107,7 @@ export const getContent = async (dispatch: any, source: any, id: string, region:
   }
 };
 
-export const setSimilarToContent = (dispatch: any, similar: any) => {
+export const setSimilarToContent = (dispatch: any, similar: ContentInterface) => {
   dispatch({ type: types.SET_SIMILAR_TO_CONTENT, similar });
 };
 
@@ -113,7 +117,7 @@ export const resetValues = (dispatch: any) => {
   dispatch({ type: types.SET_SIMILARS, similars: null });
 };
 
-export const getInitialRecomendations = async (dispatch: any, source: string, provider?: any, watchRegion?: string, genre?: number) => {
+export const getInitialRecomendations = async (dispatch: any, source: string, provider?: string, watchRegion?: string, genre?: number) => {
   isFetching(dispatch, true);
   try {
     const { data } = await axios.get(
@@ -131,7 +135,13 @@ export const getInitialRecomendations = async (dispatch: any, source: string, pr
   }
 };
 
-export const getNextRecomendationCached = async (dispatch: any, source: string, id: number, baseContent: any, watchRegion?: string) => {
+export const getNextRecomendationCached = async (
+  dispatch: any,
+  source: string,
+  id: number,
+  baseContent: BaseContentInterface,
+  watchRegion?: string,
+) => {
   dispatch({ type: types.FETCHING, value: true });
   resetValues(dispatch);
 
@@ -159,7 +169,7 @@ export const getNextRecomendationCached = async (dispatch: any, source: string, 
 export const getRecomendation = async (
   dispatch: any,
   source: string,
-  recomended: Array<number>,
+  recomended: number[],
   prev: any,
   provider?: any,
   genre?: number | null,
@@ -206,11 +216,8 @@ export const getRecomendation = async (
       dispatch({ type: types.PREV_CONTENT, prevContent: null });
     }
     dispatch({ type: types.SET_NO_CONTENT, noContent: noContentObj });
-    const searchParam =
-      err?.response?.data?.search && typeof err?.response?.data?.search === 'number' ? err?.response?.data?.search : 'error';
-    const trackWording = `getRecomendation-${source}-provider_${provider ?? 0}-genre_${genre ?? 'all'}-gte_${searchParam}`;
 
-    trackEvent('ERROR', trackWording);
+    console.log(err);
 
     return '';
   } finally {
@@ -218,7 +225,7 @@ export const getRecomendation = async (
   }
 };
 
-export const setContent = (dispatch: any, content: any) => {
+export const setContent = (dispatch: any, content: ContentInterface) => {
   dispatch({ type: types.SET_CONTENT, content });
 };
 

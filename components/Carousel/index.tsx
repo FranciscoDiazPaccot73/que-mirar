@@ -1,23 +1,17 @@
 import classnames from 'classnames';
-import { KeyboardEvent, useEffect, useRef } from 'react';
+import { FC, KeyboardEvent, useEffect, useRef } from 'react';
 
-import { excludedGenres } from '../../utils';
+import { GenresTypes } from '@/pages/types';
+import { excludedGenres } from '@/utils';
 
-type Genre = {
-  id: number | string;
-  name: string;
-};
-
-interface Props {
-  genres: Array<Genre>;
-  selected: number | string;
+type CarouselProps = {
+  genres: GenresTypes[];
+  selected: number;
   handleClick: Function;
   source: string;
-}
+};
 
-// TODO types
-
-const Carrousel = ({ genres, selected, handleClick, source }: Props) => {
+const Carrousel: FC<CarouselProps> = ({ genres, selected, handleClick, source }) => {
   const sliderRef = useRef(null);
   let isDown = false;
   let startX: any;
@@ -26,7 +20,7 @@ const Carrousel = ({ genres, selected, handleClick, source }: Props) => {
 
   useEffect(() => {
     const slider: any = sliderRef.current;
-    const genresIds = genres.map((g: Genre) => g.id);
+    const genresIds = genres.map((g: GenresTypes) => g.id);
     const selectedPosition = genresIds.indexOf(selected);
 
     if (slider) {
@@ -67,7 +61,7 @@ const Carrousel = ({ genres, selected, handleClick, source }: Props) => {
       ref={sliderRef}
       className="cursor-pointer overflow-y-hidden overflow-x-scroll relative scale-95 transition-all whitespace-nowrap w-full will-change-transform select-none scrollbar"
     >
-      {genres.map((genre: Genre, index: number) => {
+      {genres.map((genre: GenresTypes, index: number) => {
         if (source === 'tv' && excludedGenres.includes(genre.id.toString())) return null;
 
         const categoryClasses = classnames(

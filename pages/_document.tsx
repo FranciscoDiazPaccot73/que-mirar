@@ -1,19 +1,11 @@
 import NextDocument, { Head, Html, Main, NextScript } from 'next/document';
 
-import loader from '../loader';
-
 export default class Document extends NextDocument {
   render() {
     return (
       <Html data-theme="dark" lang="es" style={{ background: '#1a202c' }}>
         <Head />
-        <head>
-          <style>{loader}</style>
-        </head>
-        <body className="scroll-disabled" id="body">
-          <div id="spinner">
-            <div className="spinner" />
-          </div>
+        <body id="body">
           <Main />
           <NextScript />
         </body>

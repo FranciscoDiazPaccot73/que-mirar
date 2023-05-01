@@ -13,8 +13,6 @@ type ContentProps = {
   nextRecomendation?: () => void;
 };
 
-// TODO ICON TYPEs
-
 const Content: FC<ContentProps> = ({ source, nextRecomendation }) => {
   const {
     state: { content, BASE_IMAGE_URL, fetching },

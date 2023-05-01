@@ -8,9 +8,17 @@ import { PageContext } from '../../context';
 
 const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
 
-interface ProvidersProps {
+type ProvidersProps = {
   handleFilter: (id: number) => void;
-}
+};
+
+export type ProviderType = {
+  display_priorities: any;
+  display_priority: number;
+  logo_path: string;
+  provider_id: number;
+  provider_name: string;
+};
 
 const Providers: FC<ProvidersProps> = ({ handleFilter }) => {
   const {
@@ -38,7 +46,7 @@ const Providers: FC<ProvidersProps> = ({ handleFilter }) => {
             <div className={wrapperClasses} onClick={() => handleFilter(0)} onKeyUp={(e) => handleKeyUp(e, 0)}>
               <p className="text-center text-[10px]">TODAS</p>
             </div>
-            {providers.map((prov: any) => {
+            {providers.map((prov: ProviderType) => {
               const filtersClasses = classNames('cursor-pointer rounded-md border border-purple h-9 w-9 overflow-hidden mr-3', {
                 'border-none grayscale-90 md:hover:grayscale-0': selectedProvider !== prov.provider_id,
               });

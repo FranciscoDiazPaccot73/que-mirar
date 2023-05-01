@@ -1,17 +1,18 @@
-import { useContext } from 'react';
+import { FC, useContext } from 'react';
 
 import Image from 'next/image';
 
-import { PageContext } from '../../context';
-import { getContent, getSimilars, setSimilarToContent } from '../../context/actions';
+import { PageContext } from '@/context';
+import { getContent, getSimilars, setSimilarToContent } from '@/context/actions';
+import { ContentInterface } from '@/pages/types';
 
-interface Props {
+type ContentBoxProps = {
   url: string;
-  content: any;
+  content: ContentInterface;
   source?: string;
-}
+};
 
-const ContentBox = ({ content, url, source }: Props) => {
+const ContentBox: FC<ContentBoxProps> = ({ content, url, source }) => {
   const {
     dispatch,
     state: { watchRegion },

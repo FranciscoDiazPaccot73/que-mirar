@@ -6,8 +6,6 @@ type InputProps = {
   placeholder: string;
 };
 
-// TODO check types
-
 const Input: FC<InputProps> = ({ onChange, placeholder, onKeyUp }) => (
   <input
     className="h-10 w-input-40 pl-4 pr-16 overflow-hidden rounded-md bg-main-bg text-white"
