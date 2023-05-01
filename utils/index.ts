@@ -30,6 +30,20 @@ export const calculateMaxVotes = ({ source, genre }: votes) => {
   return { ...result, MAX: 400 };
 };
 
+export const generateRandomIndexes = (amount: number, length: number) => {
+  const randomIndexes: number[] = [];
+
+  while (randomIndexes.length < amount) {
+    const randomIndex = Math.floor(Math.random() * length);
+
+    if (!randomIndexes.includes(randomIndex)) {
+      randomIndexes.push(randomIndex);
+    }
+  }
+
+  return randomIndexes;
+};
+
 export const getDeviceTrackWording = (device: string) => {
   if (device === 'mobile') return device;
 

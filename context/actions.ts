@@ -85,6 +85,7 @@ export const getSimilars = async (dispatch: any, source: any, id: string, region
 };
 
 export const getContent = async (dispatch: any, source: any, id: string, region: string) => {
+  isFetching(dispatch, true);
   try {
     const { data } = await axios.get(`/api/content?source=${source}&id=${id}&region=${region}`, { timeout: 8000 });
 
@@ -95,6 +96,44 @@ export const getContent = async (dispatch: any, source: any, id: string, region:
     trackEvent('ERROR', 'getGenres');
 
     return '';
+  } finally {
+    isFetching(dispatch, false);
+  }
+};
+
+export const setSimilarToContent = (dispatch: any, similar: any) => {
+  dispatch({ type: types.SET_SIMILAR_TO_CONTENT, similar });
+};
+
+export const resetValues = (dispatch: any) => {
+  dispatch({ type: types.SET_CONTENT, content: null });
+  dispatch({ type: types.SET_NO_CONTENT, noContent: null });
+  dispatch({ type: types.SET_SIMILARS, similars: null });
+};
+
+export const getInitialRecomendations = async (dispatch: any, source: string, provider?: any, watchRegion?: string) => {
+  try {
+    const { data } = await axios.get(`/api/recomendation-initial?source=${source}&provider=${provider ?? 0}&region=${watchRegion}`, {
+      timeout: 10000,
+    });
+
+    dispatch({ type: types.SET_INITIAL_RECOMENDATIONS, nextRecomendations: data });
+  } catch (err: any) {
+    console.log(err);
+  }
+};
+
+export const getNextRecomendationCached = async (dispatch: any, source: string, id: number, baseContent: any, watchRegion?: string) => {
+  try {
+    const { data } = await axios.get(`/api/recomendation-next?source=${source}&id=${id}&region=${watchRegion}`, {
+      timeout: 8000,
+    });
+
+    const newContent = { ...baseContent, data };
+
+    dispatch({ type: types.SET_CONTENT, content: newContent });
+  } catch (err: any) {
+    console.log(err);
   }
 };
 
@@ -108,9 +147,7 @@ export const getRecomendation = async (
   watchRegion?: string,
 ) => {
   dispatch({ type: types.FETCHING, value: true });
-  dispatch({ type: types.SET_CONTENT, content: null });
-  dispatch({ type: types.SET_NO_CONTENT, noContent: null });
-  dispatch({ type: types.SET_SIMILARS, similars: null });
+  resetValues(dispatch);
 
   try {
     const formated = recomended.join('|');
@@ -118,7 +155,7 @@ export const getRecomendation = async (
       `/api/recomendation?source=${source}&recomended=${formated}&provider=${provider ?? 0}${
         genre ? `&genre=${genre}` : ''
       }&region=${watchRegion}`,
-      { timeout: 8000 },
+      { timeout: 10000 },
     );
 
     dispatch({ type: types.SET_CONTENT, content: data });

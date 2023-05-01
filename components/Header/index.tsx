@@ -1,15 +1,12 @@
 import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
-import { FC, RefObject, useEffect, useRef, useState } from 'react';
+import { FC } from 'react';
 
 type HeaderProps = {
   handleTab: (tab: number) => Promise<void>;
   linkSelected: number;
 };
-
-type MoviesRefType = RefObject<HTMLButtonElement>;
-type SeriesRefType = RefObject<HTMLButtonElement>;
 
 const transition = {
   duration: 0.2,
@@ -18,26 +15,14 @@ const transition = {
 };
 
 const Header: FC<HeaderProps> = ({ linkSelected = 0, handleTab }) => {
-  const [sliderDimensions, setSliderDimensions] = useState({
-    width: 0,
-    x: 0,
-  });
-  const moviesRef: MoviesRefType = useRef<HTMLButtonElement>(null);
-  const seriesRef: SeriesRefType = useRef<HTMLButtonElement>(null);
-
-  const moviesButtonClasses = classNames('w-full px-4 py-2 bg-transparent text-xl', linkSelected === 0 ? 'text-purple' : 'text-white');
-  const seriesButtonClasses = classNames('w-full px-4 py-2 bg-transparent text-xl', linkSelected === 1 ? 'text-purple' : 'text-white');
-
-  useEffect(() => {
-    const activeTabNode = linkSelected === 0 ? moviesRef.current : seriesRef.current;
-
-    if (activeTabNode?.offsetWidth) {
-      setSliderDimensions({
-        width: activeTabNode.offsetWidth,
-        x: activeTabNode.offsetLeft,
-      });
-    }
-  }, [linkSelected]);
+  const moviesButtonClasses = classNames(
+    'w-full px-4 py-2 bg-transparent text-xl',
+    linkSelected === 0 ? 'text-purple text-purple border-b-2 border-purple' : 'text-white',
+  );
+  const seriesButtonClasses = classNames(
+    'w-full px-4 py-2 bg-transparent text-xl',
+    linkSelected === 1 ? 'text-purple border-b-2 border-purple' : 'text-white',
+  );
 
   return (
     <header className="max-w-[850px] w-full md:flex md:px-4 md:mt-3 md:mx-auto md:mb-4">
@@ -48,7 +33,6 @@ const Header: FC<HeaderProps> = ({ linkSelected = 0, handleTab }) => {
         <AnimatePresence>
           <div className="flex w-full md:w-auto">
             <motion.button
-              ref={moviesRef}
               className={moviesButtonClasses}
               transition={transition}
               whileHover={{ scale: 1.05 }}
@@ -58,7 +42,6 @@ const Header: FC<HeaderProps> = ({ linkSelected = 0, handleTab }) => {
               Peliculas
             </motion.button>
             <motion.button
-              ref={seriesRef}
               className={seriesButtonClasses}
               transition={transition}
               whileHover={{ scale: 1.05 }}
@@ -68,12 +51,7 @@ const Header: FC<HeaderProps> = ({ linkSelected = 0, handleTab }) => {
               Series
             </motion.button>
           </div>
-          <div className="absolute bottom-0 left-0 bg-slate-700 h-[2px] w-full" />
-          <motion.div
-            className="absolute bottom-0 left-0 bg-purple h-[2px] rounded-t-lg"
-            style={{ width: sliderDimensions.width, x: sliderDimensions.x }}
-            transition={transition}
-          />
+          <div className="absolute bottom-0 left-0 bg-slate-700 h-[2px] w-full -z-10" />
         </AnimatePresence>
       </div>
     </header>

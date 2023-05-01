@@ -1,4 +1,4 @@
-import { FC, memo, useContext, useEffect } from 'react';
+import { FC, memo, useContext, useEffect, useRef } from 'react';
 
 import Genres from './Genres';
 import Providers from './Providers';
@@ -15,6 +15,7 @@ const Filters: FC<FilterProps> = ({ source }) => {
     dispatch,
     state: { watchRegion, selectedProvider = 0, selectedGenre = 0, fetching, recomendedContent = [], prevContent },
   } = useContext(PageContext);
+  const firstRun = useRef(true);
 
   const getPageProviders = async () => {
     await getProviders(dispatch, source);
@@ -25,7 +26,8 @@ const Filters: FC<FilterProps> = ({ source }) => {
   };
 
   useEffect(() => {
-    if (source) {
+    if (source && firstRun.current) {
+      firstRun.current = false;
       getPageProviders();
       getPageGenres();
     }

@@ -4,7 +4,7 @@ import Button from '../Button';
 import SearchBox from '../Search';
 
 import { PageContext } from '../../context';
-import { getInfo } from '../../context/actions';
+import { getInfo, resetValues } from '../../context/actions';
 import { availableRegions } from '../../utils';
 
 type ContentTitleProps = {
@@ -26,6 +26,7 @@ const ContentTitle: FC<ContentTitleProps> = ({ isFirst, watchRegion, onChange, s
 
   const getTrending = () => {
     if (!isFirst && !fetching) {
+      resetValues(dispatch);
       getInfo(dispatch, source);
       setFirst(true);
     }

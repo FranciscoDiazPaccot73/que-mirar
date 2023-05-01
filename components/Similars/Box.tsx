@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import Image from 'next/image';
 
 import { PageContext } from '../../context';
-import { getContent, getSimilars } from '../../context/actions';
+import { getContent, getSimilars, setSimilarToContent } from '../../context/actions';
 
 interface Props {
   url: string;
@@ -25,12 +25,11 @@ const ContentBox = ({ content, url, source }: Props) => {
   const imageUrl = poster || backdropPath;
 
   const handleLoadContent = async () => {
-    // TODO: ABORD REQUEST
-
     if (id) {
-      const newContentId = await getContent(dispatch, source, id, watchRegion);
-
-      await getSimilars(dispatch, source, newContentId, watchRegion);
+      window.scrollTo(0, 0);
+      setSimilarToContent(dispatch, content);
+      await getContent(dispatch, source, id, watchRegion);
+      await getSimilars(dispatch, source, id, watchRegion);
     }
   };
 

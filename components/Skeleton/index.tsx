@@ -45,6 +45,18 @@ const Skeleton: FC<SkeletonProps> = ({ type }) => {
     );
   }
 
+  if (type === 'genres-card') {
+    return (
+      <div className="pt-2 pb-3 flex">
+        {Array(2)
+          .fill('')
+          .map((_, index) => (
+            <div key={`filter-skeleton-${index}`} className="bg-skeleton h-8 w-8 rounded-md animate-pulse mr-3" />
+          ))}
+      </div>
+    );
+  }
+
   return null;
 };
 

@@ -3,15 +3,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { calculateMaxVotes } from '../../../utils';
 
-const BASE_URL = 'https://api.themoviedb.org/3';
-
 export default async function getRecomendation(req: NextApiRequest, res: NextApiResponse<any>) {
   const { source, recomended, provider, genre, region } = req.query;
+  const { BASE_URL, TMDB_API_KEY } = process.env;
   const { MIN, MAX } = calculateMaxVotes({ source, genre });
   const countGte = Math.floor(Math.random() * (MAX - MIN + 1) + MIN);
 
   try {
-    const apiKey = process.env.TMDB_API_KEY;
+    const apiKey = TMDB_API_KEY;
     const baseObj = {
       language: region === 'BR' ? 'pt-BR' : 'es-AR',
       api_key: apiKey || '',
@@ -36,6 +35,8 @@ export default async function getRecomendation(req: NextApiRequest, res: NextApi
       const { data: firstData } = await axios.get(`${BASE_URL}/discover/${source}?${params}`);
       const { results: firstresponse } = firstData || {};
 
+      firstresponse.totalPages = firstData.total_pages;
+
       return firstresponse;
     };
     let firstresponse = await initialRequest(discoverQueryParams);
@@ -44,7 +45,7 @@ export default async function getRecomendation(req: NextApiRequest, res: NextApi
       firstresponse = await initialRequest({ ...discoverQueryParams, 'vote_count.gte': 0 });
     }
 
-    const { total_pages: totalPages } = firstresponse;
+    const { totalPages } = firstresponse;
 
     const pageRandom = Math.floor(Math.random() * (totalPages - 2) + 1) || '1';
     const newObj = new URLSearchParams({ ...discoverObj, page: pageRandom.toString() });

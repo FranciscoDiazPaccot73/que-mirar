@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       grayscale: {
-        90: '90%'
+        90: '90%',
       },
       minHeight: {
         main: 'calc(100vh - 173px)',
@@ -15,10 +15,10 @@ module.exports = {
         'modal-dialog': 'calc(100vh - 190px)',
       },
       height: {
-        modal: "calc(100% - 50px)"
+        modal: 'calc(100% - 50px)',
       },
       colors: {
-        'skeleton': '#53535e50',
+        skeleton: '#53535e50',
         'filter-color': '#1a202c',
         purple: '#B794F4',
         secondary: '#313b4e',

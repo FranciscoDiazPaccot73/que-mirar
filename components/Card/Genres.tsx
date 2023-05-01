@@ -5,11 +5,13 @@ import { formatGenresText } from '@/utils';
 const Genres = ({ genres }: any) => {
   if (!genres || !genres.length) return null;
 
+  const classes = 'p-1 rounded-md border border-gray-500 flex items-center justify-center text-center';
+
   if (genres.length <= 2) {
     return (
       <div className="flex gap-1 mt-1">
         {genres.map((genre: any) => (
-          <div className="p-1 rounded-md border border-gray-500">{genre.name}</div>
+          <div className={classes}>{genre.name}</div>
         ))}
       </div>
     );
@@ -21,9 +23,9 @@ const Genres = ({ genres }: any) => {
 
   return (
     <div className="flex gap-1 mt-1">
-      <div className="p-1 rounded-md border border-gray-500 flex items-center justify-center text-center">{g1.name}</div>
-      <div className="p-1 rounded-md border border-gray-500 flex items-center justify-center text-center">{g2.name}</div>
-      <div className="p-1 rounded-md border border-gray-500 flex items-center justify-center text-center" title={genresText}>
+      <div className={classes}>{g1.name}</div>
+      <div className={classes}>{g2.name}</div>
+      <div className={classes} title={genresText}>
         +{rest.length}
       </div>
     </div>

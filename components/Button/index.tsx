@@ -26,6 +26,7 @@ const Button: FC<ButtonProps> = ({ onClick, label, variant, icon, disabled, cust
       'text-white opacity-90': variant === 'transparent' && color === 'gray',
       'text-purple border-purple md:hover:bg-purple-12': variant === 'outline' && color === 'purple',
       'border-white border-opacity-30 md:hover:border-opacity-40': variant === 'outline' && color === 'gray',
+      'cursor-not-allowed opacity-50': disabled,
     },
   );
 

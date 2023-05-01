@@ -38,7 +38,7 @@ const Content: FC<ContentProps> = ({ source, nextRecomendation }) => {
             <div className="max-w-[346px] max-h-[500px] md:min-h-[500px] md:max-h-full md:min-w-[346px]">
               <Image
                 priority
-                alt={content.title}
+                alt={content.title ?? content.name}
                 blurDataURL={`${BASE_IMAGE_URL}${imageUrl}`}
                 className="md:min-h-full"
                 height={281}
@@ -49,7 +49,7 @@ const Content: FC<ContentProps> = ({ source, nextRecomendation }) => {
             </div>
             <div className="px-4 pt-2 pb-3 md:w-4/5 md:px-8 md:mt-8 md:mb-16">
               <p className="mb-2 text-2xl text-white md:text-3xl">
-                {content.title}
+                {content.title ?? content.name}
                 {source === 'movie' ? (
                   <span>
                     <p className="text-xs opacity-60 mb-3">
@@ -60,6 +60,7 @@ const Content: FC<ContentProps> = ({ source, nextRecomendation }) => {
               </p>
               <div className="flex items-center mb-4">
                 <p className="text-slate-400 text-xs">
+                  {!content.genres && content.genre_ids && <Skeleton type="genres-card" />}
                   <Genres genres={content.genres} />
                 </p>
                 <div className="flex flex-col items-end mb-3 w-full md:my-0">

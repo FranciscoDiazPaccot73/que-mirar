@@ -13,11 +13,9 @@ import { updateParams } from '@utils/index';
 
 import {
   getGenres,
-  getInfo,
-  getProviders,
+  getInfo, getInitialRecomendations, getProviders,
   getRecomendation,
-  getSimilars,
-  setContent,
+  getSimilars, resetValues, setContent,
   setProvider,
   setRecomended,
   setSelectedGenre,
@@ -38,15 +36,16 @@ type HomeProps = {
 const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResult, initialRest, initialTab }) => {
   const {
     dispatch,
-    state: { content, watchRegion = 'AR', noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent },
+    state: { content, watchRegion = 'AR', noContent, selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent, nextRecomendations },
   } = useContext(PageContext);
   const [linkSelected, handleTabChange] = useState(initialTab);
   const [source, setSource] = useState('tv');
   const [contentId, setId] = useState<string | null>(null);
   const [isFirst, setFirst] = useState(true);
   const timestamp = useRef(new Date());
+  const firstRunFinished = useRef(false);
 
-  console.log(contentId)
+  console.log(contentId, 'NEXT RECOMEND',  nextRecomendations)
 
   useEffect(() => {
     if (contextSource && contextSource !== 'movie') {
@@ -61,7 +60,6 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
 
   useEffect(() => {
     setContent(dispatch, initialResult);
-    console.log(initialResult, "initial")
     setRecomended(dispatch, initialResult.id);
     setSimilars(dispatch, initialRest);
 
@@ -73,6 +71,11 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
       setSource(params.source || 'tv');
       setWatchRegion(dispatch, params.region || 'AR');
       setId(params.id);
+    }
+    
+    if (!firstRunFinished.current) {
+      firstRunFinished.current = true
+      getInitialRecomendations(dispatch, params.source ?? 'tv', 0, params.region ?? 'AR')
     }
   }, []);
 
@@ -106,6 +109,7 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
     if (tab !== linkSelected) {
       const newSource = tab === 0 ? 'movie' : 'tv';
 
+      resetValues(dispatch)
       setFirst(true);
       handleTabChange(tab);
       setSource(newSource);
@@ -114,11 +118,14 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
       getPageData(newSource);
       const newId = await getInfo(dispatch, newSource);
 
+      getInitialRecomendations(dispatch, newSource, 0, watchRegion)
+
       updateParams({ newSource, newWatchRegion: watchRegion, id: newId });
     }
   };
 
   const nextRecomendation = async () => {
+    resetValues(dispatch)
     setFirst(false);
     const newId = await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, watchRegion);
 
@@ -127,6 +134,7 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
   };
 
   const handleRegion = async (newRegion: string) => {
+    resetValues(dispatch)
     setWatchRegion(dispatch, newRegion);
     setFirst(false);
     const newId = await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, newRegion);
