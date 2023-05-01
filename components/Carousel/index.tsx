@@ -1,29 +1,29 @@
-import { useEffect, useRef } from 'react';
 import classnames from 'classnames';
+import { KeyboardEvent, useEffect, useRef } from 'react';
 
 import { excludedGenres } from '../../utils';
 
 type Genre = {
-  id: number|string,
-  name: string,
-}
+  id: number | string;
+  name: string;
+};
 
 interface Props {
-  genres: Array<Genre>,
-  selected: number|string,
-  handleClick: Function,
-  source: string,
+  genres: Array<Genre>;
+  selected: number | string;
+  handleClick: Function;
+  source: string;
 }
 
 // TODO types
 
 const Carrousel = ({ genres, selected, handleClick, source }: Props) => {
-  const sliderRef = useRef(null)
+  const sliderRef = useRef(null);
   let isDown = false;
   let startX: any;
   let scrollLeft: any;
   const scrollSize = 100;
-  
+
   useEffect(() => {
     const slider: any = sliderRef.current;
     const genresIds = genres.map((g: Genre) => g.id);
@@ -46,38 +46,55 @@ const Carrousel = ({ genres, selected, handleClick, source }: Props) => {
         slider.classList.remove('carrousel_active');
       });
       slider.addEventListener('mousemove', (e: any) => {
-        if(!isDown) return;
+        if (!isDown) return;
         e.preventDefault();
         const x = e.pageX - slider.offsetLeft;
-        const walk = (x - startX) * 3; //scroll-fast
+        const walk = (x - startX) * 3; // scroll-fast
+
         slider.scrollLeft = scrollLeft - walk;
       });
     }
   }, []);
 
+  const handleKeyUp = (e: KeyboardEvent<HTMLDivElement>, id: number | string) => {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      handleClick(id);
+    }
+  };
+
   return (
     <div
-      className="cursor-pointer overflow-y-hidden overflow-x-scroll relative scale-95 transition-all whitespace-nowrap w-full will-change-transform select-none scrollbar"
       ref={sliderRef}
+      className="cursor-pointer overflow-y-hidden overflow-x-scroll relative scale-95 transition-all whitespace-nowrap w-full will-change-transform select-none scrollbar"
     >
       {genres.map((genre: Genre, index: number) => {
         if (source === 'tv' && excludedGenres.includes(genre.id.toString())) return null;
 
         const categoryClasses = classnames(
-          "rounded-md border border-purple inline-block my-3 mx-2 min-h-[24px] min-w-[60px] first-of-type:ml-1 last-of-type:mr-1 md:hover:bg-purple",
-          `category-${index + 1}`, {
-          "bg-purple text-filter-color text-semibold": genre.id === selected
-        });
-        const textClasses = classnames('text-center text-xs py-1 px-2', genre.id === selected ? 'text-black' : 'text-white md:hover:text-filter-color')
+          'rounded-md border border-purple inline-block my-3 mx-2 min-h-[24px] min-w-[60px] first-of-type:ml-1 last-of-type:mr-1 md:hover:bg-purple',
+          `category-${index + 1}`,
+          {
+            'bg-purple text-filter-color text-semibold': genre.id === selected,
+          },
+        );
+        const textClasses = classnames(
+          'text-center text-xs py-1 px-2',
+          genre.id === selected ? 'text-black' : 'text-white md:hover:text-filter-color',
+        );
 
         return (
-          <div onClick={() => handleClick(genre.id)} key={`genre-${genre.id}`} className={categoryClasses}>
+          <div
+            key={`genre-${genre.id}`}
+            className={categoryClasses}
+            onClick={() => handleClick(genre.id)}
+            onKeyUp={(e) => handleKeyUp(e, genre.id)}
+          >
             <p className={textClasses}>{genre?.name.toUpperCase()}</p>
           </div>
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
 export default Carrousel;

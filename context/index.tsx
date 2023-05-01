@@ -1,11 +1,11 @@
-import React, { useMemo, useReducer, createContext } from 'react';
+import React, { createContext, useMemo, useReducer } from 'react';
 
-import { reducer, init } from './reducers';
+import { init, reducer } from './reducers';
 
 interface AppContextInterface {
-  state: any,
-  dispatch: any,
-};
+  state: any;
+  dispatch: any;
+}
 
 const contextDefaultValues = {
   state: {},

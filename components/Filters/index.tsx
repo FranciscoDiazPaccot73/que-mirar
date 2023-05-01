@@ -1,25 +1,28 @@
-import { memo, useContext, useEffect, FC } from 'react';
+import { FC, memo, useContext, useEffect } from 'react';
 
-import Providers from './Providers';
 import Genres from './Genres';
+import Providers from './Providers';
 
 import { PageContext } from '../../context';
-import { getProviders, getRecomendation, setProvider, getGenres, setSelectedGenre } from '../../context/actions';
+import { getGenres, getProviders, getRecomendation, setProvider, setSelectedGenre } from '../../context/actions';
 
 interface FilterProps {
-  source: string,
+  source: string;
 }
 
 const Filters: FC<FilterProps> = ({ source }) => {
-  const { dispatch, state: { watchRegion, selectedProvider = 0, selectedGenre = 0, fetching, recomendedContent = [], prevContent } } = useContext(PageContext);
+  const {
+    dispatch,
+    state: { watchRegion, selectedProvider = 0, selectedGenre = 0, fetching, recomendedContent = [], prevContent },
+  } = useContext(PageContext);
 
   const getPageProviders = async () => {
     await getProviders(dispatch, source);
-  }
+  };
 
   const getPageGenres = async () => {
     await getGenres(dispatch, source);
-  }
+  };
 
   useEffect(() => {
     if (source) {
@@ -30,30 +33,30 @@ const Filters: FC<FilterProps> = ({ source }) => {
 
   const handleFilter = async (id: number) => {
     if (!fetching && id !== selectedProvider) {
-      setProvider(dispatch, id)
-      await getRecomendation(dispatch, source, recomendedContent, prevContent, id, selectedGenre, watchRegion)
+      setProvider(dispatch, id);
+      await getRecomendation(dispatch, source, recomendedContent, prevContent, id, selectedGenre, watchRegion);
     }
-  }
+  };
 
   const handleGenre = async (id: number) => {
     if (!fetching) {
       if (id !== selectedGenre) {
-        setSelectedGenre(dispatch, id)
+        setSelectedGenre(dispatch, id);
         if (id === 0) {
-          await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, null, watchRegion)
+          await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, null, watchRegion);
         } else {
-          await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, id, watchRegion)
+          await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, id, watchRegion);
         }
       }
     }
-  }
+  };
 
   return (
-    <section className='mt-8'>
+    <section className="mt-8">
       <Providers handleFilter={handleFilter} />
-      <Genres source={source} handleGenre={handleGenre} />
+      <Genres handleGenre={handleGenre} source={source} />
     </section>
-  )
-}
+  );
+};
 
 export default memo(Filters);

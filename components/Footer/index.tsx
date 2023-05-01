@@ -21,9 +21,9 @@ const Footer = () => (
       </a>
       <p className="text-center text-slate-500 text-[10px]">This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
     </div>
-    <div className="absolute right-4 text-[8px] flex bottom-[10px]">
-      Created by{' '}
-      <a href="https://franciscodiazpaccot.dev" rel="noreferrer noopener" target="_blank">
+    <div className="absolute right-4 text-[8px] flex bottom-[10px] text-purple">
+      Created by
+      <a className="ml-1 font-bold" href="https://franciscodiazpaccot.dev" rel="noreferrer noopener" target="_blank">
         Francisco Diaz Paccot
       </a>
     </div>

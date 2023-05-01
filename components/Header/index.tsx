@@ -1,7 +1,7 @@
-import { FC, useEffect, useRef, useState, RefObject } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
 import classNames from 'classnames';
+import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
+import { FC, RefObject, useEffect, useRef, useState } from 'react';
 
 type HeaderProps = {
   handleTab: (tab: number) => Promise<void>;

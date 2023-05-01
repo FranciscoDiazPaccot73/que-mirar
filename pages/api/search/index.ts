@@ -1,12 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 const axios = require('axios');
+
 const BASE_URL = 'https://api.themoviedb.org/3';
 
-export default async function (
-  req: NextApiRequest,
-  res: NextApiResponse<any>
-) {
+export default async function (req: NextApiRequest, res: NextApiResponse<any>) {
   const { source, region, q } = req.query;
 
   try {
@@ -14,16 +12,15 @@ export default async function (
     const baseObj = {
       language: 'es-AR',
       api_key: apiKey || '',
-      region: region.toString(),
-      query: q.toString()
-    }
+      region: region?.toString() ?? 'AR',
+      query: q?.toString() ?? '',
+    };
     const baseQueryParams = new URLSearchParams(baseObj);
 
-    
-    const { data } = await axios.get(`${BASE_URL}/search/${source}?${baseQueryParams}`)
+    const { data } = await axios.get(`${BASE_URL}/search/${source}?${baseQueryParams}`);
     const { results } = data || {};
 
-    res.status(200).json(results)
+    res.status(200).json(results);
   } catch (err) {
     res.status(500);
   }

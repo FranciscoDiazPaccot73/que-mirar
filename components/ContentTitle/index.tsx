@@ -1,7 +1,7 @@
-import { useContext, FC } from 'react';
+import { FC, useContext } from 'react';
 
-import SearchBox from '../Search';
 import Button from '../Button';
+import SearchBox from '../Search';
 
 import { PageContext } from '../../context';
 import { getInfo } from '../../context/actions';
@@ -10,13 +10,13 @@ import { availableRegions } from '../../utils';
 type ContentTitleProps = {
   isFirst: boolean;
   watchRegion: string;
-  onChange?: any;
   source: string;
-  nextRecomendation?: any;
-  setFirst: any;
+  setFirst: (value: boolean) => void;
+  onChange?: (newRegion: any) => void;
+  nextRecomendation?: () => void;
 };
 
-//TODO types
+// TODO types
 
 const ContentTitle: FC<ContentTitleProps> = ({ isFirst, watchRegion, onChange, source, nextRecomendation, setFirst }) => {
   const {
@@ -32,7 +32,7 @@ const ContentTitle: FC<ContentTitleProps> = ({ isFirst, watchRegion, onChange, s
   };
 
   const handleGetRecomendation = () => {
-    if (isFirst && !fetching) {
+    if (isFirst && !fetching && nextRecomendation) {
       nextRecomendation();
     }
   };
@@ -59,11 +59,24 @@ const ContentTitle: FC<ContentTitleProps> = ({ isFirst, watchRegion, onChange, s
         </div>
       </div>
       <div className="flex w-full gap-3">
-        <Button variant={`${isFirst ? 'solid' : 'outline'}`} label={`${watchRegion === 'BR' ? 'Tendências' : 'Tendencias'}`} onClick={getTrending} />
-        <Button variant={`${isFirst ? 'outline' : 'solid'}`} label= {`${watchRegion === 'BR' ? 'Recomendações' : 'Recomendaciones'}`} onClick={handleGetRecomendation} />
+        <Button
+          label={`${watchRegion === 'BR' ? 'Tendências' : 'Tendencias'}`}
+          variant={`${isFirst ? 'solid' : 'outline'}`}
+          onClick={getTrending}
+        />
+        <Button
+          label={`${watchRegion === 'BR' ? 'Recomendações' : 'Recomendaciones'}`}
+          variant={`${isFirst ? 'outline' : 'solid'}`}
+          onClick={handleGetRecomendation}
+        />
       </div>
     </div>
   );
+};
+
+ContentTitle.defaultProps = {
+  onChange: () => {},
+  nextRecomendation: () => {},
 };
 
 export default ContentTitle;

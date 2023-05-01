@@ -6,12 +6,12 @@ export const getBaseInfoForFetch = () => {
     language: 'es-AR',
     api_key: apiKey || '',
     page: randomPage.toString(),
-  }
+  };
 
   const baseQueryParams = new URLSearchParams(baseObj);
 
   return { randomIndex, baseQueryParams };
-}
+};
 
 export const getResultsFormatted = (results: any, randomIndex: number) => {
   const sortedResults = results.sort((a: any, b: any) => b.vote_average - a.vote_average && b.vote_count - a.vote_count);
@@ -19,7 +19,7 @@ export const getResultsFormatted = (results: any, randomIndex: number) => {
   const [firstResult] = sortedResults;
   const result = contentToShow.id ? contentToShow : firstResult;
 
-  const rest = sortedResults.filter((info: any) => info.id !== result.id)
+  const rest = sortedResults.filter((info: any) => info.id !== result.id);
 
   return { result, rest };
-}
+};

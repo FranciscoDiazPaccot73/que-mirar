@@ -1,29 +1,30 @@
+/* eslint-disable prettier/prettier */
 import type { NextPage } from 'next';
-import { useState, useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
-import Filters from '@components/Filters';
-import Layout from '@components/Layout';
 import ContentTitle from '@components/ContentTitle';
+import Filters from '@components/Filters';
 import Footer from '@components/Footer';
 import Header from '@components/Header';
+import Layout from '@components/Layout';
 import Seo from '@components/Seo';
 
 import { updateParams } from '@utils/index';
 
-import { PageContext } from '@store/index';
 import {
-  setWatchRegion,
-  getInfo,
-  getRecomendation,
   getGenres,
+  getInfo,
   getProviders,
-  setProvider,
-  setSelectedGenre,
+  getRecomendation,
   getSimilars,
   setContent,
+  setProvider,
   setRecomended,
+  setSelectedGenre,
   setSimilars,
+  setWatchRegion
 } from '@store/actions';
+import { PageContext } from '@store/index';
 import { getdata } from './api';
 
 type HomeProps = {
@@ -45,6 +46,8 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
   const [isFirst, setFirst] = useState(true);
   const timestamp = useRef(new Date());
 
+  console.log(contentId)
+
   useEffect(() => {
     if (contextSource && contextSource !== 'movie') {
       handleTabChange(contextSource === 'tv' ? 1 : 0);
@@ -58,6 +61,7 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
 
   useEffect(() => {
     setContent(dispatch, initialResult);
+    console.log(initialResult, "initial")
     setRecomended(dispatch, initialResult.id);
     setSimilars(dispatch, initialRest);
 
@@ -115,7 +119,6 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
   };
 
   const nextRecomendation = async () => {
-    console.log('Llegamos hasta aca?')
     setFirst(false);
     const newId = await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, watchRegion);
 
@@ -145,7 +148,7 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
           watchRegion={watchRegion ?? 'AR'}
           onChange={handleRegion}
         />
-        <Layout contentId={contentId} source={source} nextRecomendation={nextRecomendation} isFirst={isFirst} />
+        <Layout isFirst={isFirst} nextRecomendation={nextRecomendation} source={source} />
         <Filters source={source} />
       </main>
       <Footer />

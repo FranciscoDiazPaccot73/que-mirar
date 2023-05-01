@@ -1,8 +1,9 @@
-import { FC } from "react";
+/* eslint-disable react/no-array-index-key */
+import { FC } from 'react';
 
 type SkeletonProps = {
-  type: string
-}
+  type: string;
+};
 
 const Skeleton: FC<SkeletonProps> = ({ type }) => {
   if (type === 'card') {
@@ -17,30 +18,34 @@ const Skeleton: FC<SkeletonProps> = ({ type }) => {
           <div className="bg-skeleton h-4 rounded-md animate-pulse w-1/3" />
         </div>
       </div>
-    )
+    );
   }
 
   if (type === 'providers') {
     return (
       <div className="pt-2 pb-3 flex">
-        {Array(7).fill('').map((_, index) => (
-          <div key={`filter-skeleton-${index}`} className="bg-skeleton h-9 w-9 rounded-md animate-pulse mr-3" />
-        ))}
+        {Array(7)
+          .fill('')
+          .map((_, index) => (
+            <div key={`filter-skeleton-${index}`} className="bg-skeleton h-9 w-9 rounded-md animate-pulse mr-3" />
+          ))}
       </div>
-    )
+    );
   }
 
   if (type === 'genres') {
     return (
       <div className="pt-2 pb-3 flex">
-        {Array(3).fill('').map((_, index) => (
-          <div key={`filter-skeleton-${index}`} className="bg-skeleton h-6 w-20 rounded-md animate-pulse mr-3" />
-        ))}
+        {Array(3)
+          .fill('')
+          .map((_, index) => (
+            <div key={`filter-skeleton-${index}`} className="bg-skeleton h-6 w-20 rounded-md animate-pulse mr-3" />
+          ))}
       </div>
-    )
+    );
   }
 
   return null;
-}
+};
 
 export default Skeleton;
