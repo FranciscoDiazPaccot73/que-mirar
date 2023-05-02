@@ -27,13 +27,22 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
   useEffect(() => {
     const inputElement = document.getElementById('search-input');
 
-    if (isOpen && inputElement) inputElement.focus();
+    if (isOpen && inputElement) {
+      inputElement.focus();
+      const body = document.getElementById('body');
+
+      body?.classList.add('scroll-disabled');
+    }
   }, [isOpen]);
 
   const resetModal = () => {
     setIsOpen(false);
     setInputValue('');
     resetSearch(dispatch);
+
+    const body = document.getElementById('body');
+
+    body?.classList.remove('scroll-disabled');
   };
 
   const handleSearch = async () => {

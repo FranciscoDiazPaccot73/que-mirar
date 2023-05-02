@@ -10,6 +10,10 @@
   display: -webkit-box;
 }
 
+.scroll-disabled{
+  overflow: hidden;
+}
+
 .carrousel_active {
   background: #ffffff4d;
   cursor: grabbing;
