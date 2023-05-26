@@ -23,10 +23,7 @@ const Similars: FC<SimilarsProps> = ({ url, content, source, isFirst }) => {
 
   return (
     <div className="mt-5">
-      <div className="flex items-center justify-between my-4">
-        <p className="text-white opacity-90">{text}</p>
-        <Button color="gray" label={`${isOpen ? 'Ver menos' : 'Ver todo'}`} size="sm" variant="transparent" onClick={handleClick} />
-      </div>
+      <p className="text-white opacity-90 my-4">{text}</p>
       <div className="flex flex-col gap-4 text-white">
         <ContentBox content={first} source={source} url={url} />
         <ContentBox content={second} source={source} url={url} />
@@ -38,6 +35,9 @@ const Similars: FC<SimilarsProps> = ({ url, content, source, isFirst }) => {
             ))}
           </>
         ) : null}
+        <div className="ml-auto">
+          <Button color="gray" label={`${isOpen ? 'Ver menos' : 'Ver todo'}`} size="sm" variant="transparent" onClick={handleClick} />
+        </div>
       </div>
     </div>
   );

@@ -57,6 +57,22 @@ const Skeleton: FC<SkeletonProps> = ({ type }) => {
     );
   }
 
+  if (type === 'similars') {
+    return (
+      <div className="mt-5">
+        <div className="bg-skeleton h-6 w-28 rounded-md my-4 animate-pulse" />
+        <div className="flex flex-col gap-4">
+          {Array(3)
+            .fill('')
+            .map((_, index) => (
+              <div key={`filter-skeleton-${index}`} className="bg-skeleton h-[70px] w-full rounded-md animate-pulse" />
+            ))}
+          <div className="ml-auto h-9 w-20 bg-skeleton rounded-md animate-pulse" />
+        </div>
+      </div>
+    );
+  }
+
   return null;
 };
 

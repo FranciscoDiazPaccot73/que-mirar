@@ -4,6 +4,7 @@ import { PageContext } from '@/context';
 import Button from '../Button';
 import Card from '../Card';
 import Similars from '../Similars';
+import Skeleton from '../Skeleton';
 
 type LayoutProps = {
   source: string;
@@ -22,7 +23,11 @@ const Layout: FC<LayoutProps> = ({ source, nextRecomendation, isFirst }) => {
       <div className="w-full flex justify-end my-3 text-purple md:hidden">
         <Button disabled={fetching} label="Ver siguiente recomendación" size="sm" variant="transparent" onClick={nextRecomendation} />
       </div>
-      {!fetching && similars ? <Similars content={similars} isFirst={isFirst} source={source} url={BASE_IMAGE_URL} /> : null}
+      {similars && !fetching ? (
+        <Similars content={similars} isFirst={isFirst} source={source} url={BASE_IMAGE_URL} />
+      ) : (
+        <Skeleton type="similars" />
+      )}
     </>
   );
 };

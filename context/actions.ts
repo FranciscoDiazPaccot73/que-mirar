@@ -9,6 +9,7 @@ interface BaseContentInterface extends ContentInterface {
 }
 
 const timeout = 20000;
+let controller: AbortController | null;
 
 export const isFetching = (dispatch: any, value: boolean) => {
   dispatch({ type: types.FETCHING, value });
@@ -81,12 +82,19 @@ export const setSimilars = (dispatch: any, content: ContentInterface[]) => {
 };
 
 export const getSimilars = async (dispatch: any, source: string, id: number, region: string) => {
+  if (controller) controller.abort();
+
+  controller = new AbortController();
+  const { signal } = controller;
+
   try {
-    const { data } = await axios.get(`/api/similar?source=${source}&id=${id}&region=${region ?? 'AR'}`, { timeout });
+    const { data } = await axios.get(`/api/similar?source=${source}&id=${id}&region=${region ?? 'AR'}`, { timeout, signal });
 
     dispatch({ type: types.SET_SIMILARS, similars: data });
   } catch (err) {
     console.log(err);
+  } finally {
+    controller = null;
   }
 };
 
