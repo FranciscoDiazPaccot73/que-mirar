@@ -35,8 +35,8 @@ const Header: FC<HeaderProps> = ({ linkSelected = 0, handleTab }) => {
             <motion.button
               className={moviesButtonClasses}
               transition={transition}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={linkSelected !== 0 ? { scale: 1.05 } : {}}
+              whileTap={linkSelected !== 0 ? { scale: 0.95 } : {}}
               onClick={() => handleTab(0)}
             >
               Peliculas
@@ -44,8 +44,8 @@ const Header: FC<HeaderProps> = ({ linkSelected = 0, handleTab }) => {
             <motion.button
               className={seriesButtonClasses}
               transition={transition}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={linkSelected !== 1 ? { scale: 1.05 } : {}}
+              whileTap={linkSelected !== 1 ? { scale: 0.95 } : {}}
               onClick={() => handleTab(1)}
             >
               Series
