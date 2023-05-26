@@ -15,7 +15,7 @@ type ContentProps = {
 
 const Content: FC<ContentProps> = ({ source, nextRecomendation }) => {
   const {
-    state: { content, BASE_IMAGE_URL, fetching },
+    state: { content, BASE_IMAGE_URL },
   } = useContext(PageContext);
   const [Element, setElement] = useState<any>('a');
 
@@ -86,16 +86,10 @@ const Content: FC<ContentProps> = ({ source, nextRecomendation }) => {
               )}
             </div>
             <div className="hidden md:flex absolute bottom-3 justify-end w-full my-3 right-8">
-              <Button
-                disabled={fetching}
-                label="Ver siguiente recomendación"
-                size="sm"
-                variant="transparent"
-                onClick={nextRecomendation ?? (() => {})}
-              />
+              <Button label="Ver siguiente recomendación" size="sm" variant="transparent" onClick={nextRecomendation ?? (() => {})} />
               {content.link ? (
                 <a className="ml-4" href={content.link} rel="noreferrer" target="_blank">
-                  <Button disabled={fetching} label="¡Quiero verla!" size="sm" onClick={() => {}} />
+                  <Button label="¡Quiero verla!" size="sm" onClick={() => {}} />
                 </a>
               ) : null}
             </div>
