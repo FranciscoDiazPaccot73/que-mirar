@@ -33,7 +33,7 @@ const Content: FC<ContentProps> = ({ source, nextRecomendation }) => {
       {content ? (
         <Element {...elementProps}>
           <section className="min-h-[430px] max-h-[950px] relative w-full overflow-hidden md:flex">
-            <div className="max-w-[346px] max-h-[500px] md:min-h-[500px] md:max-h-full md:min-w-[346px]">
+            <div className="max-h-[500px] md:min-h-[500px] md:max-h-full md:min-w-[346px]">
               <Image
                 priority
                 alt={content.title ?? content.name}
