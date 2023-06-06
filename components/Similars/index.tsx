@@ -22,7 +22,7 @@ const Similars: FC<SimilarsProps> = ({ url, content, source, isFirst }) => {
   const handleClick = () => setIsOpen((prevState) => !prevState);
 
   return (
-    <div className="mt-5">
+    <div className="mt-10">
       <p className="text-white opacity-90 my-4">{text}</p>
       <div className="flex flex-col gap-4 text-white">
         <ContentBox content={first} source={source} url={url} />

@@ -23,6 +23,7 @@ import {
   setWatchRegion
 } from '@store/actions';
 import { PageContext } from '@store/index';
+import { AnimatePresence, motion } from 'framer-motion';
 import { getdata } from './api';
 
 import { ContentInterface } from './types';
@@ -38,7 +39,7 @@ type HomeProps = {
 const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResult, initialRest, initialTab }) => {
   const {
     dispatch,
-    state: { content, watchRegion = 'AR', selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent, nextRecomendations },
+    state: { content, isModalOpen, watchRegion = 'AR', selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent, nextRecomendations },
   } = useContext(PageContext);
   const [linkSelected, handleTabChange] = useState(initialTab);
   const [source, setSource] = useState('tv');
@@ -124,10 +125,10 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
   };
 
   return (
-    <div>
+    <div className='relative'>
       <Seo />
       <Header handleTab={handleTab} linkSelected={linkSelected} />
-      <main className="flex flex-1 flex-col mx-auto max-w-[565px] min-h-main pt-6 pb-8 px-8 md:max-w-[850px] md:min-h-main-desktop md:px-4 md:pt-4 md:pb-12">
+      <main className="mt-[86px] flex flex-1 flex-col mx-auto max-w-[565px] min-h-main pt-6 pb-8 px-8 md:max-w-[850px] md:min-h-main-desktop md:px-4 md:pt-4 md:pb-12 md:mt-28">
         <ContentTitle
           isFirst={isFirst}
           nextRecomendation={nextRecomendation}
@@ -136,8 +137,15 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
           watchRegion={watchRegion ?? 'AR'}
           onChange={handleRegion}
         />
-        <Layout isFirst={isFirst} nextRecomendation={nextRecomendation} source={source} />
-        <Filters source={source} />
+        <AnimatePresence>
+          <motion.div
+            animate={isModalOpen ? { scale: 0.95, opacity: .5 } : { scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
+          >
+            <Layout isFirst={isFirst} nextRecomendation={nextRecomendation} source={source} />
+            <Filters source={source} />
+          </motion.div>
+        </AnimatePresence>
       </main>
       <Footer />
     </div>

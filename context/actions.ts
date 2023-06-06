@@ -15,6 +15,10 @@ export const isFetching = (dispatch: any, value: boolean) => {
   dispatch({ type: types.FETCHING, value });
 };
 
+export const setIsModalOpen = (dispatch: any, value: boolean) => {
+  dispatch({ type: types.SET_SEARCH_MODAL_STATE, value });
+};
+
 export const getInfo = async (dispatch: any, source: string) => {
   dispatch({ type: types.FETCHING, value: true });
   dispatch({ type: types.SET_CONTENT, content: null });

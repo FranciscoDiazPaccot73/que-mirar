@@ -14,6 +14,7 @@ export const types = {
   SET_SIMILAR_TO_CONTENT: 'SET_SIMILAR_TO_CONTENT',
   SET_NEXT_RECOMENDATIONS: 'SET_NEXT_RECOMENDATIONS',
   SET_INITIAL_RECOMENDATIONS: 'SET_INITIAL_RECOMENDATIONS',
+  SET_SEARCH_MODAL_STATE: 'SET_SEARCH_MODAL_STATE',
 };
 
 export const init = (config: any) => {
@@ -27,6 +28,9 @@ export const reducer = (state: any, action: any) => {
   switch (action.type) {
     case types.FETCHING: {
       return { ...state, fetching: action.value };
+    }
+    case types.SET_SEARCH_MODAL_STATE: {
+      return { ...state, isModalOpen: action.value };
     }
     case types.SET_INITIAL_RECOMENDATIONS: {
       return { ...state, nextRecomendations: action.nextRecomendations };

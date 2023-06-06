@@ -4,7 +4,7 @@ import { FC, useContext, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { PageContext } from '@/context';
-import { resetSearch, search } from '@/context/actions';
+import { resetSearch, search, setIsModalOpen as setIsOpen } from '@/context/actions';
 import { ContentInterface } from '@/pages/types';
 
 import Button from '../Button';
@@ -18,11 +18,10 @@ type SearchBoxProps = {
 
 const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
   const {
-    state: { fetching, searchResult, BASE_IMAGE_URL },
+    state: { isModalOpen: isOpen, fetching, searchResult, BASE_IMAGE_URL },
     dispatch,
   } = useContext(PageContext);
   const [inputValue, setInputValue] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const inputElement = document.getElementById('search-input');
@@ -36,7 +35,7 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
   }, [isOpen]);
 
   const resetModal = () => {
-    setIsOpen(false);
+    setIsOpen(dispatch, false);
     setInputValue('');
     resetSearch(dispatch);
 
@@ -71,7 +70,7 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
         icon={<img alt="Open search modal" src="/search.svg" />}
         label="Buscar"
         variant="outline"
-        onClick={() => setIsOpen(true)}
+        onClick={() => setIsOpen(dispatch, true)}
       />
       <AnimatePresence>
         {isOpen && (

@@ -24,12 +24,14 @@ const Header: FC<HeaderProps> = ({ linkSelected = 0, handleTab }) => {
     linkSelected === 1 ? 'text-purple border-b-2 border-purple' : 'text-white',
   );
 
+  const headerAfterClass = `after:h-6 after:bg-gradient-to-b after:from-[#1a202c] after:via-[#1a202c] after:w-full after:absolute after:left-0 after:-bottom-3 after:content-["''"] after:z-20`;
+
   return (
-    <header className="max-w-[850px] w-full md:flex md:px-4 md:mt-3 md:mx-auto md:mb-4">
-      <div className="mt-4 w-full flex items-center justify-center md:mt-0 md:w-36 md:mr-6">
+    <header className={`max-w-[850px] w-full flex px-4 pt-3 pb-4 z-10 fixed left-0 right-0 top-0 bg-main-bg mx-auto ${headerAfterClass}`}>
+      <div className="flex items-center justify-center mt-0 w-36 mr-6">
         <Image priority alt="Logo" height={80} src="/logo.webp" width={125} />
       </div>
-      <div className="w-full relative md:flex md:justify-start">
+      <div className="w-full relative flex justify-start">
         <AnimatePresence>
           <div className="flex w-full md:w-auto">
             <motion.button
