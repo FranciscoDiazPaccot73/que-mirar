@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import { FC, ReactNode } from 'react';
 
 type ButtonProps = {
-  label: string;
   onClick: () => void;
+  label?: string;
   h?: string;
   variant?: string;
   icon?: ReactNode;
@@ -44,6 +44,7 @@ const Button: FC<ButtonProps> = ({ onClick, label, variant, icon, disabled, cust
 
 Button.defaultProps = {
   variant: 'solid',
+  label: '',
   icon: null,
   disabled: false,
   customClass: '',

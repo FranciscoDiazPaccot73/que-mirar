@@ -45,8 +45,8 @@ const Content: FC<ContentProps> = ({ source, nextRecomendation }) => {
                 width={500}
               />
             </div>
-            <div className="px-4 pt-2 pb-3 md:w-4/5 md:px-8 md:mt-8 md:mb-16">
-              <p className="mb-2 text-2xl text-white md:text-3xl">
+            <div className="px-4 pt-6 pb-3 md:pt-2 md:w-4/5 md:px-8 md:mt-8 md:mb-16">
+              <p className="mb-3 text-2xl text-white md:text-3xl">
                 {content.title ?? content.name}
                 {source === 'movie' ? (
                   <span>
@@ -56,14 +56,14 @@ const Content: FC<ContentProps> = ({ source, nextRecomendation }) => {
                   </span>
                 ) : null}
               </p>
-              <div className="flex items-center mb-4">
+              <div className="grid grid-cols-7.3 gap-2 items-center mb-5">
                 <p className="text-slate-400 text-xs">
                   {!content.genres && content.genre_ids && <Skeleton type="genres-card" />}
                   <Genres genres={content.genres} />
                 </p>
-                <div className="flex flex-col items-end mb-3 w-full md:my-0">
-                  <p className="text-purple ml-auto">{content?.vote_average?.toFixed(2)} / 10</p>
-                  <p className="ml-2 text-gray-500 text-xs md:text-sm">{content?.vote_count} reviews</p>
+                <div className="flex flex-col items-end w-full md:my-0">
+                  <p className="text-purple">{content?.vote_average?.toFixed(2)} / 10</p>
+                  <p className="text-gray-500 text-xs md:text-sm">{content?.vote_count} reviews</p>
                 </div>
               </div>
               <p className="hidden md:block text-gray-500 font-bold text-sm md:mt-2 md:mb-3">{content.tagline}</p>
@@ -71,7 +71,7 @@ const Content: FC<ContentProps> = ({ source, nextRecomendation }) => {
                 <p className="text-sm text-ellipsis overflow-hidden text-gray-300 overview">{content.overview}</p>
               </div>
               {content.providers?.length ? (
-                <div className="flex items-center mt-5 text-gray-300">
+                <div className="flex items-center mt-10 text-gray-300">
                   <p className="text-sm">Disponible en:</p>
                   {content.providers.map((prov: any) => (
                     <div key={prov.id} className="rounded-md h-8 mx-2 overflow-hidden">

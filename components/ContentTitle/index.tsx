@@ -6,6 +6,7 @@ import SearchBox from '../Search';
 import { PageContext } from '../../context';
 import { getInfo, resetValues } from '../../context/actions';
 import { availableRegions } from '../../utils';
+import FilterIcon from '../icons/Filter';
 
 type ContentTitleProps = {
   isFirst: boolean;
@@ -72,6 +73,12 @@ const ContentTitle: FC<ContentTitleProps> = ({ isFirst, watchRegion, onChange = 
           label={`${watchRegion === 'BR' ? 'Recomendações' : 'Recomendaciones'}`}
           variant={`${isFirst ? 'outline' : 'solid'}`}
           onClick={handleGetRecomendation}
+        />
+        <Button
+          customClass="ml-auto"
+          icon={<FilterIcon color="#b197ee" height={20} width={20} />}
+          variant="transparent"
+          onClick={() => {}}
         />
       </div>
     </div>

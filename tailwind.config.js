@@ -30,6 +30,9 @@ module.exports = {
       borderColor: {
         purple: '#B794F4',
       },
+      gridTemplateColumns: {
+        7.3: '70% 30%',
+      },
     },
   },
   plugins: [],
