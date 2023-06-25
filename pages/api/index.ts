@@ -11,7 +11,7 @@ type getDataParams = {
 };
 
 export default async function (req: NextApiRequest, res: NextApiResponse<any>) {
-  const { source } = req.query;
+  const { source, time } = req.query;
 
   try {
     const apiKey = process.env.TMDB_API_KEY;
@@ -23,7 +23,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse<any>) {
       page: pageRandom.toString(),
     };
     const baseQueryParams = new URLSearchParams(baseObj);
-    const { data } = await axios.get(`${BASE_URL}/trending/${source}/week?${baseQueryParams}`);
+
+    const { data } = await axios.get(`${BASE_URL}/trending/${source}/${time}?${baseQueryParams}`);
     const { results } = data || {};
     const sortedResults = results.sort((a: any, b: any) => b.vote_average - a.vote_average && b.vote_count - a.vote_count);
     const contentToShow = sortedResults[indexRandom] ?? {};
@@ -64,7 +65,7 @@ export const getdata = async ({ source }: getDataParams) => {
   const { randomIndex, baseQueryParams } = getBaseInfoForFetch();
 
   try {
-    const { data } = await axios.get(`${BASE_URL}/trending/${source}/week?${baseQueryParams}`);
+    const { data } = await axios.get(`${BASE_URL}/trending/${source}/day?${baseQueryParams}`);
     const { results } = data || {};
     const { result, rest } = getResultsFormatted(results, randomIndex);
     const getProviders: any = new Promise((resolve) => {

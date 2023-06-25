@@ -9,7 +9,7 @@ const Skeleton: FC<SkeletonProps> = ({ type }) => {
   if (type === 'card') {
     return (
       <div className="flex flex-col gap-2 w-full md:flex-row">
-        <div className="bg-skeleton animate-pulse w-full h-44 md:h-full md:max-w-[350px]" />
+        <div className="bg-skeleton animate-pulse w-full h-44 md:h-[700px] md:max-w-[350px]" />
         <div className="px-4 pt-2 pb-3 md:w-3/4 md:px-8 md:mt-8 md:mb-16">
           <div className="bg-skeleton h-8 rounded-md animate-pulse w-full" />
           <div className="bg-skeleton h-5 rounded-md animate-pulse w-full mt-2 mb-3" />

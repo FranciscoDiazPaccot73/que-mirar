@@ -33,6 +33,9 @@ module.exports = {
       gridTemplateColumns: {
         7.3: '70% 30%',
       },
+      transitionProperty: {
+        left: 'left',
+      },
     },
   },
   plugins: [],

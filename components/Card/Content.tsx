@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { FC, useContext, useEffect, useState } from 'react';
 
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import Button from '../Button';
 import Skeleton from '../Skeleton';
 import Genres from './Genres';
@@ -8,12 +9,15 @@ import Genres from './Genres';
 import { PageContext } from '../../context';
 import { formatDuration } from '../../utils';
 
+import 'react-circular-progressbar/dist/styles.css';
+
 type ContentProps = {
   source: string;
   nextRecomendation?: () => void;
+  search: string;
 };
 
-const Content: FC<ContentProps> = ({ source, nextRecomendation }) => {
+const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
   const {
     state: { content, BASE_IMAGE_URL },
   } = useContext(PageContext);
@@ -28,25 +32,29 @@ const Content: FC<ContentProps> = ({ source, nextRecomendation }) => {
   const elementProps = Element === 'a' ? { href: content?.link ?? '/', target: '_blank' } : {};
   const imageUrl = Element === 'a' ? content?.backdrop_path : content?.poster_path || content?.backdrop_path;
 
+  const pictureGradient = "after:from-[#1a202c] after:via-[#1a202c] after:w-full after:absolute after:content-['']";
+
   return (
     <>
       {content ? (
-        <Element {...elementProps}>
-          <section className="min-h-[430px] max-h-[950px] relative w-full overflow-hidden md:flex">
-            <div className="max-h-[500px] md:min-h-[500px] md:max-h-full md:min-w-[346px]">
+        <Element {...elementProps} className="w-full">
+          <section className="min-h-[430px] max-h-[950px] relative w-full overflow-hidden md:flex md:relative">
+            <div
+              className={`relative max-h-[500px] md:min-h-[500px] md:max-h-[700px] md:min-w-[346px] md:w-full ${pictureGradient} after:h-10 after:bg-gradient-to-t after:left-0 after:-bottom-2 md:after:w-9/10 md:after:h-full md:after:bg-gradient-to-r md:after:bottom-0`}
+            >
               <Image
                 priority
                 alt={content.title ?? content.name}
                 blurDataURL={`${BASE_IMAGE_URL}${imageUrl}`}
-                className="md:min-h-full"
-                height={281}
+                className="md:h-full md:w-3/5 md:ml-auto"
+                height={500}
                 placeholder="blur"
                 src={`${BASE_IMAGE_URL}${imageUrl}`}
-                width={500}
+                width={800}
               />
             </div>
-            <div className="px-4 pt-6 pb-3 md:pt-2 md:w-4/5 md:px-8 md:mt-8 md:mb-16">
-              <p className="mb-3 text-2xl text-white md:text-3xl">
+            <div className="px-4 pt-2 pb-3 md:pt-2 md:w-3/5 md:px-8 md:mt-8 md:mb-16 md:absolute md:left-0">
+              <p className="mb-3 text-2xl text-white md:text-4xl">
                 {content.title ?? content.name}
                 {source === 'movie' ? (
                   <span>
@@ -61,37 +69,53 @@ const Content: FC<ContentProps> = ({ source, nextRecomendation }) => {
                   {!content.genres && content.genre_ids && <Skeleton type="genres-card" />}
                   <Genres genres={content.genres} />
                 </p>
-                <div className="flex flex-col items-end w-full md:my-0">
-                  <p className="text-purple">{content?.vote_average?.toFixed(2)} / 10</p>
-                  <p className="text-gray-500 text-xs md:text-sm">{content?.vote_count} reviews</p>
-                </div>
               </div>
               <p className="hidden md:block text-gray-500 font-bold text-sm md:mt-2 md:mb-3">{content.tagline}</p>
               <div className="overflow-hidden text-ellipsis">
                 <p className="text-sm text-ellipsis overflow-hidden text-gray-300 overview">{content.overview}</p>
               </div>
-              {content.providers?.length ? (
-                <div className="flex items-center mt-10 text-gray-300">
-                  <p className="text-sm">Disponible en:</p>
-                  {content.providers.map((prov: any) => (
-                    <div key={prov.id} className="rounded-md h-8 mx-2 overflow-hidden">
-                      <Image alt={prov.provider_name} height={30} src={`${BASE_IMAGE_URL}${prov.logo_path}`} width={30} />
-                    </div>
-                  ))}
+              <div className="flex mt-10 gap-6">
+                <div className="flex items-center flex-col gap-2">
+                  <div className="h-16 w-16">
+                    <CircularProgressbar
+                      maxValue={10}
+                      strokeWidth={10}
+                      styles={buildStyles({
+                        textSize: '18px',
+                        pathColor: '#B794F4',
+                        textColor: '#B794F4',
+                        trailColor: '#B794F412',
+                      })}
+                      text={`${content?.vote_average.toFixed(2)}`}
+                      value={content?.vote_average}
+                    />
+                  </div>
+                  <p className="text-gray-500 text-xs md:text-sm">{content?.vote_count} reviews</p>
                 </div>
-              ) : (
-                <p className="hidden md:block text-gray-400 text-sm font-semibold mt-6">
-                  Puede que este contenido no este disponible en tu región
-                </p>
-              )}
+                {content.providers?.length ? (
+                  <div className="flex text-gray-300">
+                    {content.providers.map((prov: any) => (
+                      <div key={prov.id} className="rounded-md h-10 mx-2 overflow-hidden">
+                        <Image alt={prov.provider_name} height={40} src={`${BASE_IMAGE_URL}${prov.logo_path}`} width={40} />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="hidden md:block text-gray-400 text-sm font-semibold mt-6">
+                    Puede que este contenido no este disponible en tu región
+                  </p>
+                )}
+              </div>
             </div>
-            <div className="hidden md:flex absolute bottom-3 justify-end w-full my-3 right-8">
-              <Button label="Ver siguiente recomendación" size="sm" variant="transparent" onClick={nextRecomendation ?? (() => {})} />
+            <div className="hidden md:flex absolute bottom-3 justify-start w-full my-3 left-6">
               {content.link ? (
                 <a className="ml-4" href={content.link} rel="noreferrer" target="_blank">
                   <Button label="¡Quiero verla!" size="sm" onClick={() => {}} />
                 </a>
               ) : null}
+              {search === 'recomendations' && (
+                <Button label="Ver siguiente recomendación" size="sm" variant="transparent" onClick={nextRecomendation ?? (() => {})} />
+              )}
             </div>
           </section>
         </Element>

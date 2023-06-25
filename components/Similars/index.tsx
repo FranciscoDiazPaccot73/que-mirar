@@ -9,15 +9,15 @@ type SimilarsProps = {
   url: string;
   content: ContentInterface[];
   source?: string;
-  isFirst?: boolean;
+  search: string;
 };
 
-const Similars: FC<SimilarsProps> = ({ url, content, source, isFirst }) => {
+const Similars: FC<SimilarsProps> = ({ url, content, source, search }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const deviceName = source === 'movie' ? 'Peliculas' : 'Series';
   const [first, second, third, ...rest] = content.sort((a: ContentInterface, b: ContentInterface) => b.popularity - a.popularity);
-  const text = isFirst ? 'Otras tendencias' : `${deviceName} similares`;
+  const text = search === 'trends' ? 'Otras tendencias' : `${deviceName} similares`;
 
   const handleClick = () => setIsOpen((prevState) => !prevState);
 

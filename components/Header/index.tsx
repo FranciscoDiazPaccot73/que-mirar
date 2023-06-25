@@ -27,7 +27,7 @@ const Header: FC<HeaderProps> = ({ linkSelected = 0, handleTab }) => {
   const headerAfterClass = `after:h-6 after:bg-gradient-to-b after:from-[#1a202c] after:via-[#1a202c] after:w-full after:absolute after:left-0 after:-bottom-3 after:content-["''"] after:z-20`;
 
   return (
-    <header className={`max-w-[850px] w-full flex px-4 pt-3 pb-4 z-10 fixed left-0 right-0 top-0 bg-main-bg mx-auto ${headerAfterClass}`}>
+    <header className={`max-w-[1000px] w-full flex px-4 pt-3 pb-4 z-10 fixed left-0 right-0 top-0 bg-main-bg mx-auto ${headerAfterClass}`}>
       <div className="flex items-center justify-center mt-0 w-36 mr-6">
         <Image priority alt="Logo" height={80} src="/logo.webp" width={125} />
       </div>

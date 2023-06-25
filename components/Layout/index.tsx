@@ -9,22 +9,22 @@ import Skeleton from '../Skeleton';
 type LayoutProps = {
   source: string;
   nextRecomendation: () => void;
-  isFirst: boolean;
+  search: string;
 };
 
-const Layout: FC<LayoutProps> = ({ source, nextRecomendation, isFirst }) => {
+const Layout: FC<LayoutProps> = ({ source, nextRecomendation, search }) => {
   const {
     state: { fetching, similars, BASE_IMAGE_URL },
   } = useContext(PageContext);
 
   return (
     <>
-      <Card nextRecomendation={nextRecomendation} source={source} />
+      <Card nextRecomendation={nextRecomendation} search={search} source={source} />
       <div className="w-full flex justify-end my-3 text-purple md:hidden">
         <Button disabled={fetching} label="Ver siguiente recomendación" size="sm" variant="transparent" onClick={nextRecomendation} />
       </div>
       {similars?.length && !fetching ? (
-        <Similars content={similars} isFirst={isFirst} source={source} url={BASE_IMAGE_URL} />
+        <Similars content={similars} search={search} source={source} url={BASE_IMAGE_URL} />
       ) : (
         <Skeleton type="similars" />
       )}
