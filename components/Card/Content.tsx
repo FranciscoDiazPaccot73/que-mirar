@@ -34,6 +34,13 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
 
   const pictureGradient = "after:from-[#1a202c] after:via-[#1a202c] after:w-full after:absolute after:content-['']";
 
+  const handleNextRecomendation = () => {
+    if (nextRecomendation) {
+      window.scrollTo(0, 0);
+      nextRecomendation();
+    }
+  };
+
   return (
     <>
       {content ? (
@@ -54,11 +61,11 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
               />
             </div>
             <div className="px-4 pt-2 pb-3 md:pt-2 md:w-3/5 md:px-8 md:mt-8 md:mb-16 md:absolute md:left-0">
-              <p className="mb-3 text-2xl text-white md:text-4xl">
+              <p className="mb-3 text-3xl text-white md:text-4xl md:mb-6">
                 {content.title ?? content.name}
                 {source === 'movie' ? (
                   <span>
-                    <p className="text-xs opacity-60 mb-3">
+                    <p className="text-xs opacity-60 mb-3 mt-1">
                       {content?.release_date?.slice(0, 4)} &bull; {formatDuration(content?.duration)}
                     </p>
                   </span>
@@ -93,9 +100,9 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
                   <p className="text-gray-500 text-xs md:text-sm">{content?.vote_count} reviews</p>
                 </div>
                 {content.providers?.length ? (
-                  <div className="flex text-gray-300">
+                  <div className="grid grid-cols-4 text-gray-300">
                     {content.providers.map((prov: any) => (
-                      <div key={prov.id} className="rounded-md h-10 mx-2 overflow-hidden">
+                      <div key={prov.id} className="rounded-md h-10 mx-2 mb-2 overflow-hidden">
                         <Image alt={prov.provider_name} height={40} src={`${BASE_IMAGE_URL}${prov.logo_path}`} width={40} />
                       </div>
                     ))}
@@ -114,7 +121,12 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
                 </a>
               ) : null}
               {search === 'recomendations' && (
-                <Button label="Ver siguiente recomendación" size="sm" variant="transparent" onClick={nextRecomendation ?? (() => {})} />
+                <Button
+                  label="Ver siguiente recomendación"
+                  size="sm"
+                  variant="transparent"
+                  onClick={handleNextRecomendation ?? (() => {})}
+                />
               )}
             </div>
           </section>

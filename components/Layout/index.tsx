@@ -8,7 +8,7 @@ import Skeleton from '../Skeleton';
 
 type LayoutProps = {
   source: string;
-  nextRecomendation: () => void;
+  nextRecomendation?: () => void;
   search: string;
 };
 
@@ -20,9 +20,11 @@ const Layout: FC<LayoutProps> = ({ source, nextRecomendation, search }) => {
   return (
     <>
       <Card nextRecomendation={nextRecomendation} search={search} source={source} />
-      <div className="w-full flex justify-end my-3 text-purple md:hidden">
-        <Button disabled={fetching} label="Ver siguiente recomendación" size="sm" variant="transparent" onClick={nextRecomendation} />
-      </div>
+      {search === 'recomendations' && (
+        <div className="w-full flex justify-end my-3 text-purple md:hidden">
+          <Button disabled={fetching} label="Ver siguiente recomendación" size="sm" variant="transparent" onClick={nextRecomendation} />
+        </div>
+      )}
       {similars?.length && !fetching ? (
         <Similars content={similars} search={search} source={source} url={BASE_IMAGE_URL} />
       ) : (

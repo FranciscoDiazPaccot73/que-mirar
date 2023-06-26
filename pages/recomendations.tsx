@@ -1,63 +1,44 @@
 /* eslint-disable prettier/prettier */
 import type { NextPage } from 'next';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import ContentTitle from '@components/ContentTitle';
-import Header from '@components/Header';
 import Layout from '@components/Layout';
 
 import { updateParams } from '@utils/index';
 
 import {
-  getGenres,
-  getInfo, getNextRecomendationCached, getProviders,
+  getNextRecomendationCached,
   getRecomendation,
   getSimilars, resetValues, setContent,
-  setProvider,
   setRecomended,
-  setSelectedGenre,
   setWatchRegion,
+  getInitialRecomendations,
   setNextRecomendation,
 } from '@store/actions';
 import { PageContext } from '@store/index';
 import { AnimatePresence, motion } from 'framer-motion';
-import { getInitialRecomendations } from './api/recomendation-initial';
 
 import { ContentInterface } from './types';
 
-type HomeProps = {
+type TvRecoProps = {
   region: string;
   source: string;
   initialTab: number;
   initialResult: ContentInterface[];
 };
 
-const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResult, initialTab }) => {
+const TvReco: NextPage<TvRecoProps> = () => {
   const {
     dispatch,
     state: { content, isModalOpen, watchRegion = 'AR', selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent, nextRecomendations },
   } = useContext(PageContext);
-  const [linkSelected, handleTabChange] = useState(initialTab);
   const [source, setSource] = useState('tv');
+  const alreadyFetch = useRef(false)
 
-  useEffect(() => {
-    if (contextSource && contextSource !== 'movie') {
-      handleTabChange(contextSource === 'tv' ? 1 : 0);
-      setSource(contextSource);
-    }
-
-    if (region) {
-      setWatchRegion(dispatch, region);
-    }
-  }, [contextSource, region]);
-
-  const getPageData = async (newSource: string) => {
-    await getProviders(dispatch, newSource);
-    await getGenres(dispatch, newSource);
-  };
-
-  useEffect(() => {
-    const [firstResult, second] = initialResult
+  const getInitialData = async () => {
+    const recomendationsData = await getInitialRecomendations(dispatch, 'tv', 0, 'AR')
+    const [firstResult, second] = recomendationsData
 
     setContent(dispatch, firstResult);
     setRecomended(dispatch, firstResult.id);
@@ -72,23 +53,15 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
       setSource(params.source || 'tv');
       setWatchRegion(dispatch, params.region || 'AR');
     }
-  }, []);
 
-  const handleTab = async (tab: number) => {
-    if (tab !== linkSelected) {
-      const newSource = tab === 0 ? 'movie' : 'tv';
-
-      resetValues(dispatch)
-      handleTabChange(tab);
-      setSource(newSource);
-      setProvider(dispatch, 0);
-      setSelectedGenre(dispatch, 0);
-      getPageData(newSource);
-      const newId = await getInfo(dispatch, newSource, 'today');
-
-      updateParams({ newSource, newWatchRegion: watchRegion, id: newId });
+  }
+  
+  useEffect(() => {
+    if (!alreadyFetch.current) {
+      alreadyFetch.current = true
+      getInitialData()
     }
-  };
+  }, []);
 
   const nextRecomendation = async () => {
     resetValues(dispatch)
@@ -111,8 +84,7 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
 
   return (
     <div className='relative'>
-      <Header handleTab={handleTab} linkSelected={linkSelected} />
-      <main className="mt-[86px] flex flex-1 flex-col mx-auto max-w-[565px] min-h-main pt-6 pb-8 md:max-w-[1000px] md:min-h-main-desktop md:px-4 md:pt-4 md:pb-12 md:mt-28">
+      <main className="mt-[86px] flex flex-1 flex-col mx-auto max-w-[565px] min-h-main pt-6 pb-8 md:max-w-[1000px] md:min-h-main-desktop md:px-8 md:pt-4 md:pb-12 md:mt-28">
         <ContentTitle
           search='recomendations'
           source={source}
@@ -132,16 +104,4 @@ const Home: NextPage<HomeProps> = ({ region, source: contextSource, initialResul
   );
 };
 
-export async function getServerSideProps() {
-  const { result } = await getInitialRecomendations({ source: 'tv', region: 'AR', provider: '0', genre: '' });
-
-  return {
-    props: {
-      initialResult: JSON.parse(JSON.stringify(result)),
-      initialTab: 1,
-      source: 'tv',
-    },
-  };
-}
-
-export default Home;
+export default TvReco;

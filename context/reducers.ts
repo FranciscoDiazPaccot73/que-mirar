@@ -15,12 +15,14 @@ export const types = {
   SET_NEXT_RECOMENDATIONS: 'SET_NEXT_RECOMENDATIONS',
   SET_INITIAL_RECOMENDATIONS: 'SET_INITIAL_RECOMENDATIONS',
   SET_SEARCH_MODAL_STATE: 'SET_SEARCH_MODAL_STATE',
+  SET_TIME_FRAME: 'SET_TIME_FRAME',
 };
 
 export const init = (config: any) => {
   return {
     ...config,
     BASE_IMAGE_URL: 'https://image.tmdb.org/t/p/w500',
+    selectedTimeframe: 'day',
   };
 };
 
@@ -48,6 +50,9 @@ export const reducer = (state: any, action: any) => {
     }
     case types.SET_CONTENT: {
       return { ...state, content: action.content };
+    }
+    case types.SET_TIME_FRAME: {
+      return { ...state, selectedTimeframe: action.selectedTimeframe };
     }
     case types.PREV_CONTENT: {
       return { ...state, prevContent: action.prevContent };

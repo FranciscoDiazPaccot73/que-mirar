@@ -135,6 +135,7 @@ export const getInitialRecomendations = async (
   provider?: string | number,
   watchRegion?: string,
   genre?: number,
+  // eslint-disable-next-line consistent-return
 ) => {
   isFetching(dispatch, true);
   try {
@@ -146,6 +147,8 @@ export const getInitialRecomendations = async (
     );
 
     dispatch({ type: types.SET_INITIAL_RECOMENDATIONS, nextRecomendations: data });
+
+    return data;
   } catch (err: any) {
     console.log(err);
   } finally {
@@ -155,6 +158,10 @@ export const getInitialRecomendations = async (
 
 export const setNextRecomendation = (dispatch: any, recomendation: any) => {
   dispatch({ type: types.SET_INITIAL_RECOMENDATIONS, nextRecomendations: recomendation });
+};
+
+export const setTimeframe = (dispatch: any, frame: string) => {
+  dispatch({ type: types.SET_TIME_FRAME, selectedTimeframe: frame });
 };
 
 export const getNextRecomendationCached = async (

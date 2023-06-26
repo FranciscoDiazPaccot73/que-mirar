@@ -9,7 +9,7 @@ const Skeleton: FC<SkeletonProps> = ({ type }) => {
   if (type === 'card') {
     return (
       <div className="flex flex-col gap-2 w-full md:flex-row">
-        <div className="bg-skeleton animate-pulse w-full h-44 md:h-[700px] md:max-w-[350px]" />
+        <div className="bg-skeleton animate-pulse w-full h-36 md:hidden" />
         <div className="px-4 pt-2 pb-3 md:w-3/4 md:px-8 md:mt-8 md:mb-16">
           <div className="bg-skeleton h-8 rounded-md animate-pulse w-full" />
           <div className="bg-skeleton h-5 rounded-md animate-pulse w-full mt-2 mb-3" />
@@ -60,14 +60,16 @@ const Skeleton: FC<SkeletonProps> = ({ type }) => {
   if (type === 'similars') {
     return (
       <div className="mt-5">
-        <div className="bg-skeleton h-6 w-28 rounded-md my-4 animate-pulse" />
-        <div className="flex flex-col gap-4">
-          {Array(3)
+        <div className="bg-skeleton h-6 w-28 rounded-md my-4 animate-pulse ml-2 md:ml-0" />
+        <div className="grid gap-6 grid-cols-2 px-1 md:gap-10 md:px-0 md:grid-cols-4">
+          {Array(4)
             .fill('')
             .map((_, index) => (
-              <div key={`filter-skeleton-${index}`} className="bg-skeleton h-[70px] w-full rounded-md animate-pulse" />
+              <div className="flex flex-col gap-2 items-center">
+                <div key={`filter-skeleton-${index}`} className="bg-skeleton h-[100px] w-full rounded-md animate-pulse" />
+                <div className="h-6 w-24 bg-skeleton rounded-md animate-pulse" />
+              </div>
             ))}
-          <div className="ml-auto h-9 w-20 bg-skeleton rounded-md animate-pulse" />
         </div>
       </div>
     );

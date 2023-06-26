@@ -6,10 +6,11 @@ type LinkProps = {
   href: string;
   label: string;
   icon?: ReactNode;
+  onClick?: () => void;
 };
 
-const LinkButton: FC<LinkProps> = ({ classes, href, label, icon }) => (
-  <Link className={classes} href={href}>
+const LinkButton: FC<LinkProps> = ({ classes, href, label, icon, onClick = () => {} }) => (
+  <Link className={classes} href={href} onClick={onClick}>
     {icon}
     {label}
   </Link>

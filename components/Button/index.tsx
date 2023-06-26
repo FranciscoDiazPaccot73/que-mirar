@@ -33,7 +33,7 @@ const Button: FC<ButtonProps> = ({ onClick, label, variant, icon, disabled, cust
     },
   );
 
-  if (href) return <LinkButton classes={buttonClasses} href={href} icon={icon} label={label} />;
+  if (href) return <LinkButton classes={buttonClasses} href={href} icon={icon} label={label} onClick={onClick} />;
 
   const handleClick = () => {
     if (!disabled && onClick) onClick();

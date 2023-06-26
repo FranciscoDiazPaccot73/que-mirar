@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 
 import Seo from '@components/Seo';
 import Footer from '@components/Footer';
+import Header from '@components/Header';
 import PageProvider from '@store/index';
 
 import '@styles/globals.scss';
@@ -14,6 +15,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <PageProvider>
         <Seo />
+        <Header />
         <Component {...pageProps} />
         <Footer />
       </PageProvider>

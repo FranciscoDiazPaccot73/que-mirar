@@ -1,16 +1,12 @@
 import axios from 'axios';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { calculateMaxVotes, generateRandomIndexes } from '../../../utils';
 
-type getDataParams = {
-  source: string;
-  provider: string;
-  genre: string;
-  region: string;
-};
 const { BASE_URL, TMDB_API_KEY } = process.env;
 
-export const getInitialRecomendations = async ({ source, provider, genre, region }: getDataParams) => {
+export default async function getInitialRecomendations(req: NextApiRequest, res: NextApiResponse<any>) {
+  const { source, provider, genre, region } = req.query;
   const { MIN, MAX } = calculateMaxVotes({ source, genre });
   const countGte = Math.floor(Math.random() * (MAX - MIN + 1) + MIN);
 
@@ -88,8 +84,9 @@ export const getInitialRecomendations = async ({ source, provider, genre, region
 
     const result = await getWatchProvider(results);
 
-    return { result };
+    res.status(200).json(result);
   } catch (err: any) {
-    return { result: [], search: countGte };
+    console.log(err);
+    res.status(500).json({ search: countGte });
   }
-};
+}
