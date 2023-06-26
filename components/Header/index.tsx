@@ -28,7 +28,7 @@ const Header = () => {
     !isMovies ? 'text-purple border-b-2 border-purple' : 'text-white',
   );
 
-  const headerAfterClass = `after:h-6 after:bg-gradient-to-b after:from-[#1a202c] after:via-[#1a202c] after:w-full after:absolute after:left-0 after:-bottom-3 after:content-["''"] after:z-20`;
+  // const headerAfterClass = `after:h-6 after:bg-gradient-to-b after:from-[#1a202c] after:via-[#1a202c] after:w-full after:absolute after:left-0 after:-bottom-3 after:content-["''"] after:z-20`;
 
   const handleClick = () => resetValues(dispatch);
 
