@@ -14,12 +14,15 @@ export const types = {
   SET_SIMILAR_TO_CONTENT: 'SET_SIMILAR_TO_CONTENT',
   SET_NEXT_RECOMENDATIONS: 'SET_NEXT_RECOMENDATIONS',
   SET_INITIAL_RECOMENDATIONS: 'SET_INITIAL_RECOMENDATIONS',
+  SET_SEARCH_MODAL_STATE: 'SET_SEARCH_MODAL_STATE',
+  SET_TIME_FRAME: 'SET_TIME_FRAME',
 };
 
 export const init = (config: any) => {
   return {
     ...config,
     BASE_IMAGE_URL: 'https://image.tmdb.org/t/p/w500',
+    selectedTimeframe: 'day',
   };
 };
 
@@ -27,6 +30,9 @@ export const reducer = (state: any, action: any) => {
   switch (action.type) {
     case types.FETCHING: {
       return { ...state, fetching: action.value };
+    }
+    case types.SET_SEARCH_MODAL_STATE: {
+      return { ...state, isModalOpen: action.value };
     }
     case types.SET_INITIAL_RECOMENDATIONS: {
       return { ...state, nextRecomendations: action.nextRecomendations };
@@ -44,6 +50,9 @@ export const reducer = (state: any, action: any) => {
     }
     case types.SET_CONTENT: {
       return { ...state, content: action.content };
+    }
+    case types.SET_TIME_FRAME: {
+      return { ...state, selectedTimeframe: action.selectedTimeframe };
     }
     case types.PREV_CONTENT: {
       return { ...state, prevContent: action.prevContent };

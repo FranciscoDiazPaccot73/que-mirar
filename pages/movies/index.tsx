@@ -16,11 +16,11 @@ import {
 } from '@store/actions';
 import { PageContext } from '@store/index';
 import { AnimatePresence, motion } from 'framer-motion';
-import { getdata } from './api';
+import { getdata } from '../api';
 
-import { ContentInterface } from './types';
+import { ContentInterface } from '../types';
 
-type TvTrendsProps = {
+type MoviesTrendsProps = {
   region: string;
   source: string;
   initialTab: number;
@@ -28,12 +28,12 @@ type TvTrendsProps = {
   initialRest: ContentInterface[];
 };
 
-const TvTrends: NextPage<TvTrendsProps> = ({ region, initialResult, initialRest }) => {
+const MoviesTrends: NextPage<MoviesTrendsProps> = ({ region, initialResult, initialRest }) => {
   const {
     dispatch,
     state: { content, isModalOpen, watchRegion = 'AR', selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent },
   } = useContext(PageContext);
-  const [source, setSource] = useState('tv');
+  const [source, setSource] = useState('movie');
 
   useEffect(() => {
     if (region) {
@@ -88,7 +88,7 @@ const TvTrends: NextPage<TvTrendsProps> = ({ region, initialResult, initialRest 
 };
 
 export async function getServerSideProps() {
-  const { result, rest } = await getdata({ source: 'tv' });
+  const { result, rest } = await getdata({ source: 'movie' });
 
   return {
     props: {
@@ -98,4 +98,4 @@ export async function getServerSideProps() {
   };
 }
 
-export default TvTrends;
+export default MoviesTrends;

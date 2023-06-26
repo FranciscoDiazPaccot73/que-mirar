@@ -1,4 +1,4 @@
-import { FC, memo, useContext, useEffect, useRef } from 'react';
+import { FC, memo, useContext, useEffect } from 'react';
 
 import Genres from './Genres';
 import Providers from './Providers';
@@ -8,14 +8,14 @@ import { getGenres, getInitialRecomendations, getProviders, getRecomendation, se
 
 interface FilterProps {
   source: string;
+  selectedFilter: () => void;
 }
 
-const Filters: FC<FilterProps> = ({ source }) => {
+const Filters: FC<FilterProps> = ({ source, selectedFilter }) => {
   const {
     dispatch,
     state: { watchRegion = 'AR', selectedProvider = 0, selectedGenre = 0, fetching, recomendedContent = [], prevContent },
   } = useContext(PageContext);
-  const firstRun = useRef(true);
 
   const getPageProviders = async () => {
     await getProviders(dispatch, source);
@@ -26,17 +26,17 @@ const Filters: FC<FilterProps> = ({ source }) => {
   };
 
   useEffect(() => {
-    if (source && firstRun.current) {
-      firstRun.current = false;
+    if (source) {
       getPageProviders();
       getPageGenres();
     }
-  }, []);
+  }, [source]);
 
   const handleFilter = async (id: number) => {
     if (!fetching && id !== selectedProvider) {
       setProvider(dispatch, id);
       window.scrollTo(0, 0);
+      selectedFilter();
       await getRecomendation(dispatch, source, recomendedContent, prevContent, id, selectedGenre, watchRegion, true);
       getInitialRecomendations(dispatch, source, id, watchRegion, selectedGenre);
     }
@@ -47,6 +47,7 @@ const Filters: FC<FilterProps> = ({ source }) => {
       if (id !== selectedGenre) {
         setSelectedGenre(dispatch, id);
         window.scrollTo(0, 0);
+        selectedFilter();
         if (id === 0) {
           await getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, null, watchRegion, true);
           getInitialRecomendations(dispatch, source, selectedProvider, watchRegion);

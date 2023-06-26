@@ -1,6 +1,6 @@
 {
   "name": "que-puedo-ver",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "private": true,
   "homepage": "https://quepuedover.online",
   "author": {
@@ -23,6 +23,7 @@
     "next": "13.3.0",
     "postcss": "^8.4.23",
     "react": "18.2.0",
+    "react-circular-progressbar": "^2.1.0",
     "react-device-detect": "^2.2.2",
     "react-dom": "18.2.0",
     "react-ga": "^3.3.1",

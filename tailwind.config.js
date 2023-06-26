@@ -26,9 +26,16 @@ module.exports = {
         'purple-12': '#B794F412',
         modal: '#2f3747',
         'main-bg': '#1a202c',
+        'black-90': '#00000090',
       },
       borderColor: {
         purple: '#B794F4',
+      },
+      gridTemplateColumns: {
+        7.3: '70% 30%',
+      },
+      transitionProperty: {
+        left: 'left',
       },
     },
   },

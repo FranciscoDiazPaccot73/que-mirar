@@ -25,7 +25,7 @@ const Providers: FC<ProvidersProps> = ({ handleFilter }) => {
     state: { selectedProvider = 0, providers },
   } = useContext(PageContext);
   const wrapperClasses = classNames(
-    'cursor-pointer flex items-center justify-center bg-purple rounded-md border border-purple text-filter-color font-semibold h-9 w-9 overflow-hidden mr-3',
+    'cursor-pointer flex items-center justify-center bg-purple rounded-md border border-purple text-filter-color font-semibold h-9 w-9 overflow-hidden md:mr-3',
     {
       'text-white bg-transparent': selectedProvider !== 0,
     },
@@ -39,15 +39,15 @@ const Providers: FC<ProvidersProps> = ({ handleFilter }) => {
 
   return (
     <div className="mb-8">
-      <p className="text-xs text-white opacity-90">Filtrar por plataforma de streaming</p>
-      <div className="w-full flex mt-3 justify-center md:justify-start">
+      <p className="text-xs text-white opacity-90">Plataformas de streaming</p>
+      <div className="w-full grid grid-cols-5 gap-4 mt-3 justify-center md:gap-0 md:flex md:justify-start">
         {providers?.length ? (
           <>
             <div className={wrapperClasses} onClick={() => handleFilter(0)} onKeyUp={(e) => handleKeyUp(e, 0)}>
               <p className="text-center text-[10px]">TODAS</p>
             </div>
             {providers.map((prov: ProviderType) => {
-              const filtersClasses = classNames('cursor-pointer rounded-md border border-purple h-9 w-9 overflow-hidden mr-3', {
+              const filtersClasses = classNames('cursor-pointer rounded-md border border-purple h-9 w-9 overflow-hidden md:mr-3', {
                 'border-none grayscale-90 md:hover:grayscale-0': selectedProvider !== prov.provider_id,
               });
 

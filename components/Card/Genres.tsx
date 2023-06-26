@@ -10,9 +10,10 @@ type GenresProps = {
 const Genres: FC<GenresProps> = ({ genres }) => {
   if (!genres || !genres.length) return null;
 
-  const classes = 'p-1 rounded-md border border-gray-500 flex items-center justify-center text-center';
+  const classes =
+    'p-1 rounded-md border border-gray-500 justify-center text-center h-7 inline-block whitespace-nowrap text-ellipsis min-w-[28px] overflow-hidden';
 
-  if (genres.length <= 2) {
+  if (genres.length <= 4) {
     return (
       <div className="flex gap-1 mt-1">
         {genres.map((genre: GenresTypes) => (
