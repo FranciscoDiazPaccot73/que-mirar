@@ -97,7 +97,7 @@ const ContentTitle: FC<ContentTitleProps> = ({ search, watchRegion, onChangeRegi
         />
         <div className="ml-auto flex gap-3">
           <SearchBox region={watchRegion} source={source} />
-          <FilterModal onChangeRegion={onChangeRegion} />
+          <FilterModal source={source} onChangeRegion={onChangeRegion} />
         </div>
       </div>
     </div>

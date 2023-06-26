@@ -36,7 +36,6 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
 
   const handleNextRecomendation = () => {
     if (nextRecomendation) {
-      window.scrollTo(0, 0);
       nextRecomendation();
     }
   };

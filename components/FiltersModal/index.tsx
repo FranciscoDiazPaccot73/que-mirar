@@ -10,9 +10,10 @@ import Filters from '../Filters';
 
 type FilterModalType = {
   onChangeRegion: (newRegion: any) => void;
+  source: string;
 };
 
-const FilterModal: FC<FilterModalType> = ({ onChangeRegion }) => {
+const FilterModal: FC<FilterModalType> = ({ onChangeRegion, source }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const {
     state: { watchRegion = 'AR' },
@@ -39,8 +40,9 @@ const FilterModal: FC<FilterModalType> = ({ onChangeRegion }) => {
       />
       <Modal isOpen={modalOpen} resetModal={resetModal}>
         <>
+          <p className="text-3xl mb-4">Filtros</p>
           <div className="relative overflow-hidden h-auto w-full">
-            <div className="relative w-20">
+            <div className="relative w-20 mt-4">
               <p className="text-[10px] absolute -top-4">Región</p>
               <select
                 className="w-full cursor-pointer bg-transparent text-white outline-2 outline-transparent outline relative appearance-none h-8 border border-white border-opacity-30 px-3 rounded-sm after:url"
@@ -56,7 +58,7 @@ const FilterModal: FC<FilterModalType> = ({ onChangeRegion }) => {
               <img alt="Down chevron" className="float-right -mt-6 mr-2" src="/chevron-down.svg" />
             </div>
           </div>
-          <Filters source="tv" />
+          <Filters selectedFilter={resetModal} source={source} />
         </>
       </Modal>
     </div>

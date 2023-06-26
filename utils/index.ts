@@ -57,6 +57,8 @@ export const getDeviceTrackWording = (device: string) => {
 };
 
 export const formatDuration = (duration: number) => {
+  if (!duration) return '';
+
   if (duration < 60) return `${duration} min.`;
 
   const hours = duration / 60;

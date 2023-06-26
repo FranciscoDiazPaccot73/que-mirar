@@ -64,7 +64,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({ children, resetModal, isOpen
             animate={{
               opacity: 1,
             }}
-            className="bg-transparent fixed h-full w-full flex items-center justify-center top-0 left-0"
+            className="bg-black-90 fixed h-full w-full flex items-center justify-center top-0 left-0"
             exit={{
               opacity: 0,
             }}

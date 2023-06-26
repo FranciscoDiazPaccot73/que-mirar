@@ -64,6 +64,7 @@ const MoviesReco: NextPage<MoviesRecoProps> = () => {
   }, []);
 
   const nextRecomendation = async () => {
+    window.scrollTo(0,0)
     resetValues(dispatch)
     const [next] = nextRecomendations;
     const newId = await getNextRecomendationCached(dispatch, source, next.id, next, watchRegion);

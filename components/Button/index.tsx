@@ -6,7 +6,7 @@ import LinkButton from './Link';
 export type ButtonProps = {
   onClick?: () => void;
   href?: string;
-  label: string;
+  label?: string;
   h?: string;
   variant?: string;
   icon?: ReactNode;
@@ -16,7 +16,7 @@ export type ButtonProps = {
   size?: string;
 };
 
-const Button: FC<ButtonProps> = ({ onClick, label, variant, icon, disabled, customClass, h, color, size, href }) => {
+const Button: FC<ButtonProps> = ({ onClick, label = '', variant, icon, disabled, customClass, h, color, size, href }) => {
   const buttonClasses = classNames(
     'inline-flex appearance-none items-center gap-3 justify-center relative select-none outline-none outline-offset-2 rounded-md font-semibold px-4 py-2',
     `h-${h}`,

@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { FC, useContext, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -18,6 +18,7 @@ const ContentBox: FC<ContentBoxProps> = ({ content, url, source }) => {
     dispatch,
     state: { watchRegion },
   } = useContext(PageContext);
+  const [errorLoadingImage, setImageError] = useState(false);
 
   if (!content) return null;
 
@@ -42,8 +43,9 @@ const ContentBox: FC<ContentBoxProps> = ({ content, url, source }) => {
         blurDataURL={`${url}${backdropPath}`}
         height={120}
         placeholder="blur"
-        src={`${url}${imageUrl}`}
+        src={errorLoadingImage ? '/not-image.png' : `${url}${imageUrl}`}
         width={190}
+        onError={() => setImageError(true)}
       />
       {vote ? (
         <div className="h-10 w-10 absolute top-20 right-0">
