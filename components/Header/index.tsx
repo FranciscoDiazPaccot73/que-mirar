@@ -33,7 +33,7 @@ const Header = () => {
   const handleClick = () => resetValues(dispatch);
 
   return (
-    <header className={`max-w-[1000px] w-full flex px-4 pt-3 pb-4 z-10 fixed left-0 right-0 top-0 bg-main-bg mx-auto ${headerAfterClass}`}>
+    <header className="max-w-[1000px] w-full flex px-4 pt-3 pb-4 z-10 fixed left-0 right-0 top-0 bg-transparent mx-auto">
       <div className="flex items-center justify-center mt-0 w-36 mr-6">
         <Image priority alt="Logo" height={80} src="/logo.webp" width={125} />
       </div>

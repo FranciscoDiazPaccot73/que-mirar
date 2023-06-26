@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable prettier/prettier */
 import type { NextPage } from 'next';
 import { useContext, useEffect, useState } from 'react';
