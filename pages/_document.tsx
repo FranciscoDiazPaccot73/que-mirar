@@ -7,7 +7,7 @@ export default class Document extends NextDocument {
     return (
       <Html data-theme="dark" lang="es" style={{ background: '#1a202c' }}>
         <Head />
-        <Image fill alt="bg" className="absolute top-0 left-0" src="/test-bg.webp" />
+        <Image fill priority alt="bg" className="absolute top-0 left-0" src="/test-bg.webp" />
         <div className="absolute top-0 left-0">
           <video autoPlay loop muted playsInline>
             <source src="/test-bg.webm" type="video/webm" />
