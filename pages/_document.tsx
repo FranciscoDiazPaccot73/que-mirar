@@ -7,7 +7,7 @@ export default class Document extends NextDocument {
       <Html data-theme="dark" lang="es" style={{ background: '#1a202c' }}>
         <Head />
         <div className="absolute top-0 left-0">
-          <video autoPlay loop muted playsInline>
+          <video autoPlay loop muted playsInline poster="/test-bg.webp">
             <source src="/test-bg.webm" type="video/webm" />
             <source src="/test-bg.mp4" type="video/mp4" />
           </video>
