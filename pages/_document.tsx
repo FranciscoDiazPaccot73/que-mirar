@@ -5,7 +5,9 @@ export default class Document extends NextDocument {
   render() {
     return (
       <Html data-theme="dark" lang="es" style={{ background: '#1a202c' }}>
-        <Head />
+        <Head>
+          <link as="image" href="/test-bg.webp" rel="preload" />
+        </Head>
         <div className="absolute top-0 left-0">
           <video autoPlay loop muted playsInline poster="/test-bg.webp">
             <source src="/test-bg.webm" type="video/webm" />
