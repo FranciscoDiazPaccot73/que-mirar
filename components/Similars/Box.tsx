@@ -1,10 +1,11 @@
-import { FC, useContext } from 'react';
+import { FC, useContext, useState } from 'react';
 
 import Image from 'next/image';
 
 import { PageContext } from '@/context';
 import { getContent, getSimilars, setSimilarToContent } from '@/context/actions';
 import { ContentInterface } from '@/pages/types';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 
 type ContentBoxProps = {
   url: string;
@@ -17,13 +18,14 @@ const ContentBox: FC<ContentBoxProps> = ({ content, url, source }) => {
     dispatch,
     state: { watchRegion },
   } = useContext(PageContext);
+  const [errorLoadingImage, setImageError] = useState(false);
 
   if (!content) return null;
 
-  const { id, name, title, poster_path: poster, vote_average: vote, backdrop_path: backdropPath, overview } = content;
-  const boxClasses = 'h-full rounded rounded-md overflow-hidden border border-purple flex items-center gap-2 px-2 py-1 cursor-pointer';
+  const { id, name, title, vote_average: vote, backdrop_path: backdropPath, overview } = content;
+  const boxClasses = 'relative h-full flex flex-col items-center gap-2 cursor-pointer mb-4 md:mb-6';
 
-  const imageUrl = poster || backdropPath;
+  const imageUrl = backdropPath;
 
   const handleLoadContent = async () => {
     if (id) {
@@ -36,14 +38,34 @@ const ContentBox: FC<ContentBoxProps> = ({ content, url, source }) => {
 
   return (
     <div className={boxClasses} title={overview ?? title} onClick={handleLoadContent}>
-      <Image alt={overview ?? title} blurDataURL={`${url}${poster}`} height={60} placeholder="blur" src={`${url}${imageUrl}`} width={40} />
-      <p className="text-sm">{name || title}</p>
+      <Image
+        alt={overview ?? title}
+        blurDataURL={`${url}${backdropPath}`}
+        height={120}
+        placeholder="blur"
+        src={errorLoadingImage ? '/not-image.png' : `${url}${imageUrl}`}
+        width={190}
+        onError={() => setImageError(true)}
+      />
       {vote ? (
-        <p className="text-xs text-slate-400 ml-auto flex">
-          {vote.toFixed(2)}
-          <span className="hidden md:block">/10</span>
-        </p>
+        <div className="h-10 w-10 absolute top-20 right-0">
+          <CircularProgressbar
+            background
+            maxValue={10}
+            strokeWidth={10}
+            styles={buildStyles({
+              textSize: '18px',
+              pathColor: '#B794F4',
+              textColor: '#B794F4',
+              trailColor: '#B794F412',
+              backgroundColor: '#1a202c',
+            })}
+            text={`${vote.toFixed(2)}`}
+            value={vote}
+          />
+        </div>
       ) : null}
+      <p className="text-lg mt-1">{name || title}</p>
     </div>
   );
 };

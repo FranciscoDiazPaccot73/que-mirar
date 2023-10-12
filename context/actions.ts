@@ -15,13 +15,17 @@ export const isFetching = (dispatch: any, value: boolean) => {
   dispatch({ type: types.FETCHING, value });
 };
 
-export const getInfo = async (dispatch: any, source: string) => {
+export const setIsModalOpen = (dispatch: any, value: boolean) => {
+  dispatch({ type: types.SET_SEARCH_MODAL_STATE, value });
+};
+
+export const getInfo = async (dispatch: any, source: string, timelapse: string) => {
   dispatch({ type: types.FETCHING, value: true });
   dispatch({ type: types.SET_CONTENT, content: null });
   let itWorked = true;
 
   try {
-    const { data } = await axios.get(`/api?source=${source}`, { timeout });
+    const { data } = await axios.get(`/api?source=${source}&time=${timelapse || 'today'}`, { timeout });
 
     const { result, rest } = data;
 
@@ -32,7 +36,7 @@ export const getInfo = async (dispatch: any, source: string) => {
     return data.id;
   } catch (err: any) {
     itWorked = false;
-    if (err?.code === 'ECONNABORTED') getInfo(dispatch, source);
+    if (err?.code === 'ECONNABORTED') getInfo(dispatch, source, timelapse);
   } finally {
     dispatch({ type: types.FETCHING, value: false });
   }
@@ -131,6 +135,7 @@ export const getInitialRecomendations = async (
   provider?: string | number,
   watchRegion?: string,
   genre?: number,
+  // eslint-disable-next-line consistent-return
 ) => {
   isFetching(dispatch, true);
   try {
@@ -142,11 +147,21 @@ export const getInitialRecomendations = async (
     );
 
     dispatch({ type: types.SET_INITIAL_RECOMENDATIONS, nextRecomendations: data });
+
+    return data;
   } catch (err: any) {
     console.log(err);
   } finally {
     isFetching(dispatch, false);
   }
+};
+
+export const setNextRecomendation = (dispatch: any, recomendation: any) => {
+  dispatch({ type: types.SET_INITIAL_RECOMENDATIONS, nextRecomendations: recomendation });
+};
+
+export const setTimeframe = (dispatch: any, frame: string) => {
+  dispatch({ type: types.SET_TIME_FRAME, selectedTimeframe: frame });
 };
 
 export const getNextRecomendationCached = async (

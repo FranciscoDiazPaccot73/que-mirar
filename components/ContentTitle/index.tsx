@@ -1,86 +1,111 @@
-import { FC, useContext } from 'react';
+import { FC, useContext, useEffect, useRef } from 'react';
 
+import { useRouter } from 'next/router';
 import Button from '../Button';
 import SearchBox from '../Search';
+import FilterModal from '../FiltersModal';
 
 import { PageContext } from '../../context';
-import { getInfo, resetValues } from '../../context/actions';
-import { availableRegions } from '../../utils';
+import { getInfo, resetValues, setTimeframe } from '../../context/actions';
 
 type ContentTitleProps = {
-  isFirst: boolean;
   watchRegion: string;
   source: string;
-  setFirst: (value: boolean) => void;
-  onChange?: (newRegion: any) => void;
-  nextRecomendation?: () => void;
+  search: string;
+  onChangeRegion?: (newRegion: any) => void;
 };
 
-const ContentTitle: FC<ContentTitleProps> = ({ isFirst, watchRegion, onChange = () => {}, source, nextRecomendation, setFirst }) => {
+const ContentTitle: FC<ContentTitleProps> = ({ search, watchRegion, onChangeRegion = () => {}, source }) => {
   const {
     dispatch,
-    state: { fetching },
+    state: { fetching, selectedTimeframe = 'day' },
   } = useContext(PageContext);
+  const animationOffset = useRef('115px');
+  const { pathname } = useRouter();
 
-  const getTrending = () => {
-    if (!isFirst && !fetching) {
+  const basePath = pathname?.includes('movies') ? '/movies' : '/';
+
+  useEffect(() => {
+    if (window.innerWidth < 768) animationOffset.current = '70px';
+  }, []);
+
+  const trendigsWording = watchRegion === 'BR' ? 'Tendências' : 'Tendencias';
+  const recomendationsWording = watchRegion === 'BR' ? 'Recomendações' : 'Recomendaciones';
+
+  const getTrending = (frame: string) => {
+    if (!fetching) {
       resetValues(dispatch);
-      getInfo(dispatch, source);
-      setFirst(true);
+      getInfo(dispatch, source, frame);
     }
   };
 
-  const handleGetRecomendation = () => {
-    if (isFirst && !fetching && nextRecomendation) {
-      nextRecomendation();
+  const handleTimeframe = (frame: string) => {
+    if (!fetching && frame !== selectedTimeframe) {
+      setTimeframe(dispatch, frame);
+      getTrending(frame);
     }
   };
 
-  const handleChangeRegion = (e: { target: { value: string } }) => {
-    const { value } = e.target;
-
-    onChange(value);
+  const handleNewSource = () => {
+    resetValues(dispatch);
   };
 
   return (
     <div className="flex text-white flex-col items-center justify-between mb-4">
-      <div className="flex justify-between mb-4 w-full">
-        <SearchBox region={watchRegion} source={source} />
-        <div className="relative w-20">
-          <p className="text-[10px] absolute -top-4">Región</p>
-          <select
-            className="w-full cursor-pointer bg-transparent text-white outline-2 outline-transparent outline relative appearance-none h-8 border border-white border-opacity-30 px-3 rounded-sm after:url"
-            value={watchRegion}
-            onChange={handleChangeRegion}
-          >
-            {availableRegions.map((region: string) => (
-              <option key={region} className="text-white bg-secondary" value={region}>
-                {region}
-              </option>
-            ))}
-          </select>
-          <img alt="Down chevron" className="float-right -mt-6 mr-2" src="/chevron-down.svg" />
-        </div>
+      <div className="flex w-full gap-10 items-end">
+        <p className="pl-4 text-2xl md:text-4xl">{search === 'trends' ? trendigsWording : recomendationsWording}</p>
+        {search === 'trends' ? (
+          <div className="flex rounded-full border border-purple relative">
+            <div
+              className="py-1 px-3 cursor-pointer flex items-center justify-center w-[70px] md:w-[115px]"
+              onClick={() => handleTimeframe('day')}
+            >
+              <p
+                className={`${
+                  selectedTimeframe === 'day' ? 'text-black' : 'text-white'
+                } transition-colors duration-300 text-sm md:text-base`}
+              >
+                Hoy
+              </p>
+            </div>
+            <div
+              className="py-1 px-3 cursor-pointer flex items-center justify-center w-[70px] md:w-[115px]"
+              onClick={() => handleTimeframe('week')}
+            >
+              <p
+                className={`${
+                  selectedTimeframe === 'week' ? 'text-black' : 'text-white'
+                } transition-colors duration-300 text-sm md:text-base`}
+              >
+                Semana
+              </p>
+            </div>
+            <div
+              className="h-full absolute rounded-full bg-purple -z-10 transition-left duration-300 w-[70px] md:w-[115px]"
+              style={{ left: selectedTimeframe === 'day' ? '0' : animationOffset.current }}
+            />
+          </div>
+        ) : null}
       </div>
-      <div className="flex w-full gap-3">
+      <div className="mt-8 w-full flex items-center">
         <Button
-          label={`${watchRegion === 'BR' ? 'Tendências' : 'Tendencias'}`}
-          variant={`${isFirst ? 'solid' : 'outline'}`}
-          onClick={getTrending}
+          href={search === 'trends' ? `${basePath}/recomendations` : basePath}
+          label={`Ver ${search === 'trends' ? recomendationsWording : trendigsWording}`}
+          size="lg"
+          variant="transparent"
+          onClick={handleNewSource}
         />
-        <Button
-          label={`${watchRegion === 'BR' ? 'Recomendações' : 'Recomendaciones'}`}
-          variant={`${isFirst ? 'outline' : 'solid'}`}
-          onClick={handleGetRecomendation}
-        />
+        <div className="ml-auto flex gap-3">
+          <SearchBox region={watchRegion} source={source} />
+          <FilterModal source={source} onChangeRegion={onChangeRegion} />
+        </div>
       </div>
     </div>
   );
 };
 
 ContentTitle.defaultProps = {
-  onChange: () => {},
-  nextRecomendation: () => {},
+  onChangeRegion: () => {},
 };
 
 export default ContentTitle;

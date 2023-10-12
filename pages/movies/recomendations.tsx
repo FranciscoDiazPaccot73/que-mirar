@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import type { NextPage } from 'next';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import ContentTitle from '@components/ContentTitle';
 import Layout from '@components/Layout';
@@ -8,53 +8,71 @@ import Layout from '@components/Layout';
 import { updateParams } from '@utils/index';
 
 import {
+  getNextRecomendationCached,
   getRecomendation,
   getSimilars, resetValues, setContent,
   setRecomended,
-  setSimilars,
-  setWatchRegion
+  setWatchRegion,
+  getInitialRecomendations,
+  setNextRecomendation,
 } from '@store/actions';
 import { PageContext } from '@store/index';
 import { AnimatePresence, motion } from 'framer-motion';
-import { getdata } from './api';
 
-import { ContentInterface } from './types';
+import { ContentInterface } from '../types';
 
-type TvTrendsProps = {
+type MoviesRecoProps = {
   region: string;
   source: string;
   initialTab: number;
-  initialResult: ContentInterface;
-  initialRest: ContentInterface[];
+  initialResult: ContentInterface[];
 };
 
-const TvTrends: NextPage<TvTrendsProps> = ({ region, initialResult, initialRest }) => {
+const MoviesReco: NextPage<MoviesRecoProps> = () => {
   const {
     dispatch,
-    state: { content, isModalOpen, watchRegion = 'AR', selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent },
+    state: { content, isModalOpen, watchRegion = 'AR', selectedGenre, selectedProvider = 0, recomendedContent = [], prevContent, nextRecomendations },
   } = useContext(PageContext);
-  const [source, setSource] = useState('tv');
+  const [source, setSource] = useState('movie');
+  const alreadyFetch = useRef(false)
 
-  useEffect(() => {
-    if (region) {
-      setWatchRegion(dispatch, region);
-    }
-  }, [region]);
+  const getInitialData = async () => {
+    const recomendationsData = await getInitialRecomendations(dispatch, 'movie', 0, 'AR')
+    const [firstResult, second] = recomendationsData
 
-  useEffect(() => {
-    setContent(dispatch, initialResult);
-    setRecomended(dispatch, initialResult.id);
-    setSimilars(dispatch, initialRest);
+    setContent(dispatch, firstResult);
+    setRecomended(dispatch, firstResult.id);
+    getSimilars(dispatch, source, firstResult.id, watchRegion);
+    setNextRecomendation(dispatch, [second])
 
     const params: any = new Proxy(new URLSearchParams(window.location.search), {
       get: (searchParams, prop: any) => searchParams.get(prop),
     });
 
     if (params.source || params.region || params.id) {
-      setSource(params.source || 'tv');
+      setSource(params.source || 'movie');
       setWatchRegion(dispatch, params.region || 'AR');
     }
+
+  }
+  
+  useEffect(() => {
+    if (!alreadyFetch.current) {
+      alreadyFetch.current = true
+      getInitialData()
+    }
   }, []);
+
+  const nextRecomendation = async () => {
+    window.scrollTo(0,0)
+    resetValues(dispatch)
+    const [next] = nextRecomendations;
+    const newId = await getNextRecomendationCached(dispatch, source, next.id, next, watchRegion);
+    
+    updateParams({ newSource: source, newWatchRegion: watchRegion, id: newId });
+    getSimilars(dispatch, source, newId, watchRegion);
+    getRecomendation(dispatch, source, recomendedContent, prevContent, selectedProvider, selectedGenre, watchRegion);
+  };
 
   const handleRegion = async (newRegion: string) => {
     resetValues(dispatch)
@@ -69,7 +87,7 @@ const TvTrends: NextPage<TvTrendsProps> = ({ region, initialResult, initialRest 
     <div className='relative'>
       <main className="mt-[86px] flex flex-1 flex-col mx-auto max-w-[565px] min-h-main pt-6 pb-8 md:max-w-[1000px] md:min-h-main-desktop md:px-8 md:pt-4 md:pb-12 md:mt-28">
         <ContentTitle
-          search='trends'
+          search='recomendations'
           source={source}
           watchRegion={watchRegion ?? 'AR'}
           onChangeRegion={handleRegion}
@@ -79,7 +97,7 @@ const TvTrends: NextPage<TvTrendsProps> = ({ region, initialResult, initialRest 
             animate={isModalOpen ? { scale: 0.95, opacity: .5 } : { scale: 1, opacity: 1 }}
             transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
           >
-            <Layout search='trends' source={source} />
+            <Layout nextRecomendation={nextRecomendation} search='recomendations' source={source} />
           </motion.div>
         </AnimatePresence>
       </main>
@@ -87,15 +105,4 @@ const TvTrends: NextPage<TvTrendsProps> = ({ region, initialResult, initialRest 
   );
 };
 
-export async function getServerSideProps() {
-  const { result, rest } = await getdata({ source: 'tv' });
-
-  return {
-    props: {
-      initialResult: JSON.parse(JSON.stringify(result)),
-      initialRest: JSON.parse(JSON.stringify(rest)),
-    },
-  };
-}
-
-export default TvTrends;
+export default MoviesReco;

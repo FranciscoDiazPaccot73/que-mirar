@@ -1,9 +1,12 @@
-import classNames from 'classnames';
 import { FC, ReactNode } from 'react';
+import classNames from 'classnames';
 
-type ButtonProps = {
-  label: string;
-  onClick: () => void;
+import LinkButton from './Link';
+
+export type ButtonProps = {
+  onClick?: () => void;
+  href?: string;
+  label?: string;
   h?: string;
   variant?: string;
   icon?: ReactNode;
@@ -13,7 +16,7 @@ type ButtonProps = {
   size?: string;
 };
 
-const Button: FC<ButtonProps> = ({ onClick, label, variant, icon, disabled, customClass, h, color, size }) => {
+const Button: FC<ButtonProps> = ({ onClick, label = '', variant, icon, disabled, customClass, h, color, size, href }) => {
   const buttonClasses = classNames(
     'inline-flex appearance-none items-center gap-3 justify-center relative select-none outline-none outline-offset-2 rounded-md font-semibold px-4 py-2',
     `h-${h}`,
@@ -30,8 +33,10 @@ const Button: FC<ButtonProps> = ({ onClick, label, variant, icon, disabled, cust
     },
   );
 
+  if (href) return <LinkButton classes={buttonClasses} href={href} icon={icon} label={label} onClick={onClick} />;
+
   const handleClick = () => {
-    if (!disabled) onClick();
+    if (!disabled && onClick) onClick();
   };
 
   return (
