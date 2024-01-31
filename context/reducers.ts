@@ -38,7 +38,7 @@ export const reducer = (state: any, action: any) => {
       return { ...state, nextRecomendations: action.nextRecomendations };
     }
     case types.SET_NEXT_RECOMENDATIONS: {
-      const { nextRecomendations } = state;
+      const { nextRecomendations = [] } = state;
 
       const currentRecomendations = [...nextRecomendations];
 

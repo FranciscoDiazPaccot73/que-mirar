@@ -2,14 +2,14 @@
 import { FC, useContext, useState } from "react";
 
 import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react";
 
@@ -18,7 +18,6 @@ import { resetSearch, search } from "@/context/actions";
 import { ContentInterface } from "@/pages/types";
 
 import { Carousel, CarouselContent, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import Input from "../Input";
 import ContentBox from "../Similars/Box";
 
 type SearchBoxProps = {
@@ -59,9 +58,17 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
     }
   };
 
+  const handleDialogChange = (newState: boolean) => {
+    if (!fetching) {
+      if (!newState) resetModal()
+  
+      setModalOpen(newState)
+    }
+  }
+
   return (
-    <AlertDialog open={modalOpen}>
-      <AlertDialogTrigger asChild>
+    <Dialog open={modalOpen} onOpenChange={handleDialogChange}>
+      <DialogTrigger asChild>
         <Button
           className="p-2 "
           color="gray"
@@ -71,54 +78,56 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
         >
           <Search className="h-4 w-4 mr-1" /> Buscar
         </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>{`Buscar ${source === "tv" ? "serie" : "pelicula"}`}</AlertDialogTitle>
-        </AlertDialogHeader>
-        <div className="w-full mt-5 flex items-center mb-6">
+      </DialogTrigger>
+      <DialogContent className="max-h-modal">
+        <DialogHeader>
+          <DialogTitle>{`Buscar ${source === "tv" ? "serie" : "pelicula"}`}</DialogTitle>
+        </DialogHeader>
+        <div className="flex items-center space-x-2">
+          <div className="grid flex-1 gap-2">
+            <Label className="sr-only" htmlFor="search-box">
+              Search box
+            </Label>
             <Input
+              id="search-box"
               placeholder="Nombre"
               onChange={handleInputChange}
               onKeyUp={handleKeyUp}
             />
-            <Button
-              className="ml-3 h-10"
-              disabled={fetching}
-              onClick={handleSearch}
-            />
           </div>
-          {searchResult?.length ? (
-            <section className="overflow-y-auto max-h-modal-dialog pb-12">
-              <div className="relative overflow-hidden h-auto w-full">
-                <Carousel
-                  className="w-full px-10 py-6"
-                  opts={{
-                    align: "center",
-                  }}
-                >
-                  <CarouselContent>
-                    {searchResult.map((result: ContentInterface) => (
-                      <ContentBox
-                        key={result.id}
-                        content={result}
-                        customAction={resetModal}
-                        source={source}
-                        url={BASE_IMAGE_URL}
-                      />
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="left-6 md:left-0" variant="secondary" />
-                  <CarouselNext className="right-6 md:right-0" variant="secondary" />
-                </Carousel>
-              </div>
-            </section>
-          ) : null}
-        <AlertDialogFooter onClick={resetModal}>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          <Button className="px-3 h-10 bg-secondary text-white hover:text-black" size="sm" type="submit" variant="outline">
+            <span className="sr-only">Search</span>
+            <Search className="h-4 w-4" />
+          </Button>
+        </div>
+        {searchResult?.length ? (
+          <section className="overflow-y-auto max-h-modal-dialog pb-12">
+            <div className="relative overflow-hidden h-auto w-full">
+              <Carousel
+                className="w-full px-10 py-6"
+                opts={{
+                  align: "center",
+                }}
+              >
+                <CarouselContent>
+                  {searchResult.map((result: ContentInterface) => (
+                    <ContentBox
+                      key={result.id}
+                      content={result}
+                      customAction={resetModal}
+                      source={source}
+                      url={BASE_IMAGE_URL}
+                    />
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="left-6 md:left-0" variant="secondary" />
+                <CarouselNext className="right-6 md:right-0" variant="secondary" />
+              </Carousel>
+            </div>
+          </section>
+        ) : null}
+      </DialogContent>
+    </Dialog>
   );
 };
 
