@@ -6,12 +6,20 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import { ContentInterface } from "@/pages/types";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import ContentBox from "./Box";
 import Button from "../Button";
 
-export const CarouselComponent = ({ search, getTrending, content, source, url }) => {
+interface CarouselComponentProps {
+  search: string
+  getTrending: () => void
+  source: string
+  url: string
+  content: ContentInterface[]
+}
+
+export const CarouselComponent: FC<CarouselComponentProps> = ({ search, getTrending, content, source, url }) => {
   const [currentSlide, setCurrent] = useState(0)
   const [api, setApi] = useState<CarouselApi>()
 
