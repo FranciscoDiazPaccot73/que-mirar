@@ -1,6 +1,6 @@
 {
   "name": "que-puedo-ver",
-  "version": "3.0.1",
+  "version": "3.1.2",
   "private": true,
   "homepage": "https://quepuedover.online",
   "author": {
@@ -15,11 +15,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.0.5",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-select": "^2.0.0",
+    "@radix-ui/react-slot": "^1.0.2",
     "@tanstack/react-query": "^4.29.3",
     "autoprefixer": "^10.4.14",
     "axios": "^0.27.2",
+    "class-variance-authority": "^0.7.0",
     "classnames": "^2.3.1",
+    "clsx": "^2.1.0",
+    "embla-carousel-react": "^8.0.0-rc21",
     "framer-motion": "^10.12.2",
+    "lucide-react": "^0.316.0",
     "next": "13.3.0",
     "postcss": "^8.4.23",
     "react": "18.2.0",
@@ -28,7 +37,9 @@
     "react-dom": "18.2.0",
     "react-ga": "^3.3.1",
     "sass": "^1.62.0",
+    "tailwind-merge": "^2.2.1",
     "tailwindcss": "3.3.1",
+    "tailwindcss-animate": "^1.0.7",
     "typescript": "5.0.4"
   },
   "devDependencies": {
