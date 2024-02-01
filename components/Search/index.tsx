@@ -95,7 +95,7 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
               onKeyUp={handleKeyUp}
             />
           </div>
-          <Button className="px-3 h-10 bg-secondary text-white hover:text-black" size="sm" type="submit" variant="outline">
+          <Button className="px-3 h-10 bg-secondary text-white hover:text-black" size="sm" type="submit" variant="outline" onClick={handleSearch}>
             <span className="sr-only">Search</span>
             <Search className="h-4 w-4" />
           </Button>
@@ -113,6 +113,7 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
                   {searchResult.map((result: ContentInterface) => (
                     <ContentBox
                       key={result.id}
+                      basis="md:basis-1/2"
                       content={result}
                       customAction={resetModal}
                       source={source}

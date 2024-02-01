@@ -10,6 +10,7 @@ import {
 } from "@/context/actions";
 import { ContentInterface } from "@/pages/types";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import { cn } from "@/lib/utils";
 import { Card, CardContent } from "../ui/card";
 
 type ContentBoxProps = {
@@ -17,9 +18,10 @@ type ContentBoxProps = {
   content: ContentInterface;
   source?: string;
   customAction?: () => void
+  basis?: string
 };
 
-const ContentBox: FC<ContentBoxProps> = ({ content, url, source, customAction }) => {
+const ContentBox: FC<ContentBoxProps> = ({ content, url, source, customAction, basis = "md:basis-1/3 lg:basis-1/4" }) => {
   const {
     dispatch,
     state: { watchRegion },
@@ -35,8 +37,10 @@ const ContentBox: FC<ContentBoxProps> = ({ content, url, source, customAction })
     poster_path: backdropPath,
     overview,
   } = content;
-  const boxClasses =
-    "relative h-full flex flex-col items-center gap-2 cursor-pointer mb-4 md:my-3 md:hover:scale-105 md:duration-200 md:basis-1/3 lg:basis-1/4";
+  const boxClasses = cn(
+    "relative h-full flex flex-col items-center gap-2 cursor-pointer mb-4 md:my-3 md:hover:scale-105 md:duration-200",
+    basis
+  )
 
   const imageUrl = backdropPath;
 

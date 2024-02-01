@@ -15,7 +15,7 @@ import Genres from './Genres';
 import Providers from './Providers';
 
 import { PageContext } from '../../context';
-import { getGenres, getInitialRecomendations, getProviders, getRecomendation, setProvider, setSelectedGenre } from '../../context/actions';
+import { getGenres, getInitialRecomendations, getProviders, getRecomendation, getSimilars, setProvider, setSelectedGenre } from '../../context/actions';
 
 interface FilterProps {
   source: string;
@@ -49,7 +49,9 @@ const Filters: FC<FilterProps> = ({ onChangeRegion, source, selectedFilter }) =>
       setProvider(dispatch, id);
       window.scrollTo(0, 0);
       selectedFilter();
-      await getRecomendation(dispatch, source, recomendedContent, prevContent, id, selectedGenre, watchRegion, true);
+      const recoId = await getRecomendation(dispatch, source, recomendedContent, prevContent, id, selectedGenre, watchRegion, true);
+
+      getSimilars(dispatch, source, recoId, watchRegion);
       getInitialRecomendations(dispatch, source, id, watchRegion, selectedGenre);
     }
   };
