@@ -1,12 +1,12 @@
 import { FC, useContext, useEffect, useRef } from 'react';
 
 import { useRouter } from 'next/router';
-import Button from '../Button';
 import SearchBox from '../Search';
 import FilterModal from '../FiltersModal';
 
 import { PageContext } from '../../context';
 import { getInfo, resetValues, setTimeframe } from '../../context/actions';
+import { Button } from '../ui/button';
 
 type ContentTitleProps = {
   watchRegion: string;
@@ -23,7 +23,7 @@ const ContentTitle: FC<ContentTitleProps> = ({ search, watchRegion, onChangeRegi
   const animationOffset = useRef('115px');
   const { pathname } = useRouter();
 
-  const basePath = pathname?.includes('movies') ? '/movies' : '/';
+  const basePath = pathname?.includes('movies') ? '/movies/' : '/';
 
   useEffect(() => {
     if (window.innerWidth < 768) animationOffset.current = '70px';
@@ -48,6 +48,7 @@ const ContentTitle: FC<ContentTitleProps> = ({ search, watchRegion, onChangeRegi
 
   const handleNewSource = () => {
     resetValues(dispatch);
+    window.location.assign(search === 'trends' ? `${basePath}recomendations` : basePath)
   };
 
   return (
@@ -89,12 +90,12 @@ const ContentTitle: FC<ContentTitleProps> = ({ search, watchRegion, onChangeRegi
       </div>
       <div className="mt-8 w-full flex items-center">
         <Button
-          href={search === 'trends' ? `${basePath}/recomendations` : basePath}
-          label={`Ver ${search === 'trends' ? recomendationsWording : trendigsWording}`}
-          size="lg"
-          variant="transparent"
+          className='text-xl text-purple'
+          variant="link"
           onClick={handleNewSource}
-        />
+        >
+          {`Ir a ${search === 'trends' ? recomendationsWording : trendigsWording}`}
+        </Button>
         <div className="ml-auto flex gap-3">
           <SearchBox region={watchRegion} source={source} />
           <FilterModal source={source} onChangeRegion={onChangeRegion} />
