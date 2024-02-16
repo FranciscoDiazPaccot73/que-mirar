@@ -72,7 +72,7 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
                 ) : (
                   <span>
                     <p className={cn("text-xs opacity-60 mb-3 mt-1", !content.seasons && 'hidden')}>
-                      {`${content.seasons} temporada${content.seasons > 1 && 's'}`} &bull; {content?.lastEpisode?.slice(0, 4)}
+                      {`${content.seasons} temporada${content.seasons > 1 ? 's' : ''}`} &bull; {content?.lastEpisode?.slice(0, 4)}
                     </p>
                   </span>
                 )}
