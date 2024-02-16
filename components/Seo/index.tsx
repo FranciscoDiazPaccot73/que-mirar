@@ -26,6 +26,7 @@ const Seo = ({ description, title, logoUrl, url }: SeoProps) => {
       <meta content={description} property="og:description" />
       <meta content={url} property="og:url" />
       <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+      <link href="https://www.quepuedover.online/" rel="canonical" />
       <link href="/favicon.ico" rel="icon" />
       <link href="/favicon.ico" rel="icon" type="image/x-icon" />
       <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />

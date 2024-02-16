@@ -1,6 +1,6 @@
 {
   "name": "que-puedo-ver",
-  "version": "3.1.2",
+  "version": "3.2.0",
   "private": true,
   "homepage": "https://quepuedover.online",
   "author": {
@@ -12,7 +12,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "open": "code . & yarn dev"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.0.5",

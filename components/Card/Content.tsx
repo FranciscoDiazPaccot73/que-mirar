@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 import { FC, useContext, useEffect, useState } from 'react';
 
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
@@ -68,7 +69,13 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
                       {content?.release_date?.slice(0, 4)} &bull; {formatDuration(content?.duration)}
                     </p>
                   </span>
-                ) : null}
+                ) : (
+                  <span>
+                    <p className={cn("text-xs opacity-60 mb-3 mt-1", !content.seasons && 'hidden')}>
+                      {`${content.seasons} temporada${content.seasons > 1 && 's'}`} &bull; {content?.lastEpisode?.slice(0, 4)}
+                    </p>
+                  </span>
+                )}
               </p>
               <div className="grid grid-cols-7.3 gap-2 items-center mb-5">
                 <p className="text-slate-400 text-xs">
@@ -113,7 +120,7 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
                 )}
               </div>
             </div>
-            <div className="hidden md:flex absolute bottom-3 justify-start w-full my-3 left-6">
+            <div className="hidden md:flex md:gap-2 absolute bottom-3 justify-start w-full my-3 left-6">
               {content.link ? (
                 <a className="ml-4" href={content.link} rel="noreferrer" target="_blank">
                   <Button label="¡Quiero verla!" size="sm" onClick={() => {}} />

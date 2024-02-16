@@ -47,6 +47,11 @@ export default async function (req: NextApiRequest, res: NextApiResponse<any>) {
     result.title = contentInfo.title ?? contentInfo.name;
     result.genres = contentInfo.genres ?? [];
     result.duration = contentInfo.runtime;
+    if (source === 'tv') {
+      result.episodes = contentInfo.number_of_episodes
+      result.seasons = contentInfo.number_of_seasons
+      result.lastEpisode = contentInfo.last_air_date
+    }
     if (provider) {
       result.link = provider.link;
     }
@@ -83,6 +88,12 @@ export const getdata = async ({ source }: getDataParams) => {
     result.title = contentInfo.title ?? contentInfo.name;
     result.genres = contentInfo.genres ?? [];
     result.duration = contentInfo.runtime;
+
+    if (source === 'tv') {
+      result.episodes = contentInfo.number_of_episodes
+      result.seasons = contentInfo.number_of_seasons
+      result.lastEpisode = contentInfo.last_air_date
+    }
     if (provider) {
       result.link = provider.link;
     }

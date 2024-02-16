@@ -23,6 +23,12 @@ export default async function getNextRecomendation(req: NextApiRequest, res: Nex
       duration: contentInfo.runtime,
     };
 
+    if (source === 'tv') {
+      result.episodes = contentInfo.number_of_episodes
+      result.seasons = contentInfo.number_of_seasons
+      result.lastEpisode = contentInfo.last_air_date
+    }
+
     res.status(200).json(result);
   } catch (err: any) {
     res.status(500).json({ search: 'ERROR' });

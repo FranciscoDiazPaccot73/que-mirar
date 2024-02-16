@@ -25,4 +25,7 @@ export interface ContentInterface {
   name?: string;
   link?: string;
   providers?: string;
+  episodes?: number
+  seasons?: number
+  lastEpisode?: string
 }

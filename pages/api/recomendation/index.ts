@@ -91,6 +91,11 @@ export default async function getRecomendation(req: NextApiRequest, res: NextApi
     result.title = contentInfo.title ?? contentInfo.name;
     result.genres = contentInfo.genres ?? [];
     result.duration = contentInfo.runtime;
+    if (source === 'tv') {
+      result.episodes = contentInfo.number_of_episodes
+      result.seasons = contentInfo.number_of_seasons
+      result.lastEpisode = contentInfo.last_air_date
+    }
     if (providerResponse?.flatrate) {
       result.providers = providerResponse.flatrate;
       result.link = providerResponse.link;
