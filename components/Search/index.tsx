@@ -1,17 +1,17 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { FC, useContext, useState } from "react";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 
 import { PageContext } from "@/context";
 import { resetSearch, search } from "@/context/actions";
@@ -67,23 +67,25 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
   }
 
   return (
-    <Dialog open={modalOpen} onOpenChange={handleDialogChange}>
-      <DialogTrigger asChild>
+    <Sheet open={modalOpen} onOpenChange={handleDialogChange}>
+      <SheetTrigger asChild>
         <Button
           className="p-2 "
           color="gray"
           size="sm"
           variant="ghost"
-          onClick={() => setModalOpen(true)}
         >
           <Search className="h-4 w-4 mr-1" /> Buscar
         </Button>
-      </DialogTrigger>
-      <DialogContent className="max-h-modal">
-        <DialogHeader>
-          <DialogTitle>{`Buscar ${source === "tv" ? "serie" : "pelicula"}`}</DialogTitle>
-        </DialogHeader>
-        <div className="flex items-center space-x-2">
+      </SheetTrigger>
+      <SheetContent className="h-[500px]" side="top">
+        <SheetHeader>
+          <SheetTitle className='text-white font-semibold'>{`Buscar ${source === "tv" ? "serie" : "pelicula"}`}</SheetTitle>
+          <SheetDescription className='text-gray-400'>
+            {`Que ${source === "tv" ? "serie" : "pelicula"} estas buscando?`}
+          </SheetDescription>
+        </SheetHeader>
+        <div className="flex items-center mt-4 space-x-2">
           <div className="grid flex-1 gap-2">
             <Label className="sr-only" htmlFor="search-box">
               Search box
@@ -127,9 +129,9 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
             </div>
           </section>
         ) : null}
-      </DialogContent>
-    </Dialog>
-  );
+      </SheetContent>
+    </Sheet>
+  )
 };
 
 export default SearchBox;
