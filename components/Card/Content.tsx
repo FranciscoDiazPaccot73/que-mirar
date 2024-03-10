@@ -64,10 +64,12 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
               <p className="mb-3 text-3xl text-white md:text-4xl md:mb-6">
                 {content.title ?? content.name}
                 {source === 'movie' ? (
-                  <span>
-                    <p className="text-xs opacity-60 mb-3 mt-1">
-                      {content?.release_date?.slice(0, 4)} &bull; {formatDuration(content?.duration)}
+                  <span className='text-xs opacity-60 mb-3 mt-1 flex gap-3'>
+                    <p>
+                      {content?.release_date?.slice(0, 4)} 
                     </p>
+                    <p>{formatDuration(content?.duration)}</p>
+                    <Genres genres={content.genres} />
                   </span>
                 ) : (
                   <span>
@@ -77,12 +79,6 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
                   </span>
                 )}
               </p>
-              <div className="grid grid-cols-7.3 gap-2 items-center mb-5">
-                <p className="text-slate-400 text-xs">
-                  {!content.genres && content.genre_ids && <Skeleton type="genres-card" />}
-                  <Genres genres={content.genres} />
-                </p>
-              </div>
               <p className="hidden md:block text-gray-500 font-bold text-sm md:mt-2 md:mb-3">{content.tagline}</p>
               <div className="overflow-hidden text-ellipsis">
                 <p className="text-sm text-ellipsis overflow-hidden text-gray-300 overview">{content.overview}</p>

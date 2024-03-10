@@ -4,7 +4,7 @@ const axios = require('axios');
 
 const BASE_URL = 'https://api.themoviedb.org/3';
 
-const availableProviderId = [119, 619, 531, 384, 337, 8, 283];
+const availableProviderId = [119, 619, 531, 1899, 337, 8, 283];
 
 export default async function (req: NextApiRequest, res: NextApiResponse<any>) {
   const { source } = req.query;

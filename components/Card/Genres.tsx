@@ -1,7 +1,6 @@
 import { FC } from 'react';
 
 import { GenresTypes } from '@/pages/types';
-import { formatGenresText } from '@/utils';
 
 type GenresProps = {
   genres?: GenresTypes[];
@@ -10,33 +9,19 @@ type GenresProps = {
 const Genres: FC<GenresProps> = ({ genres }) => {
   if (!genres || !genres.length) return null;
 
-  const classes =
-    'p-1 rounded-md border border-gray-500 justify-center text-center h-7 inline-block whitespace-nowrap text-ellipsis min-w-[28px] overflow-hidden';
+  if (genres.length <= 2) {
+    const genreTwo = genres[1] ? <> &bull; {genres[1].name}</> : <></>
 
-  if (genres.length <= 4) {
     return (
-      <div className="flex gap-1 mt-1">
-        {genres.map((genre: GenresTypes) => (
-          <div key={genre.id} className={classes}>
-            {genre.name}
-          </div>
-        ))}
-      </div>
+      <p>{genres[0].name}{genreTwo}</p>
     );
   }
 
-  const [g1, g2, ...rest] = genres;
-
-  const genresText = formatGenresText(genres);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  const [g1, g2, ..._rest] = genres;
 
   return (
-    <div className="flex gap-1 mt-1">
-      <div className={classes}>{g1.name}</div>
-      <div className={classes}>{g2.name}</div>
-      <div className={classes} title={genresText}>
-        +{rest.length}
-      </div>
-    </div>
+    <p>{g1.name} &bull; {g2.name}</p>
   );
 };
 

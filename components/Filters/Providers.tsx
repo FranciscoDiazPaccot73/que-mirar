@@ -30,6 +30,8 @@ const Providers: FC<ProvidersProps> = ({ handleFilter }) => {
       'text-white bg-transparent': selectedProvider !== 0,
     },
   );
+  let firstLineProviders = [];
+  let secondLineProviders = []
 
   const handleKeyUp = (e: KeyboardEvent<HTMLDivElement>, value: number) => {
     if (e.key === 'Enter' || e.keyCode === 13) {
@@ -37,16 +39,46 @@ const Providers: FC<ProvidersProps> = ({ handleFilter }) => {
     }
   };
 
+  if (providers) {
+    firstLineProviders = providers.slice(0, providers.length / 2);
+    secondLineProviders = providers.slice(providers.length / 2, providers.length);
+  }
+
+
   return (
     <div className="mb-8">
       <p className="text-xs text-white opacity-90">Plataformas de streaming</p>
-      <div className="w-full grid grid-cols-5 gap-4 mt-3 justify-center md:gap-0 md:flex md:justify-start">
+      <div className="w-full grid grid-cols-5 gap-5 mt-3 justify-center md:gap-4 md:flex md:justify-start">
         {providers?.length ? (
           <>
             <div className={wrapperClasses} onClick={() => handleFilter(0)} onKeyUp={(e) => handleKeyUp(e, 0)}>
               <p className="text-center text-[10px]">TODAS</p>
             </div>
-            {providers.map((prov: ProviderType) => {
+            {firstLineProviders.map((prov: ProviderType) => {
+              const filtersClasses = classNames('cursor-pointer rounded-md border border-purple h-9 w-9 overflow-hidden md:mr-3', {
+                'border-none grayscale-90 md:hover:grayscale-0': selectedProvider !== prov.provider_id,
+              });
+
+              return (
+                <div
+                  key={prov.provider_id}
+                  className={filtersClasses}
+                  onClick={() => handleFilter(prov.provider_id)}
+                  onKeyUp={(e) => handleKeyUp(e, prov.provider_id)}
+                >
+                  <Image alt={prov.provider_name} height={40} src={`${BASE_IMAGE_URL}${prov.logo_path}`} width={40} />
+                </div>
+              );
+            })}
+          </>
+        ) : (
+          <Skeleton type="providers" />
+        )}
+      </div>
+      <div className="w-full grid grid-cols-5 gap-4 mt-3 justify-center md:gap-4 md:flex md:justify-start">
+        {providers?.length ? (
+          <>
+            {secondLineProviders.map((prov: ProviderType) => {
               const filtersClasses = classNames('cursor-pointer rounded-md border border-purple h-9 w-9 overflow-hidden md:mr-3', {
                 'border-none grayscale-90 md:hover:grayscale-0': selectedProvider !== prov.provider_id,
               });
