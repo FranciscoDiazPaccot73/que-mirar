@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const { StatsWriterPlugin } = require('webpack-stats-plugin')
+
 const nextConfig = {
   reactStrictMode: true,
   env: {
@@ -11,6 +13,19 @@ const nextConfig = {
     domains: ['image.tmdb.org'],
     unoptimized: true,
   },
+  // eslint-disable-next-line no-unused-vars
+  webpack: (config, _options) => {
+    config.plugins.push(
+      new StatsWriterPlugin({
+        filename: '../.tmp/webpack-stats.json',
+        stats: {
+          assets: true,
+        }
+      })
+    );
+
+    return config;
+  }
 };
 
 module.exports = nextConfig;

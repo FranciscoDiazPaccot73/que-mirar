@@ -1,0 +1,21 @@
+name: "Analyze webpack stats"
+
+on: 
+  pull_request:
+    branches: [ webpack-development ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ 20 ]
+
+    name: Node ${{ matrix.node }} sample
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run linting rules and tests
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npx @fdiazpaccot/webpack-js-difference -c
