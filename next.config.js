@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
-const { StatsWriterPlugin } = require('webpack-stats-plugin')
+const { StatsWriterPlugin } = require("webpack-stats-plugin");
+const MyFirstWebpackPlugin = require("./webpack-plugin");
 
 const nextConfig = {
   reactStrictMode: true,
@@ -10,22 +11,23 @@ const nextConfig = {
     BASE_URL: process.env.BASE_URL,
   },
   images: {
-    domains: ['image.tmdb.org'],
+    domains: ["image.tmdb.org"],
     unoptimized: true,
   },
   // eslint-disable-next-line no-unused-vars
   webpack: (config, _options) => {
     config.plugins.push(
-      new StatsWriterPlugin({
-        filename: '../.tmp/webpack-stats.json',
-        stats: {
-          assets: true,
-        }
-      })
+      // new StatsWriterPlugin({
+      //   filename: '../.tmp/webpack-stats.json',
+      //   stats: {
+      //     assets: true,
+      //   }
+      // })
+      new MyFirstWebpackPlugin()
     );
 
     return config;
-  }
+  },
 };
 
 module.exports = nextConfig;
