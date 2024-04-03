@@ -63,10 +63,12 @@ const ContentTitle: FC<ContentTitleProps> = ({ search, watchRegion, onChangeRegi
   };
 
   return (
-    <div className="flex text-white flex-col items-center justify-between mb-4">
-      <div className="flex w-full gap-10 items-end">
-        <Switcher isLeftActiveTab={search === 'trends'} left={trendigsWording} right={recomendationsWording} onClick={handleNewSource} />
-        <div className="ml-auto mr-2 flex gap-3">
+    <div className="flex text-white flex-col items-center justify-between md:mb-4">
+      <div className="w-full px-3 md:px-0 md:flex md:gap-10 md:items-end">
+        <div className='w-full flex justify-center mb-5 md:mb-0 md:block'>
+          <Switcher isLeftActiveTab={search === 'trends'} left={trendigsWording} right={recomendationsWording} onClick={handleNewSource} />
+        </div>
+        <div className="flex gap-3 justify-end md:ml-auto md:mr-2">
           <SearchBox region={watchRegion} source={source} />
           <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
