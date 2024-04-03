@@ -56,7 +56,7 @@ const ContentBox: FC<ContentBoxProps> = ({ content, url, source, customAction, b
 
   return (
     <CarouselItem className={boxClasses} title={overview ?? title} onClick={handleLoadContent}>
-      <Card className="h-[260px] bg-transparent border-purple overflow-hidden">
+      <Card className="h-[260px] bg-transparent border-purple-50 overflow-hidden">
         <CardContent className="flex flex-col p-0 h-full">
           <Image
             alt={overview ?? title}

@@ -75,6 +75,14 @@ const Skeleton: FC<SkeletonProps> = ({ type }) => {
     );
   }
 
+  if (type === 'search') {
+    return (
+      <div className="mt-6">
+        <div className="bg-skeleton h-[270px] w-[190px] rounded-md my-4 animate-pulse ml-2 md:ml-0" />
+      </div>
+    );
+  }
+
   return null;
 };
 

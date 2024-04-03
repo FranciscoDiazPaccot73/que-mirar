@@ -1,7 +1,7 @@
 import { FC, useContext, useEffect, useRef, useState } from 'react';
 
 import { useRouter } from 'next/router';
-import { ArrowRight, FilterIcon } from 'lucide-react';
+import { FilterIcon } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -16,6 +16,7 @@ import SearchBox from '../Search';
 import { PageContext } from '../../context';
 import { getInfo, resetValues, setTimeframe } from '../../context/actions';
 import Filters from '../Filters';
+import { Switcher } from '../Switcher';
 
 type ContentTitleProps = {
   watchRegion: string;
@@ -64,7 +65,7 @@ const ContentTitle: FC<ContentTitleProps> = ({ search, watchRegion, onChangeRegi
   return (
     <div className="flex text-white flex-col items-center justify-between mb-4">
       <div className="flex w-full gap-10 items-end">
-        <h1 className="pl-4 text-2xl md:text-4xl">{search === 'trends' ? trendigsWording : recomendationsWording}</h1>
+        <Switcher isLeftActiveTab={search === 'trends'} left={trendigsWording} right={recomendationsWording} onClick={handleNewSource} />
         <div className="ml-auto mr-2 flex gap-3">
           <SearchBox region={watchRegion} source={source} />
           <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
@@ -86,52 +87,13 @@ const ContentTitle: FC<ContentTitleProps> = ({ search, watchRegion, onChangeRegi
               </SheetHeader>
               <div className='flex w-full gap-10 items-center justify-center mt-8'>
                 {search === 'trends' ? (
-                <div className="flex rounded-full border border-purple relative">
-                  <div
-                    className="py-1 px-3 cursor-pointer flex items-center justify-center w-[70px] md:w-[115px]"
-                    onClick={() => handleTimeframe('day')}
-                  >
-                    <p
-                      className={`${
-                        selectedTimeframe === 'day' ? 'text-black' : 'text-white'
-                      } transition-colors duration-300 text-sm md:text-base`}
-                    >
-                      Hoy
-                    </p>
-                  </div>
-                  <div
-                    className="py-1 px-3 cursor-pointer flex items-center justify-center w-[70px] md:w-[115px]"
-                    onClick={() => handleTimeframe('week')}
-                  >
-                    <p
-                      className={`${
-                        selectedTimeframe === 'week' ? 'text-black' : 'text-white'
-                      } transition-colors duration-300 text-sm md:text-base`}
-                    >
-                      Semana
-                    </p>
-                  </div>
-                  <div
-                    className="h-full absolute rounded-full bg-purple -z-10 transition-left duration-300 w-[70px] md:w-[115px]"
-                    style={{ left: selectedTimeframe === 'day' ? '0' : animationOffset.current }}
-                  />
-                </div>
-              ) : null}
+                  <Switcher isLeftActiveTab={selectedTimeframe === 'day'} left='Hoy' right='Semana' onClick={() => handleTimeframe(selectedTimeframe === 'day' ? 'week' : 'day')} />
+                ) : null}
               </div>
               <Filters selectedFilter={() => setSheetOpen(false)} source={source} onChangeRegion={onChangeRegion} />
             </SheetContent>
           </Sheet>
         </div>
-      </div>
-      <div className="mt-2 w-full flex items-center">
-        <Button
-          className='group text-xl text-purple flex gap-1 items-center'
-          variant="link"
-          onClick={handleNewSource}
-        >
-          {`Ir a ${search === 'trends' ? recomendationsWording : trendigsWording}`}
-          <ArrowRight className="duration-100 group-hover:ml-1 h-5 w-5 text-purple" />
-        </Button>
       </div>
     </div>
   );

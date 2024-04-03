@@ -19,6 +19,8 @@ import { ContentInterface } from "@/pages/types";
 
 import { Carousel, CarouselContent, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import ContentBox from "../Similars/Box";
+import Skeleton from "../Skeleton";
+import NoData from "../icons/NoData";
 
 type SearchBoxProps = {
   source: string;
@@ -44,6 +46,8 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
       await search(dispatch, source, inputValue, region);
     }
   };
+
+  console.log(searchResult)
 
   const handleInputChange = (e: any) => {
     setInputValue(e.target?.value);
@@ -79,56 +83,66 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
         </Button>
       </SheetTrigger>
       <SheetContent className="h-[500px]" side="top">
-        <SheetHeader>
-          <SheetTitle className='text-white font-semibold'>{`Buscar ${source === "tv" ? "serie" : "pelicula"}`}</SheetTitle>
-          <SheetDescription className='text-gray-400'>
-            {`Que ${source === "tv" ? "serie" : "pelicula"} estas buscando?`}
-          </SheetDescription>
-        </SheetHeader>
-        <div className="flex items-center mt-4 space-x-2">
-          <div className="grid flex-1 gap-2">
-            <Label className="sr-only" htmlFor="search-box">
-              Search box
-            </Label>
-            <Input
-              id="search-box"
-              placeholder="Nombre"
-              onChange={handleInputChange}
-              onKeyUp={handleKeyUp}
-            />
+        <div className="max-w-[750px] mx-auto">
+          <SheetHeader>
+            <SheetTitle className='text-white font-semibold'>{`Buscar ${source === "tv" ? "serie" : "pelicula"}`}</SheetTitle>
+            <SheetDescription className='text-gray-400'>
+              {`Que ${source === "tv" ? "serie" : "pelicula"} estas buscando?`}
+            </SheetDescription>
+          </SheetHeader>
+          <div className="flex items-center mt-4 space-x-2">
+            <div className="grid flex-1 gap-2">
+              <Label className="sr-only" htmlFor="search-box">
+                Search box
+              </Label>
+              <Input
+                id="search-box"
+                placeholder="Nombre"
+                onChange={handleInputChange}
+                onKeyUp={handleKeyUp}
+              />
+            </div>
+            <Button className="px-3 h-10 bg-secondary text-white hover:text-black" size="sm" type="submit" variant="outline" onClick={handleSearch}>
+              <span className="sr-only">Search</span>
+              <Search className="h-4 w-4" />
+            </Button>
           </div>
-          <Button className="px-3 h-10 bg-secondary text-white hover:text-black" size="sm" type="submit" variant="outline" onClick={handleSearch}>
-            <span className="sr-only">Search</span>
-            <Search className="h-4 w-4" />
-          </Button>
-        </div>
-        {searchResult?.length ? (
           <section className="overflow-y-auto max-h-modal-dialog pb-12">
             <div className="relative overflow-hidden h-auto w-full">
-              <Carousel
-                className="w-full px-10 py-6"
-                opts={{
-                  align: "center",
-                }}
-              >
-                <CarouselContent>
-                  {searchResult.map((result: ContentInterface) => (
-                    <ContentBox
-                      key={result.id}
-                      basis="md:basis-1/2"
-                      content={result}
-                      customAction={resetModal}
-                      source={source}
-                      url={BASE_IMAGE_URL}
-                    />
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="left-6 md:left-0" variant="secondary" />
-                <CarouselNext className="right-6 md:right-0" variant="secondary" />
-              </Carousel>
+              {searchResult?.length && !fetching ? (
+                <Carousel
+                  className="w-full px-10 py-6"
+                  opts={{
+                    align: "center",
+                  }}
+                >
+                  <CarouselContent>
+                    {searchResult.map((result: ContentInterface) => (
+                      <ContentBox
+                        key={result.id}
+                        basis="md:basis-1/2"
+                        content={result}
+                        customAction={resetModal}
+                        source={source}
+                        url={BASE_IMAGE_URL}
+                      />
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-6 md:left-0" variant="secondary" />
+                  <CarouselNext className="right-6 md:right-0" variant="secondary" />
+                </Carousel>
+              ) : null}
+              {fetching ? (
+                <div className="w-full mx-auto">
+                  <Skeleton type='search' />
+                </div>
+              ) : null}
+              {searchResult?.length === 0 && !fetching ? (
+                <div className="h-[270px] mt-6 mx-auto w-[190px] rounded-lg border border-purple-50"><NoData height="250px" width="170px" /></div>
+              ) : null}
             </div>
           </section>
-        ) : null}
+        </div>
       </SheetContent>
     </Sheet>
   )

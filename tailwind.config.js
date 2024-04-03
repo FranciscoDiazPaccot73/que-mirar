@@ -32,6 +32,7 @@ module.exports = {
         secondary: '#313b4e',
         'purple-hover': '#9766ed',
         'purple-12': '#B794F412',
+        'purple-50': '#B794F450',
         modal: '#2f3747',
         'main-bg': '#1a202c',
         'black-90': '#00000090',
