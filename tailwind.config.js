@@ -34,6 +34,7 @@ module.exports = {
         'purple-12': '#B794F412',
         'purple-50': '#B794F450',
         modal: '#2f3747',
+        'modal-50': '#2f374750',
         'main-bg': '#1a202c',
         'black-90': '#00000090',
       },
