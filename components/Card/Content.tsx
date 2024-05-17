@@ -79,9 +79,7 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
                     </p>
                   </span>
                 )}
-                <div className='ml-auto'>
-                  <Rating />
-                </div>
+                <Rating rating={content?.vote_average} reviews={content?.vote_count} />
               </p>
               <p className="hidden md:block text-gray-500 font-bold text-sm md:mt-2 md:mb-3">{content.tagline}</p>
               <div className="overflow-hidden text-ellipsis">
