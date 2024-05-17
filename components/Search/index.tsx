@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-import { FC, useContext, useState } from "react";
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
+import { FC, useContext, useMemo, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import {
   Sheet,
@@ -11,13 +11,23 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet";
 
 import { PageContext } from "@/context";
-import { resetSearch, search } from "@/context/actions";
+import {
+  resetSearch,
+  search,
+  searchLocally,
+  switchSearchValues,
+} from "@/context/actions";
 import { ContentInterface } from "@/pages/types";
 
-import { Carousel, CarouselContent, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import ContentBox from "../Similars/Box";
 import Skeleton from "../Skeleton";
 import NoData from "../icons/NoData";
@@ -27,27 +37,45 @@ type SearchBoxProps = {
   region: string;
 };
 
+const sourceName: Record<string, string> = {
+  movie: "peliculas",
+  tv: "series",
+};
+
 const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
   const {
     state: { fetching, searchResult, BASE_IMAGE_URL },
     dispatch,
   } = useContext(PageContext);
   const [inputValue, setInputValue] = useState("");
+  const [otherSearchResults, setSearchResults] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const otherSource = useMemo(
+    () => (source === "movie" ? "tv" : "movie"),
+    [source]
+  );
 
   const resetModal = () => {
     setInputValue("");
     resetSearch(dispatch);
     setModalOpen(false);
+    setSearchResults([]);
   };
 
   const handleSearch = async () => {
     if (inputValue && inputValue !== "") {
-      await search(dispatch, source, inputValue, region);
+      search(dispatch, source, inputValue, region);
+
+      const otherSourceData = await searchLocally(
+        otherSource,
+        inputValue,
+        region
+      );
+
+      setSearchResults(otherSourceData);
     }
   };
-
-  console.log(searchResult)
 
   const handleInputChange = (e: any) => {
     setInputValue(e.target?.value);
@@ -64,29 +92,37 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
 
   const handleDialogChange = (newState: boolean) => {
     if (!fetching) {
-      if (!newState) resetModal()
-  
-      setModalOpen(newState)
+      if (!newState) resetModal();
+
+      setModalOpen(newState);
     }
-  }
+  };
+
+  const handleSwitchValuesClick = () => {
+    switchSearchValues(dispatch, otherSearchResults);
+    setSearchResults([]);
+  };
 
   return (
     <Sheet open={modalOpen} onOpenChange={handleDialogChange}>
       <SheetTrigger asChild>
-        <Button
-          className="p-2 "
-          color="gray"
-          size="sm"
-          variant="ghost"
-        >
+        <Button className="p-2 " color="gray" size="sm" variant="ghost">
           <Search className="h-4 w-4 mr-1" /> Buscar
         </Button>
       </SheetTrigger>
       <SheetContent className="h-[500px]" side="top">
         <div className="max-w-[750px] mx-auto">
           <SheetHeader>
-            <SheetTitle className='text-white font-semibold'>{`Buscar ${source === "tv" ? "serie" : "pelicula"}`}</SheetTitle>
-            <SheetDescription className='text-gray-400'>
+            <SheetTitle className="text-white font-semibold flex items-center">
+              {`Buscar ${source === "tv" ? "serie" : "pelicula"}`}
+              {otherSearchResults?.length ? (
+                <button
+                  className="text-xs text-gray-300 ml-3 underline"
+                  onClick={handleSwitchValuesClick}
+                >{`${otherSearchResults.length} ${sourceName[otherSource]} encontradas`}</button>
+              ) : null}
+            </SheetTitle>
+            <SheetDescription className="text-gray-400">
               {`Que ${source === "tv" ? "serie" : "pelicula"} estas buscando?`}
             </SheetDescription>
           </SheetHeader>
@@ -102,7 +138,13 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
                 onKeyUp={handleKeyUp}
               />
             </div>
-            <Button className="px-3 h-10 bg-secondary text-white hover:text-black" size="sm" type="submit" variant="outline" onClick={handleSearch}>
+            <Button
+              className="px-3 h-10 bg-secondary text-white hover:text-black"
+              size="sm"
+              type="submit"
+              variant="outline"
+              onClick={handleSearch}
+            >
               <span className="sr-only">Search</span>
               <Search className="h-4 w-4" />
             </Button>
@@ -128,24 +170,28 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
                       />
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="left-6 md:left-0" variant="secondary" />
-                  <CarouselNext className="right-6 md:right-0" variant="secondary" />
+                  <CarouselPrevious
+                    className="left-6 md:left-0"
+                    variant="secondary"
+                  />
+                  <CarouselNext
+                    className="right-6 md:right-0"
+                    variant="secondary"
+                  />
                 </Carousel>
               ) : null}
-              {fetching ? (
-                <div className="w-full mx-auto">
-                  <Skeleton type='search' />
-                </div>
-              ) : null}
+              {fetching ? <Skeleton type="search" /> : null}
               {searchResult?.length === 0 && !fetching ? (
-                <div className="h-[270px] mt-6 mx-auto w-[190px] rounded-lg border border-purple-50"><NoData height="250px" width="170px" /></div>
+                <div className="h-[270px] mt-6 mx-auto w-[190px] rounded-lg border border-purple-50">
+                  <NoData height="250px" width="170px" />
+                </div>
               ) : null}
             </div>
           </section>
         </div>
       </SheetContent>
     </Sheet>
-  )
+  );
 };
 
 export default SearchBox;
