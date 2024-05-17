@@ -11,6 +11,7 @@ import { PageContext } from '../../context';
 import { formatDuration } from '../../utils';
 
 import 'react-circular-progressbar/dist/styles.css';
+import { Rating } from '../Rating';
 
 type ContentProps = {
   source: string;
@@ -78,13 +79,16 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
                     </p>
                   </span>
                 )}
+                <div className='ml-auto'>
+                  <Rating />
+                </div>
               </p>
               <p className="hidden md:block text-gray-500 font-bold text-sm md:mt-2 md:mb-3">{content.tagline}</p>
               <div className="overflow-hidden text-ellipsis">
                 <p className="text-sm text-ellipsis overflow-hidden text-gray-300 overview">{content.overview}</p>
               </div>
               <div className="flex mt-10 gap-6">
-                <div className="flex items-center flex-col gap-2">
+                {/* <div className="flex items-center flex-col gap-2">
                   <div className="h-16 w-16">
                     <CircularProgressbar
                       maxValue={10}
@@ -100,7 +104,7 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
                     />
                   </div>
                   <p className="text-gray-500 text-xs md:text-sm">{content?.vote_count} reviews</p>
-                </div>
+                </div> */}
                 {content.providers?.length ? (
                   <div className="grid grid-cols-4 text-gray-300">
                     {content.providers.map((prov: any) => (
