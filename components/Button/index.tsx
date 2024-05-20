@@ -10,13 +10,14 @@ export type ButtonProps = {
   h?: string;
   variant?: string;
   icon?: ReactNode;
+  rightIcon?: ReactNode;
   disabled?: boolean;
   customClass?: string;
   color?: string;
   size?: string;
 };
 
-const Button: FC<ButtonProps> = ({ onClick, label = '', variant, icon, disabled, customClass, h, color, size, href }) => {
+const Button: FC<ButtonProps> = ({ onClick, label = '', variant, icon, disabled, customClass, h, color, size, href, rightIcon }) => {
   const buttonClasses = classNames(
     'inline-flex appearance-none items-center gap-3 justify-center relative select-none outline-none outline-offset-2 rounded-md font-semibold px-4 py-2',
     `h-${h}`,
@@ -43,6 +44,7 @@ const Button: FC<ButtonProps> = ({ onClick, label = '', variant, icon, disabled,
     <button className={buttonClasses} disabled={disabled} onClick={handleClick}>
       {icon}
       {label}
+      {rightIcon}
     </button>
   );
 };

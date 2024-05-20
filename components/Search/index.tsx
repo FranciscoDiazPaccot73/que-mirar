@@ -114,7 +114,7 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
         <div className="max-w-[750px] mx-auto">
           <SheetHeader>
             <SheetTitle className="text-white font-semibold flex items-center">
-              {`Buscar ${source === "tv" ? "serie" : "pelicula"}`}
+              Buscar
               {otherSearchResults?.length ? (
                 <button
                   className="text-xs text-gray-300 ml-3 underline"
@@ -123,7 +123,7 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
               ) : null}
             </SheetTitle>
             <SheetDescription className="text-gray-400">
-              {`Que ${source === "tv" ? "serie" : "pelicula"} estas buscando?`}
+              ¿Qué serie o película estás buscando?
             </SheetDescription>
           </SheetHeader>
           <div className="flex items-center mt-4 space-x-2">

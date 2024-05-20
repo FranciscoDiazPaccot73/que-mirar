@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { FC, useContext, useEffect, useState } from "react";
+import { ArrowRight } from "lucide-react";
 
 import Button from "../Button";
 import Skeleton from "../Skeleton";
@@ -45,6 +46,16 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
       nextRecomendation();
     }
   };
+
+  const buttonProps = {
+    label: search === "recomendations" ? "Ver siguiente recomendación" : "Ver otras tendencias",
+    size: "sm",
+    variant: "transparent",
+    onClick: search === "recomendations" ? handleNextRecomendation : () => {},
+    href: search === "recomendations" ? undefined : "#other-trends",
+    rightIcon: search === "recomendations" ? <ArrowRight className="w-5 h-5" /> : undefined,
+    customClass: "gap-2"
+  }
 
   return (
     <>
@@ -154,14 +165,7 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
                   <Button label="¡Quiero verla!" size="sm" onClick={() => {}} />
                 </a>
               ) : null}
-              {search === "recomendations" && (
-                <Button
-                  label="Ver siguiente recomendación"
-                  size="sm"
-                  variant="transparent"
-                  onClick={handleNextRecomendation ?? (() => {})}
-                />
-              )}
+              <Button {...buttonProps} />
             </div>
           </section>
         </Element>

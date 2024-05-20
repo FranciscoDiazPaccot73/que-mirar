@@ -36,7 +36,7 @@ const Similars: FC<SimilarsProps> = ({ url, content, source, search }) => {
   };
 
   return (
-    <div className="mt-20">
+    <div className="mt-20" id="other-trends">
       <p className="text-white opacity-90 my-4 pl-4 md:pl-0">{text}</p>
       <div className="max-w-[565px] md:max-w-[1000px]">
         <Carousel content={sortedContent} getTrending={getTrending} search={search} source={source} url={url} />
