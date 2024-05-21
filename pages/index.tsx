@@ -18,6 +18,7 @@ import {
 } from "@store/actions";
 import { PageContext } from "@store/index";
 import { AnimatePresence, motion } from "framer-motion";
+import { useTrackRender } from "@/hooks";
 import { getdata } from "./api";
 
 import { ContentInterface } from "./types";
@@ -49,6 +50,8 @@ const TvTrends: NextPage<TvTrendsProps> = ({
     },
   } = useContext(PageContext);
   const [source, setSource] = useState("tv");
+
+  useTrackRender('Initial TvTrends');
 
   useEffect(() => {
     if (region) {
