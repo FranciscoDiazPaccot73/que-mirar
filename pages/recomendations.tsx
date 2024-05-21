@@ -21,7 +21,6 @@ import {
 import { PageContext } from "@store/index";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { track } from "@amplitude/analytics-browser";
 import { ContentInterface } from "./types";
 import { getContentApi } from "./api/content";
 
@@ -80,8 +79,6 @@ const TvReco: NextPage<TvRecoProps> = ({ initialResult }) => {
       alreadyFetch.current = true;
       getInitialData();
     }
-
-    track('Sign Up');
   }, []);
 
   const nextRecomendation = async () => {

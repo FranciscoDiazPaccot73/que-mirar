@@ -8,14 +8,16 @@ import Header from '@components/Header';
 import PageProvider from '@store/index';
 
 import '@styles/globals.scss';
+import { useEffect } from 'react';
 
 const queryClient = new QueryClient();
-const { NEXT_PUBLIC_AMPLITUDE_API_KEY } = process.env;
 
 function MyApp({ Component, pageProps }: AppProps) {
-  if (NEXT_PUBLIC_AMPLITUDE_API_KEY) {
-    init(NEXT_PUBLIC_AMPLITUDE_API_KEY);
-  }
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY) {
+      init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY);
+    }
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
