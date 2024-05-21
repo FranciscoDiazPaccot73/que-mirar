@@ -1,27 +1,26 @@
 import { FC, ReactNode } from 'react';
 import classNames from 'classnames';
 
-import LinkButton from './Link';
-
 export type ButtonProps = {
   onClick?: () => void;
   href?: string;
   label?: string;
   h?: string;
-  variant?: string;
+  variant?: 'solid' | 'outline' | 'transparent';
   icon?: ReactNode;
   rightIcon?: ReactNode;
   disabled?: boolean;
   customClass?: string;
   color?: string;
   size?: string;
+  title?: string
 };
 
-const Button: FC<ButtonProps> = ({ onClick, label = '', variant, icon, disabled, customClass, h, color, size, href, rightIcon }) => {
+const Button: FC<ButtonProps> = ({ onClick, label = '', variant = 'solid', icon, disabled, customClass, h = '7', color = 'purple', size = 'sm', href, rightIcon, title }) => {
   const buttonClasses = classNames(
     'inline-flex appearance-none items-center gap-3 justify-center relative select-none outline-none outline-offset-2 rounded-md font-semibold px-4 py-2',
-    `h-${h}`,
     `text-${size}`,
+    `h-${h}`,
     customClass,
     {
       'text-black bg-purple md:hover:bg-purple-hover': variant === 'solid',
@@ -34,29 +33,19 @@ const Button: FC<ButtonProps> = ({ onClick, label = '', variant, icon, disabled,
     },
   );
 
-  if (href) return <LinkButton classes={buttonClasses} href={href} icon={icon} label={label} onClick={onClick} />;
+  if (href) return null
 
   const handleClick = () => {
     if (!disabled && onClick) onClick();
   };
 
   return (
-    <button className={buttonClasses} disabled={disabled} onClick={handleClick}>
+    <button className={buttonClasses} disabled={disabled} title={title} onClick={handleClick}>
       {icon}
       {label}
       {rightIcon}
     </button>
   );
-};
-
-Button.defaultProps = {
-  variant: 'solid',
-  icon: null,
-  disabled: false,
-  customClass: '',
-  h: '7',
-  color: 'purple',
-  size: 'xs',
 };
 
 export default Button;

@@ -14,6 +14,7 @@ import { GenresTypes } from '@/pages/types';
 import { excludedGenres } from '@/utils';
 
 import { PageContext } from '../../context';
+import { Label } from '../ui/label';
 
 type GenreProps = {
   handleGenre: (id: number) => void;
@@ -33,9 +34,12 @@ const Genres: FC<GenreProps> = ({ handleGenre, source }) => {
   return (
     <>
       <Select value={selectedGenre.toString()} onValueChange={handleChange}>
-        <SelectTrigger id="region">
-          <SelectValue placeholder="Región" />
-        </SelectTrigger>
+        <div className='w-full'>
+          <Label className='text-white text-xs' htmlFor="genres">Géneros</Label>
+          <SelectTrigger id="genres">
+            <SelectValue placeholder="Géneros" />
+          </SelectTrigger>
+        </div>
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Géneros</SelectLabel>

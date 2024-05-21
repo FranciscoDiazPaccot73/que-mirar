@@ -338,3 +338,7 @@ export const setWatchRegion = (dispatch: any, value: string) => {
 export const setSelectedGenre = (dispatch: any, id: number | null) => {
   dispatch({ type: types.SET_SELECTED_GENRE, selectedGenre: id });
 };
+
+export const setLastSearch = (dispatch: any, lastSearch: any) => {
+  dispatch({ type: types.SET_LAST_SEARCH, lastSearch });
+}
