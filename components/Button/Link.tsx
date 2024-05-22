@@ -13,5 +13,3 @@ export const LinkButton: FC<PropsWithChildren<ButtonProps>> = ({ className, href
     {children}
   </Link>
 );
-
-export default LinkButton;
