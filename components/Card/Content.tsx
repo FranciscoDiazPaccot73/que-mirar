@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils";
 import { FC, useContext, useEffect, useState } from "react";
 import { ArrowRight, LineChart, Play } from "lucide-react";
 
-// import Button from "../Button";
 import Skeleton from "../Skeleton";
 import Genres from "./Genres";
 

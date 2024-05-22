@@ -17,6 +17,7 @@ export const types = {
   SET_SEARCH_MODAL_STATE: 'SET_SEARCH_MODAL_STATE',
   SET_TIME_FRAME: 'SET_TIME_FRAME',
   SET_LAST_SEARCH: 'SET_LAST_SEARCH',
+  UPDATE_SIMILARS: 'UPDATE_SIMILARS',
 };
 
 export const init = (config: any) => {
@@ -80,6 +81,9 @@ export const reducer = (state: any, action: any) => {
       return { ...state, content: action.similar };
     }
     case types.SET_SIMILARS: {
+      return { ...state, similars: action.similars };
+    }
+    case types.UPDATE_SIMILARS: {
       return { ...state, similars: action.similars };
     }
     case types.SET_SEARCH: {

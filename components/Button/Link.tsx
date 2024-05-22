@@ -8,7 +8,7 @@ interface ButtonProps extends ShadButtonProps {
   href?: string;
 }
 
-const LinkButton: FC<PropsWithChildren<ButtonProps>> = ({ className, href, children, size, variant }) => (
+export const LinkButton: FC<PropsWithChildren<ButtonProps>> = ({ className, href, children, size, variant }) => (
   <Link className={cn(buttonVariants({ variant, size, className }))} href={href as Url}>
     {children}
   </Link>

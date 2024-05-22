@@ -30,7 +30,7 @@ export const getInfo = async (
 
   try {
     const { data } = await axios.get(
-      `/api?source=${source}&time=${timelapse || "today"}`,
+      `/api?source=${source}&time=${timelapse || "day"}`,
       { timeout }
     );
 
@@ -49,6 +49,30 @@ export const getInfo = async (
   }
 
   return itWorked;
+};
+
+export const getMoreTrendings = async (
+  dispatch: any,
+  source: string,
+  timelapse: string,
+  page: number
+) => {
+  dispatch({ type: types.FETCHING, value: true });
+
+  try {
+    const { data } = await axios.get(
+      `/api/trendings?source=${source}&time=${timelapse || "day"}&page=${page || 2}`,
+      { timeout }
+    );
+
+    const { results } = data;
+
+    dispatch({ type: types.UPDATE_SIMILARS, similars: results });
+  } catch (err: any) {
+    console.log(err);
+  } finally {
+    dispatch({ type: types.FETCHING, value: false });
+  }
 };
 
 export const getProviders = async (dispatch: any, source: string) => {
