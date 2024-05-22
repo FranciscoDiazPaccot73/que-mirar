@@ -23,6 +23,7 @@ import { PageContext } from "@store/index";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { DynamicHead } from "@/components/DynamicHead";
 import { ContentInterface } from "./types";
 import { getContentApi } from "./api/content";
 
@@ -83,7 +84,7 @@ const TvReco: NextPage<TvRecoProps> = ({ initialResult }) => {
       getInitialData();
     }
 
-    updateParams({ newSource: source, newWatchRegion: watchRegion, id: initialResult.id.toString() });
+    updateParams({ newSource: source, newWatchRegion: watchRegion, id: initialResult?.id.toString() });
     const lastSearch = storage.get("qpv-lastSearch");
 
     if (lastSearch) {
@@ -135,8 +136,9 @@ const TvReco: NextPage<TvRecoProps> = ({ initialResult }) => {
   };
 
   return (
-    <div className="relative">
-      <main className="mt-[86px] flex flex-1 flex-col mx-auto max-w-[565px] min-h-main pt-6 pb-8 md:max-w-[1000px] md:min-h-main-desktop md:px-8 md:pt-4 md:pb-12 md:mt-28">
+    <>
+      <DynamicHead title={content?.title} />
+      <main className="mt-[86px] relative flex flex-1 flex-col mx-auto max-w-[565px] min-h-main pt-6 pb-8 md:max-w-[1000px] md:min-h-main-desktop md:px-8 md:pt-4 md:pb-12 md:mt-28">
         <ContentTitle
           search="recomendations"
           source={source}
@@ -160,7 +162,7 @@ const TvReco: NextPage<TvRecoProps> = ({ initialResult }) => {
           </motion.div>
         </AnimatePresence>
       </main>
-    </div>
+    </>
   );
 };
 

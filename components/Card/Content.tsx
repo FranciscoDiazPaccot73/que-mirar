@@ -111,7 +111,7 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
                 </p>
               </div>
               <div className="flex mt-10 gap-6">
-                {content.link ? (
+                {content.link && content.providers?.length ? (
                   <div className="ml-4 hidden first-line:hidden md:flex">
                     <a
                       className="w-10 h-10"
