@@ -15,10 +15,12 @@ import {
   setRecomended,
   setSimilars,
   setWatchRegion,
+  setLastSearch
 } from "@store/actions";
 import { PageContext } from "@store/index";
 import { AnimatePresence, motion } from "framer-motion";
-import { useTrackRender } from "@/hooks";
+import { useTrackRender } from "@/hooks/useTrackRender";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { getdata } from "./api";
 
 import { ContentInterface } from "./types";
@@ -49,6 +51,7 @@ const TvTrends: NextPage<TvTrendsProps> = ({
       prevContent,
     },
   } = useContext(PageContext);
+  const { storage } = useLocalStorage();
   const [source, setSource] = useState("tv");
 
   useTrackRender('Initial TvTrends');
@@ -71,6 +74,13 @@ const TvTrends: NextPage<TvTrendsProps> = ({
     if (params.source || params.region || params.id) {
       setSource(params.source || "tv");
       setWatchRegion(dispatch, params.region || "AR");
+    }
+
+    updateParams({ newSource: source, newWatchRegion: watchRegion, id: initialResult.id.toString() });
+    const lastSearch = storage.get("qpv-lastSearch");
+
+    if (lastSearch) {
+      setLastSearch(dispatch, lastSearch);
     }
   }, []);
 

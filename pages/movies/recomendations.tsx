@@ -17,10 +17,12 @@ import {
   setWatchRegion,
   getInitialRecomendations,
   setNextRecomendation,
+  setLastSearch,
 } from "@store/actions";
 import { PageContext } from "@store/index";
 import { AnimatePresence, motion } from "framer-motion";
 
+import { useLocalStorage } from "@/hooks";
 import { ContentInterface } from "../types";
 import { getContentApi } from "../api/content";
 
@@ -45,6 +47,7 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
       nextRecomendations,
     },
   } = useContext(PageContext);
+  const { storage } = useLocalStorage()
   const [source, setSource] = useState("movie");
   const alreadyFetch = useRef(false);
 
@@ -78,6 +81,13 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
     if (!alreadyFetch.current) {
       alreadyFetch.current = true;
       getInitialData();
+    }
+
+    updateParams({ newSource: source, newWatchRegion: watchRegion, id: initialResult.id.toString() });
+    const lastSearch = storage.get("qpv-lastSearch");
+
+    if (lastSearch) {
+      setLastSearch(dispatch, lastSearch);
     }
   }, []);
 

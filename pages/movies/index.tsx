@@ -12,12 +12,14 @@ import {
   getSimilars,
   resetValues,
   setContent,
+  setLastSearch,
   setRecomended,
   setSimilars,
   setWatchRegion,
 } from "@store/actions";
 import { PageContext } from "@store/index";
 import { AnimatePresence, motion } from "framer-motion";
+import { useLocalStorage } from "@/hooks";
 import { getdata } from "../api";
 
 import { ContentInterface } from "../types";
@@ -48,6 +50,7 @@ const MoviesTrends: NextPage<MoviesTrendsProps> = ({
       prevContent,
     },
   } = useContext(PageContext);
+  const { storage } = useLocalStorage()
   const [source, setSource] = useState("movie");
 
   useEffect(() => {
@@ -68,6 +71,13 @@ const MoviesTrends: NextPage<MoviesTrendsProps> = ({
     if (params.source || params.region || params.id) {
       setSource(params.source || "tv");
       setWatchRegion(dispatch, params.region || "AR");
+    }
+
+    updateParams({ newSource: source, newWatchRegion: watchRegion, id: initialResult.id.toString() });
+    const lastSearch = storage.get("qpv-lastSearch");
+
+    if (lastSearch) {
+      setLastSearch(dispatch, lastSearch);
     }
   }, []);
 

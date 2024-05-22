@@ -16,6 +16,7 @@ export const types = {
   SET_INITIAL_RECOMENDATIONS: 'SET_INITIAL_RECOMENDATIONS',
   SET_SEARCH_MODAL_STATE: 'SET_SEARCH_MODAL_STATE',
   SET_TIME_FRAME: 'SET_TIME_FRAME',
+  SET_LAST_SEARCH: 'SET_LAST_SEARCH',
 };
 
 export const init = (config: any) => {
@@ -97,6 +98,9 @@ export const reducer = (state: any, action: any) => {
       );
 
       return { ...state, recomendedContent: uniqueContent };
+    }
+    case types.SET_LAST_SEARCH: {
+      return { ...state, lastSearch: action.lastSearch };
     }
     default:
       return null;

@@ -16,6 +16,7 @@ import Providers from './Providers';
 
 import { PageContext } from '../../context';
 import { getGenres, getInitialRecomendations, getProviders, getRecomendation, getSimilars, setProvider, setSelectedGenre } from '../../context/actions';
+import { Label } from '../ui/label';
 
 interface FilterProps {
   source: string;
@@ -82,9 +83,12 @@ const Filters: FC<FilterProps> = ({ onChangeRegion, source, selectedFilter }) =>
     <section className="mt-8">
       <div className='flex gap-4 mb-10 w-full'>
         <Select value={watchRegion} onValueChange={handleChangeRegion}>
-          <SelectTrigger id="region">
-            <SelectValue placeholder="Región" />
-          </SelectTrigger>
+          <div className='w-full'>
+            <Label className='text-white text-xs' htmlFor="region">Región</Label>
+            <SelectTrigger id="region">
+              <SelectValue placeholder="Región" />
+            </SelectTrigger>
+          </div>
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Regiones</SelectLabel>

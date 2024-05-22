@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { FC, useContext, useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LineChart, Play } from "lucide-react";
 
-import Button from "../Button";
+// import Button from "../Button";
 import Skeleton from "../Skeleton";
 import Genres from "./Genres";
 
@@ -12,6 +12,8 @@ import { formatDuration } from "../../utils";
 
 import "react-circular-progressbar/dist/styles.css";
 import { Rating } from "../Rating";
+import { Share } from "../Share";
+import { Button } from "../Button/Button";
 
 type ContentProps = {
   source: string;
@@ -48,13 +50,9 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
   };
 
   const buttonProps = {
-    label: search === "recomendations" ? "Ver siguiente recomendación" : "Ver otras tendencias",
-    size: "sm",
-    variant: "transparent",
     onClick: search === "recomendations" ? handleNextRecomendation : () => {},
     href: search === "recomendations" ? undefined : "#other-trends",
-    rightIcon: search === "recomendations" ? <ArrowRight className="w-5 h-5" /> : undefined,
-    customClass: "gap-2"
+    className: "gap-2"
   }
 
   return (
@@ -114,23 +112,20 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
                 </p>
               </div>
               <div className="flex mt-10 gap-6">
-                {/* <div className="flex items-center flex-col gap-2">
-                  <div className="h-16 w-16">
-                    <CircularProgressbar
-                      maxValue={10}
-                      strokeWidth={10}
-                      styles={buildStyles({
-                        textSize: '18px',
-                        pathColor: '#B794F4',
-                        textColor: '#B794F4',
-                        trailColor: '#B794F412',
-                      })}
-                      text={`${content?.vote_average.toFixed(2)}`}
-                      value={content?.vote_average}
-                    />
+                {content.link ? (
+                  <div className="ml-4 hidden first-line:hidden md:flex">
+                    <a
+                      className="w-10 h-10"
+                      href={content.link}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      <Button className="w-10 h-10 rounded-full" size="sm" title="¡Quiero verla!" variant="site">
+                        <Play className="h-4 w-4" />
+                      </Button>
+                    </a>
                   </div>
-                  <p className="text-gray-500 text-xs md:text-sm">{content?.vote_count} reviews</p>
-                </div> */}
+                ) : null}
                 {content.providers?.length ? (
                   <div className="grid grid-cols-4 text-gray-300">
                     {content.providers.map((prov: any) => (
@@ -155,17 +150,11 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
               </div>
             </div>
             <div className="hidden md:flex md:gap-2 absolute bottom-3 justify-start w-full my-3 left-6">
-              {content.link ? (
-                <a
-                  className="ml-4"
-                  href={content.link}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  <Button label="¡Quiero verla!" size="sm" onClick={() => {}} />
-                </a>
-              ) : null}
-              <Button {...buttonProps} />
+              <Share />
+              <Button {...buttonProps} variant="site-transparent">
+                {search === "recomendations" ? "Ver siguiente recomendación" : "Ver otras tendencias"}
+                {search === "recomendations" ? <ArrowRight className="w-5 h-5" /> : <LineChart className="w-5 h-5" />}
+              </Button>
             </div>
           </section>
         </Element>
