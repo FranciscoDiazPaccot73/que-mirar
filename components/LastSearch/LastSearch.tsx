@@ -6,7 +6,9 @@ import { getContent, getSimilars, setLastSearch } from "@/context/actions";
 import Image from "next/image";
 import { CurrentValues } from "@/utils/lastSearch";
 import { updateParams } from "@/utils";
+import { Trash } from "lucide-react";
 import { Rating } from "../Rating";
+import { Button } from "../Button/Button";
 
 export const LastSearch = () => {
   const {
@@ -39,7 +41,9 @@ export const LastSearch = () => {
     <div className="text-white">
       <div className="flex justify-between gap-10 items-center mb-4 md:justify-start">
         <h1>Historial de búsquedas</h1>
-        <button onClick={handleRemove}>Eliminar</button>
+        <Button className="w-6 h-6 rounded-full p-1" size="sm" title="Eliminar historial" variant="destructive" onClick={handleRemove}>
+          <Trash className="w-3 h-3" />
+        </Button>
       </div>
       <div className="py-6 px-10 gap-3 grid grid-cols-1 md:grid-cols-2">
         {lastSearch?.map(({ name, image, votes, id, source }: CurrentValues & { source: string }) => (
