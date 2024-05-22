@@ -70,7 +70,6 @@ const Skeleton: FC<SkeletonProps> = ({ type }) => {
     return (
       <div className="mt-5">
         <div className="bg-skeleton mx-auto h-[270px] w-[190px] rounded-md my-4 animate-pulse" />
-        <div className="bg-skeleton mx-auto h-[270px] w-[190px] rounded-md my-4 animate-pulse" />
       </div>
     );
   }

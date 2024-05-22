@@ -7,7 +7,10 @@ export const useLocalStorage = () => {
       const value = localStorage.getItem(key);
 
       return value ? JSON.parse(value) : null;
-    }
+    },
+    remove: (key: string) => {
+      localStorage.removeItem(key);
+    },
   }
 
   return { storage }

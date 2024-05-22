@@ -7,6 +7,7 @@ import Similars from '../Similars';
 import Skeleton from '../Skeleton';
 import { Button } from '../Button/Button';
 import { Share } from '../Share';
+import { LastSearch } from '../LastSearch';
 
 type LayoutProps = {
   source: string;
@@ -40,6 +41,7 @@ const Layout: FC<LayoutProps> = ({ source, nextRecomendation, search }) => {
       ) : (
         <Skeleton type="similars" />
       )}
+      <LastSearch />
     </>
   );
 };
