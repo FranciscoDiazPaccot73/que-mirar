@@ -9,6 +9,9 @@ import { PageContext } from "@/context";
 import { Button } from "../ui/button";
 import { WhatsappIcon } from "../icons/WhatsappIcon";
 
+const getText = (title: string, votes: number, url: string) =>
+  `Ver ${title} - ${votes} de 10 | ${url}`;
+
 export const Share = () => {
   const {
     state: { content },
@@ -24,16 +27,14 @@ export const Share = () => {
     let text = encodedUrl;
 
     if (content) {
-      text = `${title || name} - ${votes.toFixed(2)} | ${encodedUrl}`;
+      text = getText(title || name, votes.toFixed(2), encodedUrl);
     }
 
     setHref(`https://api.whatsapp.com/send?text=${text}`);
   }, [votes]);
 
   const copyToClipboard = () => {
-    const text = `Ver ${title || name} - ${votes.toFixed(2)} de 10 | ${
-      window.location.href
-    }`;
+    const text = getText(title || name, votes.toFixed(2), window.location.href);
 
     navigator.clipboard.writeText(text);
     setIsCopied(true);
