@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-import { FC, useContext, useMemo, useState } from "react";
+import { FC, useContext, useMemo, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import {
   resetSearch,
   search,
   searchLocally,
+  setLastSearch,
   switchSearchValues,
 } from "@/context/actions";
 import { ContentInterface } from "@/pages/types";
@@ -28,6 +29,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { getLastSearchItems } from "@/utils/lastSearch";
+import { useLocalStorage } from "@/hooks";
+import { updateParams } from "@/utils";
 import ContentBox from "../Similars/Box";
 import Skeleton from "../Skeleton";
 import NoData from "../icons/NoData";
@@ -44,12 +48,14 @@ const sourceName: Record<string, string> = {
 
 const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
   const {
-    state: { fetching, searchResult, BASE_IMAGE_URL },
+    state: { fetching, searchResult, BASE_IMAGE_URL, watchRegion, lastSearch },
     dispatch,
   } = useContext(PageContext);
   const [inputValue, setInputValue] = useState("");
   const [otherSearchResults, setSearchResults] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const selectedSource = useRef(source);
+  const { storage } = useLocalStorage();
 
   const otherSource = useMemo(
     () => (source === "movie" ? "tv" : "movie"),
@@ -100,8 +106,22 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
 
   const handleSwitchValuesClick = () => {
     switchSearchValues(dispatch, otherSearchResults);
+    selectedSource.current = otherSource;
     setSearchResults([]);
   };
+
+  const handleCustomAction = (result: ContentInterface) => {
+    const lastSearchItems = getLastSearchItems(lastSearch, result, selectedSource.current);
+
+    setLastSearch(dispatch, lastSearchItems)
+    storage.set("qpv-lastSearch", lastSearchItems);
+    resetModal()
+    updateParams({
+      newSource: selectedSource.current,
+      newWatchRegion: watchRegion,
+      id: result.id.toString(),
+    });
+  }
 
   return (
     <Sheet open={modalOpen} onOpenChange={handleDialogChange}>
@@ -164,7 +184,7 @@ const SearchBox: FC<SearchBoxProps> = ({ source, region }) => {
                         key={result.id}
                         basis="md:basis-1/2"
                         content={result}
-                        customAction={resetModal}
+                        customAction={() => handleCustomAction(result)}
                         source={source}
                         url={BASE_IMAGE_URL}
                       />

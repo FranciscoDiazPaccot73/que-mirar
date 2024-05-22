@@ -1,18 +1,16 @@
-import { FC, ReactNode } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import Link from 'next/link';
+import { Url } from 'next/dist/shared/lib/router/router';
+import { cn } from '@/lib/utils';
+import { ButtonProps as ShadButtonProps, buttonVariants } from '../ui/button'
 
-type LinkProps = {
-  classes: string;
-  href: string;
-  label: string;
-  icon?: ReactNode;
-  onClick?: () => void;
-};
+interface ButtonProps extends ShadButtonProps {
+  href?: string;
+}
 
-const LinkButton: FC<LinkProps> = ({ classes, href, label, icon, onClick = () => {} }) => (
-  <Link className={classes} href={href} onClick={onClick}>
-    {icon}
-    {label}
+const LinkButton: FC<PropsWithChildren<ButtonProps>> = ({ className, href, children, size, variant }) => (
+  <Link className={cn(buttonVariants({ variant, size, className }))} href={href as Url}>
+    {children}
   </Link>
 );
 
