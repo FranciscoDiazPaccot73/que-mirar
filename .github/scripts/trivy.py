@@ -53,6 +53,7 @@ def comment_pr(owner, repo, pr_number, body, github_token):
         "event": "COMMENT"
     }
     url = f"https://api.github.com/repos/{owner}/{repo}/pulls/{pr_number}/reviews"
+    print(url)
     req = Request(url, data=data)
     req.add_header('Accept', 'application/vnd.github.v3+json')
     req.add_header('Authorization', f"Bearer {github_token}")

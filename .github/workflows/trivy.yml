@@ -41,6 +41,6 @@ jobs:
 
       - name: Comment PR if vulnerabilities found
         run: |
-          python .github/scripts/trivy.py --vulns trivy.json --owner wizza-fe --repo ${{ env.REPOSITORY_NAME }} --pr ${{ env.PULL_NUMBER }} --sha ${{ github.event.pull_request.head.sha }}
+          python .github/scripts/trivy.py --vulns trivy.json --owner que-mirar --repo ${{ env.REPOSITORY_NAME }} --pr ${{ env.PULL_NUMBER }} --sha ${{ github.event.pull_request.head.sha }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
