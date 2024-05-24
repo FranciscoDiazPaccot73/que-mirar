@@ -87,6 +87,7 @@ f = open(args.vulns)
 # returns JSON object as
 # a dictionary
 data = json.load(f)
+print(data)
 
 # Iterating through the json
 # list
