@@ -65,7 +65,7 @@ const Carrousel: FC<CarouselProps> = ({ genres, selected, handleClick, source })
         if (source === 'tv' && excludedGenres.includes(genre.id.toString())) return null;
 
         const categoryClasses = classnames(
-          'rounded-md border border-purple inline-block my-3 mx-2 min-h-[24px] min-w-[60px] first-of-type:ml-1 last-of-type:mr-1 md:hover:bg-purple',
+          'rounded-md border border-purple-50 inline-block my-3 mx-2 min-h-[24px] min-w-[60px] first-of-type:ml-1 last-of-type:mr-1 md:hover:bg-purple',
           `category-${index + 1}`,
           {
             'bg-purple text-filter-color text-semibold': genre.id === selected,

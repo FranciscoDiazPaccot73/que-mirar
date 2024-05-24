@@ -9,7 +9,7 @@ import { ContentInterface } from "@/pages/types";
 import { FC, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import ContentBox from "./Box";
-import Button from "../Button";
+import { Button } from "../Button/Button";
 
 interface CarouselComponentProps {
   search: string
@@ -58,15 +58,20 @@ export const CarouselComponent: FC<CarouselComponentProps> = ({ search, getTrend
       </div>
       {search === "trends" && (
         <div
-          className={cn("opacity-0 mt-4 w-full flex justify-center", currentSlide === content.length && "opacity-100")}
+          className={cn("opacity-0 mt-4 w-full flex justify-center", {
+            "opacity-100": currentSlide === content.length,
+            "md:opacity-100": currentSlide === content.length - 2,
+          })}
         >
           <Button
-            color="purple"
-            label="Ver mas"
+            className="text-purple"
             size="sm"
-            variant="outline"
+            title="Ver mas"
+            variant="link"
             onClick={getTrending}
-          />
+          >
+            Cargar mas
+          </Button>
         </div>
       )}
     </>

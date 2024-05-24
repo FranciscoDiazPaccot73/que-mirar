@@ -1,24 +1,29 @@
-import axios from 'axios';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import axios from "axios";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-export default async function getContent(req: NextApiRequest, res: NextApiResponse<any>) {
+export default async function getContent(
+  req: NextApiRequest,
+  res: NextApiResponse<any>
+) {
   const { source, id, region } = req.query;
   const { BASE_URL, TMDB_API_KEY } = process.env;
 
   try {
     const apiKey = TMDB_API_KEY;
     const baseObj = {
-      language: region === 'BR' ? 'pt-BR' : 'es-AR',
-      api_key: apiKey || '',
+      language: region === "BR" ? "pt-BR" : "es-AR",
+      api_key: apiKey || "",
     };
     const baseQueryParams = new URLSearchParams(baseObj);
 
     const [{ data: contentInfo }, { data }] = await Promise.all([
       axios.get(`${BASE_URL}/${source}/${id}?${baseQueryParams}`),
-      axios.get(`${BASE_URL}/${source}/${id}/watch/providers?${baseQueryParams}`),
+      axios.get(
+        `${BASE_URL}/${source}/${id}/watch/providers?${baseQueryParams}`
+      ),
     ]);
 
-    const currentIndex = region?.toString() ?? 'AR';
+    const currentIndex = region?.toString() ?? "AR";
 
     let result;
 
@@ -34,10 +39,10 @@ export default async function getContent(req: NextApiRequest, res: NextApiRespon
     result.title = contentInfo.title ?? contentInfo.name;
     result.genres = contentInfo.genres ?? [];
     result.duration = contentInfo.runtime;
-    if (source === 'tv') {
-      result.episodes = contentInfo.number_of_episodes
-      result.seasons = contentInfo.number_of_seasons
-      result.lastEpisode = contentInfo.last_air_date
+    if (source === "tv") {
+      result.episodes = contentInfo.number_of_episodes;
+      result.seasons = contentInfo.number_of_seasons;
+      result.lastEpisode = contentInfo.last_air_date;
     }
 
     if (result?.flatrate) {
@@ -50,3 +55,61 @@ export default async function getContent(req: NextApiRequest, res: NextApiRespon
     res.status(500);
   }
 }
+
+export const getContentApi = async ({
+  source,
+  id,
+  region,
+}: {
+  source: string;
+  id: string;
+  region: string;
+}) => {
+  const { BASE_URL, TMDB_API_KEY } = process.env;
+
+  try {
+    const apiKey = TMDB_API_KEY;
+    const baseObj = {
+      language: region === "BR" ? "pt-BR" : "es-AR",
+      api_key: apiKey || "",
+    };
+    const baseQueryParams = new URLSearchParams(baseObj);
+
+    const [{ data: contentInfo }, { data }] = await Promise.all([
+      axios.get(`${BASE_URL}/${source}/${id}?${baseQueryParams}`),
+      axios.get(
+        `${BASE_URL}/${source}/${id}/watch/providers?${baseQueryParams}`
+      ),
+    ]);
+
+    const currentIndex = region?.toString() ?? "AR";
+
+    let result;
+
+    if (data.results) {
+      result = data.results[currentIndex] || data.results.US || {};
+      result.id = id;
+    }
+
+    result = { ...result, ...contentInfo };
+
+    result.overview = contentInfo.overview;
+    result.tagline = contentInfo.tagline;
+    result.title = contentInfo.title ?? contentInfo.name;
+    result.genres = contentInfo.genres ?? [];
+    result.duration = contentInfo.runtime;
+    if (source === "tv") {
+      result.episodes = contentInfo.number_of_episodes;
+      result.seasons = contentInfo.number_of_seasons;
+      result.lastEpisode = contentInfo.last_air_date;
+    }
+
+    if (result?.flatrate) {
+      result.providers = result.flatrate;
+    }
+
+    return result;
+  } catch (err: any) {
+    return null;
+  }
+};

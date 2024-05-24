@@ -1,16 +1,18 @@
-import Image from 'next/image';
-import { cn } from '@/lib/utils';
-import { FC, useContext, useEffect, useState } from 'react';
+import Image from "next/image";
+import { cn } from "@/lib/utils";
+import { FC, useContext, useEffect, useState } from "react";
+import { ArrowRight, LineChart, Play } from "lucide-react";
 
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import Button from '../Button';
-import Skeleton from '../Skeleton';
-import Genres from './Genres';
+import Skeleton from "../Skeleton";
+import Genres from "./Genres";
 
-import { PageContext } from '../../context';
-import { formatDuration } from '../../utils';
+import { PageContext } from "../../context";
+import { formatDuration } from "../../utils";
 
-import 'react-circular-progressbar/dist/styles.css';
+import "react-circular-progressbar/dist/styles.css";
+import { Rating } from "../Rating";
+import { Share } from "../Share";
+import { Button } from "../Button/Button";
 
 type ContentProps = {
   source: string;
@@ -22,24 +24,35 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
   const {
     state: { content, BASE_IMAGE_URL },
   } = useContext(PageContext);
-  const [Element, setElement] = useState<any>('a');
+  const [Element, setElement] = useState<any>("a");
 
   useEffect(() => {
     if (window.innerWidth >= 768) {
-      setElement('div');
+      setElement("div");
     }
   }, []);
 
-  const elementProps = Element === 'a' ? { href: content?.link ?? '/', target: '_blank' } : {};
-  const imageUrl = Element === 'a' ? content?.backdrop_path : content?.poster_path || content?.backdrop_path;
+  const elementProps =
+    Element === "a" ? { href: content?.link ?? "/", target: "_blank" } : {};
+  const imageUrl =
+    Element === "a"
+      ? content?.backdrop_path
+      : content?.poster_path || content?.backdrop_path;
 
-  const pictureGradient = "after:from-[#1a202c] after:via-[#1a202c] after:w-full after:absolute after:content-['']";
+  const pictureGradient =
+    "after:from-[#1a202c] after:via-[#1a202c] after:w-full after:absolute after:content-['']";
 
   const handleNextRecomendation = () => {
     if (nextRecomendation) {
       nextRecomendation();
     }
   };
+
+  const buttonProps = {
+    onClick: search === "recomendations" ? handleNextRecomendation : () => {},
+    href: search === "recomendations" ? undefined : "#other-trends",
+    className: "gap-2"
+  }
 
   return (
     <>
@@ -63,49 +76,68 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
             <div className="px-4 pt-2 pb-3 md:pt-2 md:w-3/5 md:px-8 md:mt-8 md:mb-16 md:absolute md:left-0">
               <p className="mb-3 text-3xl text-white md:text-4xl md:mb-6">
                 {content.title ?? content.name}
-                {source === 'movie' ? (
-                  <span className='text-xs opacity-60 mb-3 mt-1 flex gap-3'>
-                    <p>
-                      {content?.release_date?.slice(0, 4)} 
-                    </p>
+                {source === "movie" ? (
+                  <span className="text-xs opacity-60 mb-3 mt-1 flex gap-3">
+                    <p>{content?.release_date?.slice(0, 4)}</p>
                     <p>{formatDuration(content?.duration)}</p>
                     <Genres genres={content.genres} />
                   </span>
                 ) : (
                   <span>
-                    <p className={cn("text-xs opacity-60 mb-3 mt-1", !content.seasons && 'hidden')}>
-                      {`${content.seasons} temporada${content.seasons > 1 ? 's' : ''}`} &bull; {content?.lastEpisode?.slice(0, 4)}
+                    <p
+                      className={cn(
+                        "text-xs opacity-60 mb-3 mt-1",
+                        !content.seasons && "hidden"
+                      )}
+                    >
+                      {`${content.seasons} temporada${
+                        content.seasons > 1 ? "s" : ""
+                      }`}{" "}
+                      &bull; {content?.lastEpisode?.slice(0, 4)}
                     </p>
                   </span>
                 )}
+                <Rating
+                  rating={content?.vote_average}
+                  reviews={content?.vote_count}
+                />
               </p>
-              <p className="hidden md:block text-gray-500 font-bold text-sm md:mt-2 md:mb-3">{content.tagline}</p>
+              <p className="hidden md:block text-gray-500 font-bold text-sm md:mt-2 md:mb-3">
+                {content.tagline}
+              </p>
               <div className="overflow-hidden text-ellipsis">
-                <p className="text-sm text-ellipsis overflow-hidden text-gray-300 overview">{content.overview}</p>
+                <p className="text-sm text-ellipsis overflow-hidden text-gray-300 overview">
+                  {content.overview}
+                </p>
               </div>
               <div className="flex mt-10 gap-6">
-                <div className="flex items-center flex-col gap-2">
-                  <div className="h-16 w-16">
-                    <CircularProgressbar
-                      maxValue={10}
-                      strokeWidth={10}
-                      styles={buildStyles({
-                        textSize: '18px',
-                        pathColor: '#B794F4',
-                        textColor: '#B794F4',
-                        trailColor: '#B794F412',
-                      })}
-                      text={`${content?.vote_average.toFixed(2)}`}
-                      value={content?.vote_average}
-                    />
+                {content.link && content.providers?.length ? (
+                  <div className="ml-4 hidden first-line:hidden md:flex">
+                    <a
+                      className="w-10 h-10"
+                      href={content.link}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      <Button className="w-10 h-10 rounded-full" size="sm" title="¡Quiero verla!" variant="site">
+                        <Play className="h-4 w-4" />
+                      </Button>
+                    </a>
                   </div>
-                  <p className="text-gray-500 text-xs md:text-sm">{content?.vote_count} reviews</p>
-                </div>
+                ) : null}
                 {content.providers?.length ? (
                   <div className="grid grid-cols-4 text-gray-300">
                     {content.providers.map((prov: any) => (
-                      <div key={prov.id} className="rounded-md h-10 mx-2 mb-2 overflow-hidden">
-                        <Image alt={prov.provider_name} height={40} src={`${BASE_IMAGE_URL}${prov.logo_path}`} width={40} />
+                      <div
+                        key={prov.id}
+                        className="rounded-md h-10 mx-2 mb-2 overflow-hidden"
+                      >
+                        <Image
+                          alt={prov.provider_name}
+                          height={40}
+                          src={`${BASE_IMAGE_URL}${prov.logo_path}`}
+                          width={40}
+                        />
                       </div>
                     ))}
                   </div>
@@ -117,19 +149,11 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
               </div>
             </div>
             <div className="hidden md:flex md:gap-2 absolute bottom-3 justify-start w-full my-3 left-6">
-              {content.link ? (
-                <a className="ml-4" href={content.link} rel="noreferrer" target="_blank">
-                  <Button label="¡Quiero verla!" size="sm" onClick={() => {}} />
-                </a>
-              ) : null}
-              {search === 'recomendations' && (
-                <Button
-                  label="Ver siguiente recomendación"
-                  size="sm"
-                  variant="transparent"
-                  onClick={handleNextRecomendation ?? (() => {})}
-                />
-              )}
+              <Share />
+              <Button {...buttonProps} variant="site-transparent">
+                {search === "recomendations" ? "Ver siguiente recomendación" : "Ver otras tendencias"}
+                {search === "recomendations" ? <ArrowRight className="w-5 h-5" /> : <LineChart className="w-5 h-5" />}
+              </Button>
             </div>
           </section>
         </Element>
