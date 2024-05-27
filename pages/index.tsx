@@ -20,7 +20,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useTrackRender } from "@/hooks/useTrackRender";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { DynamicHead } from "@/components/DynamicHead";
-import { useRouter } from "next/router";
 import { getdata } from "./api";
 
 import { ContentInterface } from "./types";

@@ -8,8 +8,6 @@ import Layout from "@components/Layout";
 import { updateParams } from "@utils/index";
 
 import {
-  getRecomendation,
-  getSimilars,
   resetValues,
   setContent,
   setLastSearch,
@@ -45,10 +43,6 @@ const MoviesTrends: NextPage<MoviesTrendsProps> = ({
       content,
       isModalOpen,
       watchRegion = "AR",
-      selectedGenre,
-      selectedProvider = 0,
-      recomendedContent = [],
-      prevContent,
     },
   } = useContext(PageContext);
   const { storage } = useLocalStorage();
