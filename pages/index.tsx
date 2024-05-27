@@ -8,20 +8,19 @@ import Layout from "@components/Layout";
 import { updateParams } from "@utils/index";
 
 import {
-  getRecomendation,
-  getSimilars,
   resetValues,
   setContent,
   setRecomended,
   setSimilars,
   setWatchRegion,
-  setLastSearch
+  setLastSearch,
 } from "@store/actions";
 import { PageContext } from "@store/index";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTrackRender } from "@/hooks/useTrackRender";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { DynamicHead } from "@/components/DynamicHead";
+import { useRouter } from "next/router";
 import { getdata } from "./api";
 
 import { ContentInterface } from "./types";
@@ -42,20 +41,12 @@ const TvTrends: NextPage<TvTrendsProps> = ({
 }) => {
   const {
     dispatch,
-    state: {
-      content,
-      isModalOpen,
-      watchRegion = "AR",
-      selectedGenre,
-      selectedProvider = 0,
-      recomendedContent = [],
-      prevContent,
-    },
+    state: { content, isModalOpen, watchRegion = "AR" },
   } = useContext(PageContext);
   const { storage } = useLocalStorage();
   const [source, setSource] = useState("tv");
 
-  useTrackRender('Initial TvTrends');
+  useTrackRender("Initial TvTrends");
 
   useEffect(() => {
     if (region) {
@@ -77,7 +68,11 @@ const TvTrends: NextPage<TvTrendsProps> = ({
       setWatchRegion(dispatch, params.region || "AR");
     }
 
-    updateParams({ newSource: source, newWatchRegion: watchRegion, id: initialResult.id.toString() });
+    updateParams({
+      newSource: source,
+      newWatchRegion: watchRegion,
+      id: initialResult.id.toString(),
+    });
     const lastSearch = storage.get("qpv-lastSearch");
 
     if (lastSearch) {
@@ -87,20 +82,7 @@ const TvTrends: NextPage<TvTrendsProps> = ({
 
   const handleRegion = async (newRegion: string) => {
     resetValues(dispatch);
-    setWatchRegion(dispatch, newRegion);
-    const newId = await getRecomendation(
-      dispatch,
-      source,
-      recomendedContent,
-      prevContent,
-      selectedProvider,
-      selectedGenre,
-      newRegion,
-      true
-    );
-
-    getSimilars(dispatch, source, content.id, watchRegion);
-    updateParams({ newSource: source, newWatchRegion: newRegion, id: newId });
+    window.location.assign(`/recomendations?region=${newRegion}`);
   };
 
   return (

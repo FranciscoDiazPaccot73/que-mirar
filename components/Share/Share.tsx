@@ -20,8 +20,6 @@ export const Share = () => {
   const [href, setHref] = useState("");
   const { vote_average: votes, title, name } = content || {};
 
-  console.log(content);
-
   useEffect(() => {
     const encodedUrl = encodeURIComponent(window.location.href);
     let text = encodedUrl;

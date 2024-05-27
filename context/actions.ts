@@ -61,7 +61,9 @@ export const getMoreTrendings = async (
 
   try {
     const { data } = await axios.get(
-      `/api/trendings?source=${source}&time=${timelapse || "day"}&page=${page || 2}`,
+      `/api/trendings?source=${source}&time=${timelapse || "day"}&page=${
+        page || 2
+      }`,
       { timeout }
     );
 
@@ -130,14 +132,21 @@ export const resetSearch = (dispatch: any) => {
 
 export const getGenres = async (dispatch: any, source: string) => {
   try {
+    console.log("ENTRA");
     const { data } = await axios.get(`/api/genres?source=${source}`, {
       timeout,
     });
+
+    console.log("data", data);
 
     dispatch({ type: types.SET_GENRES, genres: data });
   } catch (err) {
     console.log(err);
   }
+};
+
+export const resetGenres = (dispatch: any) => {
+  dispatch({ type: types.SET_GENRES, genres: [] });
 };
 
 export const setSimilars = (dispatch: any, content: ContentInterface[]) => {
@@ -365,4 +374,4 @@ export const setSelectedGenre = (dispatch: any, id: number | null) => {
 
 export const setLastSearch = (dispatch: any, lastSearch: any) => {
   dispatch({ type: types.SET_LAST_SEARCH, lastSearch });
-}
+};

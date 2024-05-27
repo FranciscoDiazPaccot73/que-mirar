@@ -1,30 +1,69 @@
 export const types = {
-  FETCHING: 'FETCHING',
-  SET_CONTENT: 'SET_CONTENT',
-  ALREADY_RECOMENDED: 'ALREADY_RECOMENDED',
-  PREV_CONTENT: 'PREV_CONTENT',
-  SET_PROVIDERS: 'SET_PROVIDERS',
-  SET_GENRES: 'SET_GENRES',
-  SET_SELECTED_PROVIDER: 'SET_SELECTED_PROVIDER',
-  SET_SELECTED_GENRE: 'SET_SELECTED_GENRE',
-  SET_NO_CONTENT: 'SET_NO_CONTENT',
-  SET_WATCH_REGION: 'SET_WATCH_REGION',
-  SET_SIMILARS: 'SET_SIMILARS',
-  SET_SEARCH: 'SET_SEARCH',
-  SET_SIMILAR_TO_CONTENT: 'SET_SIMILAR_TO_CONTENT',
-  SET_NEXT_RECOMENDATIONS: 'SET_NEXT_RECOMENDATIONS',
-  SET_INITIAL_RECOMENDATIONS: 'SET_INITIAL_RECOMENDATIONS',
-  SET_SEARCH_MODAL_STATE: 'SET_SEARCH_MODAL_STATE',
-  SET_TIME_FRAME: 'SET_TIME_FRAME',
-  SET_LAST_SEARCH: 'SET_LAST_SEARCH',
-  UPDATE_SIMILARS: 'UPDATE_SIMILARS',
+  FETCHING: "FETCHING",
+  SET_CONTENT: "SET_CONTENT",
+  ALREADY_RECOMENDED: "ALREADY_RECOMENDED",
+  PREV_CONTENT: "PREV_CONTENT",
+  SET_PROVIDERS: "SET_PROVIDERS",
+  SET_GENRES: "SET_GENRES",
+  SET_SELECTED_PROVIDER: "SET_SELECTED_PROVIDER",
+  SET_SELECTED_GENRE: "SET_SELECTED_GENRE",
+  SET_NO_CONTENT: "SET_NO_CONTENT",
+  SET_WATCH_REGION: "SET_WATCH_REGION",
+  SET_SIMILARS: "SET_SIMILARS",
+  SET_SEARCH: "SET_SEARCH",
+  SET_SIMILAR_TO_CONTENT: "SET_SIMILAR_TO_CONTENT",
+  SET_NEXT_RECOMENDATIONS: "SET_NEXT_RECOMENDATIONS",
+  SET_INITIAL_RECOMENDATIONS: "SET_INITIAL_RECOMENDATIONS",
+  SET_SEARCH_MODAL_STATE: "SET_SEARCH_MODAL_STATE",
+  SET_TIME_FRAME: "SET_TIME_FRAME",
+  SET_LAST_SEARCH: "SET_LAST_SEARCH",
+  UPDATE_SIMILARS: "UPDATE_SIMILARS",
 };
+
+const DEFAULT_PROVIDERS = [
+  {
+    logo_path: "/dQeAar5H991VYporEjUspolDarG.jpg",
+    provider_name: "Amazon Prime Video",
+    provider_id: 119,
+  },
+  {
+    logo_path: "/cv5S44vHpNoGj7wby6390AyhEkH.jpg",
+    provider_name: "Star Plus",
+    provider_id: 619,
+  },
+  {
+    logo_path: "/h5DcR0J2EESLitnhR8xLG1QymTE.jpg",
+    provider_name: "Paramount Plus",
+    provider_id: 531,
+  },
+  {
+    logo_path: "/fksCUZ9QDWZMUwL2LgMtLckROUN.jpg",
+    provider_name: "Max",
+    provider_id: 1899,
+  },
+  {
+    logo_path: "/97yvRBw1GzX7fXprcF80er19ot.jpg",
+    provider_name: "Disney Plus",
+    provider_id: 337,
+  },
+  {
+    logo_path: "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
+    provider_name: "Netflix",
+    provider_id: 8,
+  },
+  {
+    logo_path: "/mXeC4TrcgdU6ltE9bCBCEORwSQR.jpg",
+    provider_name: "Crunchyroll",
+    provider_id: 283,
+  },
+];
 
 export const init = (config: any) => {
   return {
     ...config,
-    BASE_IMAGE_URL: 'https://image.tmdb.org/t/p/w500',
-    selectedTimeframe: 'day',
+    BASE_IMAGE_URL: "https://image.tmdb.org/t/p/w500",
+    selectedTimeframe: "day",
+    providers: DEFAULT_PROVIDERS,
   };
 };
 
@@ -46,7 +85,10 @@ export const reducer = (state: any, action: any) => {
 
       if (currentRecomendations.length) currentRecomendations.shift();
 
-      const newRecomendations = [...currentRecomendations, action.nextRecomendations];
+      const newRecomendations = [
+        ...currentRecomendations,
+        action.nextRecomendations,
+      ];
 
       return { ...state, nextRecomendations: newRecomendations };
     }
@@ -98,7 +140,7 @@ export const reducer = (state: any, action: any) => {
           result[item] = true;
 
           return result;
-        }, {}),
+        }, {})
       );
 
       return { ...state, recomendedContent: uniqueContent };

@@ -7,21 +7,27 @@ export type CurrentValues = {
   id: number;
 };
 
-export const getLastSearchItems = (values: CurrentValues[], result: ContentInterface, source: string) => {
+export const getLastSearchItems = (
+  values: CurrentValues[],
+  result: ContentInterface,
+  source: string
+) => {
+  if (values.find((item) => item.id === result.id)) return values;
+
   const lastSearchItem = {
     image: result.poster_path,
     name: result.name || result.title,
     votes: result.vote_average,
     id: result.id,
-    source
-  }
+    source,
+  };
 
   const currentValues = values || [];
 
   const newLastSearch = new Set([lastSearchItem, ...currentValues]);
   const arr = Array.from(newLastSearch);
 
-  if (arr.length > 5) arr.pop()
+  if (arr.length > 5) arr.pop();
 
   return arr;
-}
+};

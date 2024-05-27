@@ -51,7 +51,7 @@ const MoviesTrends: NextPage<MoviesTrendsProps> = ({
       prevContent,
     },
   } = useContext(PageContext);
-  const { storage } = useLocalStorage()
+  const { storage } = useLocalStorage();
   const [source, setSource] = useState("movie");
 
   useEffect(() => {
@@ -74,7 +74,11 @@ const MoviesTrends: NextPage<MoviesTrendsProps> = ({
       setWatchRegion(dispatch, params.region || "AR");
     }
 
-    updateParams({ newSource: source, newWatchRegion: watchRegion, id: initialResult.id.toString() });
+    updateParams({
+      newSource: source,
+      newWatchRegion: watchRegion,
+      id: initialResult.id.toString(),
+    });
     const lastSearch = storage.get("qpv-lastSearch");
 
     if (lastSearch) {
@@ -84,20 +88,7 @@ const MoviesTrends: NextPage<MoviesTrendsProps> = ({
 
   const handleRegion = async (newRegion: string) => {
     resetValues(dispatch);
-    setWatchRegion(dispatch, newRegion);
-    const newId = await getRecomendation(
-      dispatch,
-      source,
-      recomendedContent,
-      prevContent,
-      selectedProvider,
-      selectedGenre,
-      newRegion,
-      true
-    );
-
-    getSimilars(dispatch, source, content.id, watchRegion);
-    updateParams({ newSource: source, newWatchRegion: newRegion, id: newId });
+    window.location.assign(`/movies/recomendations?region=${newRegion}`);
   };
 
   return (

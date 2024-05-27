@@ -48,7 +48,7 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
       nextRecomendations,
     },
   } = useContext(PageContext);
-  const { storage } = useLocalStorage()
+  const { storage } = useLocalStorage();
   const [source, setSource] = useState("movie");
   const alreadyFetch = useRef(false);
 
@@ -76,6 +76,12 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
       setSource(params.source || "movie");
       setWatchRegion(dispatch, params.region || "AR");
     }
+
+    updateParams({
+      newSource: params.source || source,
+      newWatchRegion: params.region || watchRegion,
+      id: params.id || initialResult?.id.toString(),
+    });
   };
 
   useEffect(() => {
@@ -83,8 +89,6 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
       alreadyFetch.current = true;
       getInitialData();
     }
-
-    updateParams({ newSource: source, newWatchRegion: watchRegion, id: initialResult?.id.toString() });
     const lastSearch = storage.get("qpv-lastSearch");
 
     if (lastSearch) {

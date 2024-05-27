@@ -76,6 +76,12 @@ const TvReco: NextPage<TvRecoProps> = ({ initialResult }) => {
       setSource(params.source || "tv");
       setWatchRegion(dispatch, params.region || "AR");
     }
+
+    updateParams({
+      newSource: params.source || source,
+      newWatchRegion: params.region || watchRegion,
+      id: params.id || initialResult?.id.toString(),
+    });
   };
 
   useEffect(() => {
@@ -84,7 +90,6 @@ const TvReco: NextPage<TvRecoProps> = ({ initialResult }) => {
       getInitialData();
     }
 
-    updateParams({ newSource: source, newWatchRegion: watchRegion, id: initialResult?.id.toString() });
     const lastSearch = storage.get("qpv-lastSearch");
 
     if (lastSearch) {

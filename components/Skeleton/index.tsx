@@ -8,8 +8,8 @@ type SkeletonProps = {
 const Skeleton: FC<SkeletonProps> = ({ type }) => {
   if (type === "card") {
     return (
-      <div className="flex flex-col gap-2 w-full md:flex-row">
-        <div className="bg-skeleton animate-pulse w-full h-48 md:hidden" />
+      <div className="flex flex-col gap-2 w-full min-h-[550px] md:flex-row">
+        <div className="bg-skeleton animate-pulse w-full h-56 md:hidden" />
         <div className="px-4 pt-2 pb-3 md:w-3/4 md:px-8 md:mt-8 md:mb-16">
           <div className="bg-skeleton h-8 rounded-md animate-pulse w-full" />
           <div className="bg-skeleton h-5 rounded-md animate-pulse w-full mt-2 mb-3" />
