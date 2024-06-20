@@ -12,7 +12,7 @@ export const getLastSearchItems = (
   result: ContentInterface,
   source: string
 ) => {
-  if (values.find((item) => item.id === result.id)) return values;
+  if (values?.find((item) => item.id === result.id)) return values;
 
   const lastSearchItem = {
     image: result.poster_path,

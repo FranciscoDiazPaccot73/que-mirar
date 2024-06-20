@@ -135,9 +135,9 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
             ) : null}
             {content.providers?.length ? (
               <div className="grid grid-cols-4 text-gray-300">
-                {content.providers.map((prov: any, index: number) => (
+                {content.providers.map((prov: any) => (
                   <div
-                    key={prov.id + index}
+                    key={`provider-${prov.d}`}
                     className="rounded-md h-10 mx-2 mb-2 overflow-hidden"
                   >
                     <Image

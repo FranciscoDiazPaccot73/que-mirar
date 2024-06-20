@@ -156,7 +156,7 @@ const Filters: FC<FilterProps> = ({
             <SelectGroup>
               <SelectLabel>Regiones</SelectLabel>
               {availableRegions.map((region: string) => (
-                <SelectItem key={region} value={region}>
+                <SelectItem key={`region-${region}`} value={region}>
                   {region}
                 </SelectItem>
               ))}

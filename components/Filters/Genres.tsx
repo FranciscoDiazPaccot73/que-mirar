@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { FC, useContext } from "react";
 
 import {
   Select,
@@ -8,13 +8,13 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
-import { GenresTypes } from '@/pages/types';
-import { excludedGenres } from '@/utils';
+import { GenresTypes } from "@/pages/types";
+import { excludedGenres } from "@/utils";
 
-import { PageContext } from '../../context';
-import { Label } from '../ui/label';
+import { PageContext } from "../../context";
+import { Label } from "../ui/label";
 
 type GenreProps = {
   handleGenre: (id: number) => void;
@@ -25,17 +25,21 @@ const Genres: FC<GenreProps> = ({ handleGenre, source }) => {
   const {
     state: { genres = [], selectedGenre = 0 },
   } = useContext(PageContext);
-  const genresWithAll = genres.length ? [{ id: 0, name: 'TODOS' }, ...genres] : [];
+  const genresWithAll = genres.length
+    ? [{ id: 0, name: "TODOS" }, ...genres]
+    : [];
 
   const handleChange = (value: string) => {
-    handleGenre(Number(value))
-  }
+    handleGenre(Number(value));
+  };
 
   return (
     <>
       <Select value={selectedGenre.toString()} onValueChange={handleChange}>
-        <div className='w-full'>
-          <Label className='text-white text-xs' htmlFor="genres">Géneros</Label>
+        <div className="w-full">
+          <Label className="text-white text-xs" htmlFor="genres">
+            Géneros
+          </Label>
           <SelectTrigger id="genres">
             <SelectValue placeholder="Géneros" />
           </SelectTrigger>
@@ -44,17 +48,26 @@ const Genres: FC<GenreProps> = ({ handleGenre, source }) => {
           <SelectGroup>
             <SelectLabel>Géneros</SelectLabel>
             {genresWithAll?.map((genre: GenresTypes) => {
-              if (source === 'tv' && excludedGenres.includes(genre.id.toString())) return null
+              if (
+                source === "tv" &&
+                excludedGenres.includes(genre.id.toString())
+              )
+                return null;
 
               return (
-                <SelectItem key={genre.id} value={genre.id.toString()}>{genre?.name.toUpperCase()}</SelectItem>
-              )
+                <SelectItem
+                  key={`selected-genre-${genre.id}`}
+                  value={genre.id.toString()}
+                >
+                  {genre?.name.toUpperCase()}
+                </SelectItem>
+              );
             })}
           </SelectGroup>
         </SelectContent>
       </Select>
     </>
-  )
+  );
 };
 
 export default Genres;

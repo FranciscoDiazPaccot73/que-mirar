@@ -71,7 +71,7 @@ export const Providers: FC<ProvidersProps> = ({ handleFilter }) => {
 
               return (
                 <div
-                  key={prov.provider_id}
+                  key={`filters-provider-${prov.provider_id}`}
                   className={filtersClasses}
                   onClick={() => handleFilter(prov.provider_id)}
                   onKeyUp={(e) => handleKeyUp(e, prov.provider_id)}
@@ -104,7 +104,7 @@ export const Providers: FC<ProvidersProps> = ({ handleFilter }) => {
 
               return (
                 <div
-                  key={prov.provider_id}
+                  key={`provider-second-filter-${prov.provider_id}`}
                   className={filtersClasses}
                   onClick={() => handleFilter(prov.provider_id)}
                   onKeyUp={(e) => handleKeyUp(e, prov.provider_id)}
