@@ -1,9 +1,9 @@
-import Image from 'next/image';
+import Image from "next/image";
 
-import Copyright from '../icons/Copyright';
+import Copyright from "../icons/Copyright";
 
 const Footer = () => (
-  <footer className="flex flex-1 items-center justify-center pt-4 pb-10 relative border-t border-purple-50">
+  <footer className="flex flex-1 items-center justify-center pt-4 pb-10 relative border-t border-purple-50 mb-28 md:mb-0">
     <div className="flex items-center justify-center flex-col text-lg">
       <a
         className="flex flex-grow items-center justify-center text-white"
@@ -21,7 +21,9 @@ const Footer = () => (
           />
         </span>
       </a>
-      <p className="text-center text-slate-500 text-[10px]">This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+      <p className="text-center text-slate-500 text-[10px]">
+        This product uses the TMDB API but is not endorsed or certified by TMDB.
+      </p>
     </div>
     <div className="absolute right-4 text-[8px] flex bottom-[10px] text-purple">
       <span className="flex mr-2 items-center">
@@ -29,7 +31,12 @@ const Footer = () => (
         <span className="ml-0.5">{`2022-${new Date().getFullYear()}`}</span>
       </span>
       Created by
-      <a className="ml-1 font-bold" href="https://franciscodiazpaccot.dev" rel="noreferrer noopener" target="_blank">
+      <a
+        className="ml-1 font-bold"
+        href="https://franciscodiazpaccot.dev"
+        rel="noreferrer noopener"
+        target="_blank"
+      >
         Francisco Diaz Paccot
       </a>
     </div>
