@@ -19,11 +19,12 @@ import { Label } from "../ui/label";
 type GenreProps = {
   handleGenre: (id: number) => void;
   source: string;
+  selectedGenre: number;
 };
 
-const Genres: FC<GenreProps> = ({ handleGenre, source }) => {
+const Genres: FC<GenreProps> = ({ handleGenre, source, selectedGenre }) => {
   const {
-    state: { genres = [], selectedGenre = 0 },
+    state: { genres = [] },
   } = useContext(PageContext);
   const genresWithAll = genres.length
     ? [{ id: 0, name: "TODOS" }, ...genres]

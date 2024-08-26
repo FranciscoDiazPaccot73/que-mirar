@@ -97,7 +97,12 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
   }, []);
 
   const nextRecomendation = async () => {
-    window.scrollTo(0, 0);
+    const contentElement = document.getElementById("content");
+
+    if (contentElement) {
+      contentElement.scrollIntoView({ behavior: "smooth" });
+    }
+
     resetValues(dispatch);
     const [next] = nextRecomendations;
     const newId = await getNextRecomendationCached(

@@ -73,7 +73,8 @@ export const LastSearch = () => {
                   width={60}
                 />
               </div>
-              <div className="h-full gap-2 flex flex-col justify-center">
+              <div className="h-full gap-2 flex flex-col justify-center relative">
+                <p className="absolute top-1 left-0 text-xs text-gray-400">{`(${source === 'tv' ? "Serie" : 'Pelicula'})`}</p>
                 <p>{name}</p>
                 <Rating rating={votes} />
               </div>

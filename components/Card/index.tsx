@@ -25,7 +25,7 @@ const Card: FC<CardProps> = ({ source, nextRecomendation, search }) => {
   );
 
   return (
-    <div className={cardClasses}>
+    <div className={cardClasses} id="content">
       {noContent ? (
         <NoContent height="600px" width="100%" />
       ) : (

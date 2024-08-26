@@ -10,6 +10,7 @@ const BASE_IMAGE_URL = "https://image.tmdb.org/t/p/w500";
 
 type ProvidersProps = {
   handleFilter: (id: number) => void;
+  selectedProvider: number;
 };
 
 export type ProviderType = {
@@ -20,9 +21,9 @@ export type ProviderType = {
   provider_name: string;
 };
 
-export const Providers: FC<ProvidersProps> = ({ handleFilter }) => {
+export const Providers: FC<ProvidersProps> = ({ handleFilter, selectedProvider }) => {
   const {
-    state: { selectedProvider = 0, providers },
+    state: { providers },
   } = useContext(PageContext);
   const wrapperClasses = classNames(
     "cursor-pointer flex items-center justify-center bg-purple rounded-md border border-purple-50 text-filter-color font-semibold h-9 w-9 overflow-hidden md:mr-3",
