@@ -132,12 +132,9 @@ export const resetSearch = (dispatch: any) => {
 
 export const getGenres = async (dispatch: any, source: string) => {
   try {
-    console.log("ENTRA");
     const { data } = await axios.get(`/api/genres?source=${source}`, {
       timeout,
     });
-
-    console.log("data", data);
 
     dispatch({ type: types.SET_GENRES, genres: data });
   } catch (err) {
@@ -193,7 +190,7 @@ export const getContent = async (
 
     dispatch({ type: types.SET_CONTENT, content: data });
 
-    return data.id;
+    return { id: data.id, similars: data.similars };
   } catch (err) {
     console.log(err);
 
@@ -221,15 +218,22 @@ export const getInitialRecomendations = async (
   source: string,
   provider?: string | number,
   watchRegion?: string,
-  genre?: number
+  genre?: number,
+  gte?: number,
   // eslint-disable-next-line consistent-return
 ) => {
   isFetching(dispatch, true);
   try {
+    const params = new URLSearchParams({
+      source,
+      provider: provider?.toString() ?? "0",
+      genre: genre?.toString() || '',
+      region: watchRegion || 'AR',
+      gte: gte?.toString() || "6"
+    })
+
     const { data } = await axios.get(
-      `/api/recomendation-initial?source=${source}&provider=${
-        provider ?? 0
-      }&region=${watchRegion}&genre=${genre ?? ""}`,
+      `/api/recomendation-initial?${params}`,
       {
         timeout,
       }
@@ -283,7 +287,7 @@ export const getNextRecomendationCached = async (
 
     dispatch({ type: types.SET_CONTENT, content: newContent });
 
-    return data.id;
+    return { id: data.id, similars: data.similars };
   } catch (err: any) {
     console.log(err);
 
@@ -301,7 +305,8 @@ export const getRecomendation = async (
   provider?: any,
   genre?: number | null,
   watchRegion?: string,
-  saveContent?: boolean
+  gte?: number,
+  saveContent?: boolean,
 ) => {
   try {
     dispatch({ type: types.FETCHING, value: true });
@@ -309,10 +314,17 @@ export const getRecomendation = async (
       resetValues(dispatch);
     }
     const formated = recomended.join("|");
+    const params = new URLSearchParams({
+      source,
+      recomended: formated,
+      provider: provider ?? "0",
+      genre: genre?.toString() || '',
+      region: watchRegion || 'AR',
+      gte: gte?.toString() || "6"
+    })
+
     const { data } = await axios.get(
-      `/api/recomendation?source=${source}&recomended=${formated}&provider=${
-        provider ?? 0
-      }${genre ? `&genre=${genre}` : ""}&region=${watchRegion}`,
+      `/api/recomendation?${params.toString()}`,
       { timeout }
     );
 
@@ -323,7 +335,7 @@ export const getRecomendation = async (
 
     dispatch({ type: types.PREV_CONTENT, prevContent });
 
-    return data.id;
+    return { id: data.id, similars: data.similars };
   } catch (err: any) {
     let noContentObj = {
       message: "No hay contenido para tu búsqueda.",
@@ -362,6 +374,10 @@ export const setRecomended = (dispatch: any, id: number) => {
 
 export const setProvider = (dispatch: any, id: number) => {
   dispatch({ type: types.SET_SELECTED_PROVIDER, selectedProvider: id });
+};
+
+export const setGte = (dispatch: any, value: number) => {
+  dispatch({ type: types.SET_SELECTED_GTE, selectedGte: value });
 };
 
 export const setWatchRegion = (dispatch: any, value: string) => {

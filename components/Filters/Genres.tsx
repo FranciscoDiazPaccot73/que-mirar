@@ -15,6 +15,7 @@ import { excludedGenres } from "@/utils";
 
 import { PageContext } from "../../context";
 import { Label } from "../ui/label";
+import Skeleton from "../Skeleton";
 
 type GenreProps = {
   handleGenre: (id: number) => void;
@@ -41,29 +42,31 @@ const Genres: FC<GenreProps> = ({ handleGenre, source, selectedGenre }) => {
           <Label className="text-white text-xs" htmlFor="genres">
             Géneros
           </Label>
-          <SelectTrigger id="genres">
-            <SelectValue placeholder="Géneros" />
-          </SelectTrigger>
+          {!genresWithAll.length ? <Skeleton type="genres" /> : (
+            <SelectTrigger id="genres">
+              <SelectValue placeholder="Géneros" />
+            </SelectTrigger>
+          )}
         </div>
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Géneros</SelectLabel>
-            {genresWithAll?.map((genre: GenresTypes) => {
-              if (
-                source === "tv" &&
-                excludedGenres.includes(genre.id.toString())
-              )
-                return null;
+              {genresWithAll?.map((genre: GenresTypes) => {
+                if (
+                  source === "tv" &&
+                  excludedGenres.includes(genre.id.toString())
+                )
+                  return null;
 
-              return (
-                <SelectItem
-                  key={`selected-genre-${genre.id}`}
-                  value={genre.id.toString()}
-                >
-                  {genre?.name.toUpperCase()}
-                </SelectItem>
-              );
-            })}
+                return (
+                  <SelectItem
+                    key={`selected-genre-${genre.id}`}
+                    value={genre.id.toString()}
+                  >
+                    {genre?.name.toUpperCase()}
+                  </SelectItem>
+                );
+              })}
           </SelectGroup>
         </SelectContent>
       </Select>

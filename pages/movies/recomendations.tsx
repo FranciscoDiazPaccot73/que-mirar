@@ -10,7 +10,7 @@ import { updateParams } from "@utils/index";
 import {
   getNextRecomendationCached,
   getRecomendation,
-  getSimilars,
+  setSimilars,
   resetValues,
   setContent,
   setRecomended,
@@ -43,6 +43,7 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
       watchRegion = "AR",
       selectedGenre,
       selectedProvider = 0,
+      selectedGte = 6,
       recomendedContent = [],
       prevContent,
       nextRecomendations,
@@ -65,7 +66,7 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
 
     setContent(dispatch, firstResult);
     setRecomended(dispatch, firstResult.id);
-    getSimilars(dispatch, source, firstResult.id, watchRegion);
+    setSimilars(dispatch, firstResult.similars as ContentInterface[]);
     setNextRecomendation(dispatch, [second]);
 
     const params: any = new Proxy(new URLSearchParams(window.location.search), {
@@ -105,7 +106,7 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
 
     resetValues(dispatch);
     const [next] = nextRecomendations;
-    const newId = await getNextRecomendationCached(
+    const nextContent = await getNextRecomendationCached(
       dispatch,
       source,
       next.id,
@@ -113,8 +114,10 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
       watchRegion
     );
 
-    updateParams({ newSource: source, newWatchRegion: watchRegion, id: newId });
-    getSimilars(dispatch, source, newId, watchRegion);
+    // @ts-ignore
+    updateParams({ newSource: source, newWatchRegion: watchRegion, id: nextContent.id });
+    // @ts-ignore
+    setSimilars(dispatch, nextContent.similars);
     getRecomendation(
       dispatch,
       source,
@@ -122,14 +125,15 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
       prevContent,
       selectedProvider,
       selectedGenre,
-      watchRegion
+      watchRegion,
+      selectedGte
     );
   };
 
   const handleRegion = async (newRegion: string) => {
     resetValues(dispatch);
     setWatchRegion(dispatch, newRegion);
-    const newId = await getRecomendation(
+    const nextContent = await getRecomendation(
       dispatch,
       source,
       recomendedContent,
@@ -137,11 +141,14 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
       selectedProvider,
       selectedGenre,
       newRegion,
+      selectedGte,
       true
     );
 
-    getSimilars(dispatch, source, content.id, watchRegion);
-    updateParams({ newSource: source, newWatchRegion: newRegion, id: newId });
+    // @ts-ignore
+    setSimilars(dispatch, nextContent.similars);
+    // @ts-ignore
+    updateParams({ newSource: source, newWatchRegion: newRegion, id: nextContent.id });
   };
 
   return (

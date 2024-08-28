@@ -28,4 +28,5 @@ export interface ContentInterface {
   episodes?: number
   seasons?: number
   lastEpisode?: string
+  similars?: any[]
 }

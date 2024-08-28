@@ -5,10 +5,10 @@ import { CarouselItem } from "@/components/ui/carousel";
 import { PageContext } from "@/context";
 import {
   getContent,
-  getSimilars,
+  setSimilars,
   setSimilarToContent,
 } from "@/context/actions";
-import { ContentInterface } from "@/pages/types";
+import type { ContentInterface } from "@/pages/types";
 import { cn } from "@/lib/utils";
 import { updateParams } from "@/utils";
 import { Card, CardContent } from "../ui/card";
@@ -63,8 +63,10 @@ const ContentBox: FC<ContentBoxProps> = ({
           id: id.toString(),
         });
       }
-      await getContent(dispatch, source ?? "tv", id, watchRegion);
-      await getSimilars(dispatch, source ?? "tv", id, watchRegion);
+      // @ts-ignore
+      const { similars } = await getContent(dispatch, source ?? "tv", id, watchRegion);
+
+      setSimilars(dispatch, similars as ContentInterface[]);
     }
   };
 

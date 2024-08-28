@@ -38,15 +38,8 @@ const Skeleton: FC<SkeletonProps> = ({ type }) => {
 
   if (type === "genres") {
     return (
-      <div className="pt-2 pb-3 flex">
-        {Array(3)
-          .fill("")
-          .map((_, index) => (
-            <div
-              key={`filter-skeleton-${index}`}
-              className="bg-skeleton h-6 w-20 rounded-md animate-pulse mr-3"
-            />
-          ))}
+      <div className="text-white flex h-10 w-full items-center justify-between rounded-md border border-purple-12 bg-secondary px-3 py-2 text-sm ring-offset-purple">
+        <div className="h-full w-full bg-skeleton rounded-md animate-pulse" />
       </div>
     );
   }

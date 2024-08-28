@@ -2,11 +2,12 @@
 import { PageContext } from "@/context";
 import { useLocalStorage } from "@/hooks";
 import { useContext } from "react";
-import { getContent, getSimilars, setLastSearch } from "@/context/actions";
+import { getContent, setLastSearch, setSimilars } from "@/context/actions";
 import Image from "next/image";
 import { CurrentValues } from "@/utils/lastSearch";
 import { updateParams } from "@/utils";
 import { Trash } from "lucide-react";
+import { ContentInterface } from "@/pages/types";
 import { Rating } from "../Rating";
 import { Button } from "../Button/Button";
 
@@ -32,8 +33,10 @@ export const LastSearch = () => {
         newWatchRegion: watchRegion,
         id: id.toString(),
       });
-      await getContent(dispatch, source, id, watchRegion);
-      await getSimilars(dispatch, source, id, watchRegion);
+      // @ts-ignore
+      const { similars } = await getContent(dispatch, source, id, watchRegion);
+
+      setSimilars(dispatch, similars as ContentInterface[]);
     }
   };
 

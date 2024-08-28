@@ -2,6 +2,7 @@ import { FC, memo, useContext, useEffect, useRef } from "react";
 
 import Genres from "./Genres";
 import { Providers } from "./Providers";
+import { Gte } from "./Gte";
 
 import { PageContext } from "../../context";
 import {
@@ -25,6 +26,7 @@ const Filters: FC<FilterProps> = ({
     state: {
       selectedProvider = 0,
       selectedGenre = 0,
+      selectedGte = 6,
       fetching,
       genres,
     },
@@ -43,16 +45,20 @@ const Filters: FC<FilterProps> = ({
   }, [source]);
 
   const handleFilter = async (id: number) => {
-    if (!fetching && id !== selectedProvider) {
+    if (!fetching) {
       onChangeFilter({ provider: id });
     }
   };
 
   const handleGenre = async (id: number) => {
     if (!fetching) {
-      if (id !== selectedGenre) {
-        onChangeFilter({ genre: id });
-      }
+      onChangeFilter({ genre: id });
+    }
+  };
+
+  const handleGte = async (id: number) => {
+    if (!fetching) {
+      onChangeFilter({ gte: id });
     }
   };
 
@@ -60,6 +66,7 @@ const Filters: FC<FilterProps> = ({
     <section className="mt-2">
       <div className="flex gap-4 mb-10 w-full">
         <Genres handleGenre={handleGenre} selectedGenre={localFilters.genre || selectedGenre} source={source} />
+        <Gte handleGte={handleGte} selectedGte={localFilters.gte || selectedGte} />
       </div>
       <Providers handleFilter={handleFilter} selectedProvider={localFilters.provider || selectedProvider} />
     </section>

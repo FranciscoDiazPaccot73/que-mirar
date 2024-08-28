@@ -14,6 +14,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { Rating } from "../Rating";
 import { Share } from "../Share";
 import { Button } from "../Button/Button";
+import { GteInfo } from "./GteInfo";
 
 type ContentProps = {
   source: string;
@@ -77,27 +78,30 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
         <div className="px-4 pt-2 pb-3 md:pt-2 md:w-3/5 md:px-8 md:mt-8 md:mb-16 md:absolute md:left-0">
           <p className="mb-3 text-3xl text-white md:text-4xl md:mb-6">
             {content.title ?? content.name}
-            {source === "movie" ? (
-              <span className="text-xs opacity-60 mb-3 mt-1 flex gap-3">
-                <p>{content?.release_date?.slice(0, 4)}</p>
-                <p>{formatDuration(content?.duration)}</p>
-                <Genres genres={content.genres} />
-              </span>
-            ) : (
-              <span>
-                <p
-                  className={cn(
-                    "text-xs opacity-60 mb-3 mt-1",
-                    !content.seasons && "hidden"
-                  )}
-                >
-                  {`${content.seasons} temporada${
-                    content.seasons > 1 ? "s" : ""
-                  }`}{" "}
-                  &bull; {content?.lastEpisode?.slice(0, 4)}
-                </p>
-              </span>
-            )}
+            <div className="flex gap-2 items-center text-xs mb-3 mt-1">
+              {content.certification && <GteInfo value={content.certification} />}
+              {source === "movie" ? (
+                <span className="opacity-60 flex gap-3">
+                  <p>{content?.release_date?.slice(0, 4)}</p>
+                  <p>{formatDuration(content?.duration)}</p>
+                  <Genres genres={content.genres} />
+                </span>
+              ) : (
+                <span>
+                  <p
+                    className={cn(
+                      "opacity-60 ",
+                      !content.seasons && "hidden"
+                    )}
+                  >
+                    {`${content.seasons} temporada${
+                      content.seasons > 1 ? "s" : ""
+                    }`}{" "}
+                    &bull; {content?.lastEpisode?.slice(0, 4)}
+                  </p>
+                </span>
+              )}
+            </div>
             {content?.vote_average && (
               <Rating
                 rating={content?.vote_average}

@@ -7,6 +7,7 @@ export const types = {
   SET_GENRES: "SET_GENRES",
   SET_SELECTED_PROVIDER: "SET_SELECTED_PROVIDER",
   SET_SELECTED_GENRE: "SET_SELECTED_GENRE",
+  SET_SELECTED_GTE: "SET_SELECTED_GTE",
   SET_NO_CONTENT: "SET_NO_CONTENT",
   SET_WATCH_REGION: "SET_WATCH_REGION",
   SET_SIMILARS: "SET_SIMILARS",
@@ -115,6 +116,9 @@ export const reducer = (state: any, action: any) => {
     }
     case types.SET_SELECTED_GENRE: {
       return { ...state, selectedGenre: action.selectedGenre };
+    }
+    case types.SET_SELECTED_GTE: {
+      return { ...state, selectedGte: action.selectedGte };
     }
     case types.SET_NO_CONTENT: {
       return { ...state, noContent: action.noContent };
