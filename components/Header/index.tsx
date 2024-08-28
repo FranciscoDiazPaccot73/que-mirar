@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 
 import { PageContext } from "@/context";
 import { resetGenres, resetValues } from "@/context/actions";
-import { Monitor, Film } from "lucide-react";
+import { Monitor, Clapperboard } from "lucide-react";
 
 const transition = {
   duration: 0.2,
@@ -42,7 +42,7 @@ const Header = () => {
     {
       name: "Peliculas",
       link: "/movies",
-      icon: Film,
+      icon: Clapperboard,
       color: isMovies ? "#B794F4" : "#ffffff",
       bgColor: isMovies ? "#B794F412" : "",
     },
