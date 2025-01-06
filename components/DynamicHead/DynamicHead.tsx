@@ -2,9 +2,10 @@ import Head from "next/head";
 
 interface DynamicHeadProps {
   title?: string;
+  image?: string;
 }
 
-export const DynamicHead = ({ title }: DynamicHeadProps) => {
+export const DynamicHead = ({ title, image }: DynamicHeadProps) => {
   if (!title) {
     return (
       <Head>
@@ -19,7 +20,7 @@ export const DynamicHead = ({ title }: DynamicHeadProps) => {
       <meta content={title} property="og:title" />
       <meta content={title} property="og:site_name" />
       <meta content={title} property="twitter:title" />
-      <meta content={title} property="og:title" />
+      <meta content={image} property="og:image" />
     </Head>
   );
-}
+};
