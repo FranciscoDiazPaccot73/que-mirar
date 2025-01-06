@@ -119,7 +119,8 @@ const TvReco: NextPage<TvRecoProps> = ({ initialResult }) => {
     updateParams({
       newSource: source,
       newWatchRegion: watchRegion,
-      id: nextContent.id,
+      // @ts-ignore
+      id: nextContent?.id,
     });
     // @ts-ignore
     setSimilars(dispatch, nextContent.similars);
@@ -152,10 +153,10 @@ const TvReco: NextPage<TvRecoProps> = ({ initialResult }) => {
 
     // @ts-ignore
     setSimilars(dispatch, nextContent.similars);
-    // @ts-ignore
     updateParams({
       newSource: source,
       newWatchRegion: newRegion,
+      // @ts-ignore
       id: nextContent.id,
     });
   };

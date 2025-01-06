@@ -114,10 +114,10 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
       watchRegion
     );
 
-    // @ts-ignore
     updateParams({
       newSource: source,
       newWatchRegion: watchRegion,
+      // @ts-ignore
       id: nextContent.id,
     });
     // @ts-ignore
@@ -151,10 +151,10 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
 
     // @ts-ignore
     setSimilars(dispatch, nextContent.similars);
-    // @ts-ignore
     updateParams({
       newSource: source,
       newWatchRegion: newRegion,
+      // @ts-ignore
       id: nextContent.id,
     });
   };
