@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import Head from "next/head";
 
 interface SeoProps {
   description?: string;
@@ -25,23 +25,42 @@ const Seo = ({ description, title, logoUrl, url }: SeoProps) => {
       <meta content={logoUrl} property="og:image" />
       <meta content={description} property="og:description" />
       <meta content={url} property="og:url" />
-      <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" />
+      <meta
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+        name="viewport"
+      />
+      <meta content="ca-pub-5178471526942912" name="google-adsense-account" />
       <link href="https://www.quepuedover.online/" rel="canonical" />
       <link href="/favicon.ico" rel="icon" />
       <link href="/favicon.ico" rel="icon" type="image/x-icon" />
-      <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
-      <link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
-      <link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
-      <link href="/site.webmanifest" rel="manifest"/>
+      <link
+        href="/apple-touch-icon.png"
+        rel="apple-touch-icon"
+        sizes="180x180"
+      />
+      <link
+        href="/favicon-32x32.png"
+        rel="icon"
+        sizes="32x32"
+        type="image/png"
+      />
+      <link
+        href="/favicon-16x16.png"
+        rel="icon"
+        sizes="16x16"
+        type="image/png"
+      />
+      <link href="/site.webmanifest" rel="manifest" />
     </Head>
   );
 };
 
 Seo.defaultProps = {
-  description: 'Si no sabes que serie o pelicula empezar a ver, este es tu lugar',
-  title: '¿Qué puedo ver?',
-  logoUrl: 'https://i.ibb.co/yhYsNjq/que-puedo-ver-4.png',
-  url: 'https://quepuedover.online',
+  description:
+    "Si no sabes que serie o pelicula empezar a ver, este es tu lugar",
+  title: "¿Qué puedo ver?",
+  logoUrl: "https://i.ibb.co/yhYsNjq/que-puedo-ver-4.png",
+  url: "https://quepuedover.online",
 };
 
 export default Seo;
