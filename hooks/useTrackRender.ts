@@ -1,7 +1,11 @@
 import { useTrack } from "./useTrack";
 
-export const useTrackRender = (page: string) => {
+const PAGE = "QPV";
+
+export const useTrackRender = (p?: string) => {
   const { trackEvent } = useTrack();
 
-  trackEvent('RENDER', { page });
-}
+  const page = p ?? PAGE;
+
+  trackEvent("RENDER", { page });
+};

@@ -19,6 +19,7 @@ import { PageContext } from "@store/index";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLocalStorage } from "@/hooks";
 import { DynamicHead } from "@/components/DynamicHead";
+import { useTrackRender } from "@/hooks/useTrackRender";
 import { getdata } from "../api";
 
 import { ContentInterface } from "../types";
@@ -43,6 +44,8 @@ const MoviesTrends: NextPage<MoviesTrendsProps> = ({
   } = useContext(PageContext);
   const { storage } = useLocalStorage();
   const [source, setSource] = useState("movie");
+
+  useTrackRender();
 
   useEffect(() => {
     if (region) {

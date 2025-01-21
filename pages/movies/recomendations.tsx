@@ -24,6 +24,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { useLocalStorage } from "@/hooks";
 import { DynamicHead } from "@/components/DynamicHead";
+import { useTrackRender } from "@/hooks/useTrackRender";
 import { ContentInterface } from "../types";
 import { getContentApi } from "../api/content";
 
@@ -52,6 +53,8 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
   const { storage } = useLocalStorage();
   const [source, setSource] = useState("movie");
   const alreadyFetch = useRef(false);
+
+  useTrackRender();
 
   const getInitialData = async () => {
     const recomendationsData = await getInitialRecomendations(
@@ -98,11 +101,7 @@ const MoviesReco: NextPage<MoviesRecoProps> = ({ initialResult }) => {
   }, []);
 
   const nextRecomendation = async () => {
-    const contentElement = document.getElementById("content");
-
-    if (contentElement) {
-      contentElement.scrollIntoView({ behavior: "smooth" });
-    }
+    // scrollIntoViewContent(".content");
 
     resetValues(dispatch);
     const [next] = nextRecomendations;

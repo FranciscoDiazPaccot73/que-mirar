@@ -24,6 +24,7 @@ const Layout: FC<LayoutProps> = ({ source, nextRecomendation, search }) => {
     onClick: search === "recomendations" ? nextRecomendation : () => {},
     href: search === "recomendations" ? undefined : "#other-trends",
     className: "gap-2",
+    disabled: fetching,
   };
 
   return (

@@ -45,7 +45,7 @@ const TvTrends: NextPage<TvTrendsProps> = ({
   const { storage } = useLocalStorage();
   const [source, setSource] = useState("tv");
 
-  useTrackRender("Initial TvTrends");
+  useTrackRender();
 
   useEffect(() => {
     if (region) {
