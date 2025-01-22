@@ -10,6 +10,8 @@ import { Trash } from "lucide-react";
 import { ContentInterface } from "@/pages/types";
 import { Rating } from "../Rating";
 import { Button } from "../Button/Button";
+import { SectionWrapper } from "../SectionWrapper/SectionWrapper";
+import { BadgeTypeEnum, InlineBadge } from "../InlineBadge/InlineBadge";
 
 export const LastSearch = () => {
   const {
@@ -42,18 +44,20 @@ export const LastSearch = () => {
 
   return (
     <div className="text-white mt-20">
-      <div className="flex justify-between gap-10 px-4 items-center mb-4 md:justify-start">
-        <h1>Historial de búsquedas</h1>
-        <Button
-          className="w-6 h-6 rounded-full p-1"
-          size="sm"
-          title="Eliminar historial"
-          variant="destructive"
-          onClick={handleRemove}
-        >
-          <Trash className="w-3 h-3" />
-        </Button>
-      </div>
+      <SectionWrapper className="mb-4">
+        <div className="flex justify-between gap-10 px-4 items-center w-full">
+          <h1>Historial de búsquedas</h1>
+          <Button
+            className="w-6 h-6 rounded-full p-1"
+            size="sm"
+            title="Eliminar historial"
+            variant="destructive"
+            onClick={handleRemove}
+          >
+            <Trash className="w-3 h-3" />
+          </Button>
+        </div>
+      </SectionWrapper>
       <div className="py-6 px-10 gap-3 grid grid-cols-1 md:grid-cols-2">
         {lastSearch?.map(
           ({
@@ -77,8 +81,15 @@ export const LastSearch = () => {
                 />
               </div>
               <div className="h-full gap-2 flex flex-col justify-center relative">
-                <p className="absolute top-1 left-0 text-xs text-gray-400">{`(${source === 'tv' ? "Serie" : 'Pelicula'})`}</p>
                 <p>{name}</p>
+                <InlineBadge
+                  className="w-fit"
+                  type={
+                    source === "tv" ? BadgeTypeEnum.TV : BadgeTypeEnum.MOVIE
+                  }
+                >
+                  {source === "tv" ? "Serie" : "Pelicula"}
+                </InlineBadge>
                 <Rating rating={votes} />
               </div>
             </div>

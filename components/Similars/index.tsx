@@ -5,8 +5,11 @@ import { ContentInterface } from "@/pages/types";
 
 import { PageContext } from "@/context";
 import { getMoreTrendings } from "@/context/actions";
+import { SectionWrapper } from "../SectionWrapper/SectionWrapper";
 
-const Carousel = dynamic(() => import('./Carousel').then((mod) => mod.CarouselComponent))
+const Carousel = dynamic(() =>
+  import("./Carousel").then((mod) => mod.CarouselComponent)
+);
 
 type SimilarsProps = {
   url: string;
@@ -37,10 +40,18 @@ const Similars: FC<SimilarsProps> = ({ url, content, source, search }) => {
 
   return (
     <div className="mt-20" id="other-trends">
-      <p className="text-white opacity-90 my-4 pl-4 md:pl-0">{text}</p>
+      <SectionWrapper className="my-4">
+        <p className="text-white opacity-90 pl-4 md:pl-0">{text}</p>
+      </SectionWrapper>
       <div className="max-w-[565px] md:max-w-[1000px]">
-        <Carousel content={sortedContent} getTrending={getTrending} search={search} source={source} url={url} />
-      </div>      
+        <Carousel
+          content={sortedContent}
+          getTrending={getTrending}
+          search={search}
+          source={source}
+          url={url}
+        />
+      </div>
     </div>
   );
 };

@@ -41,10 +41,7 @@ export const Gte: FC<GenreProps> = ({ handleGte, selectedGte }) => {
             <SelectLabel>Puntuaciones</SelectLabel>
             {gtes?.map((gte: number) => {
               return (
-                <SelectItem
-                  key={`selected-gte-${gte}`}
-                  value={gte.toString()}
-                >
+                <SelectItem key={`selected-gte-${gte}`} value={gte.toString()}>
                   {gte}
                 </SelectItem>
               );

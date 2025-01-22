@@ -219,7 +219,7 @@ export const getInitialRecomendations = async (
   provider?: string | number,
   watchRegion?: string,
   genre?: number,
-  gte?: number,
+  gte?: number
   // eslint-disable-next-line consistent-return
 ) => {
   isFetching(dispatch, true);
@@ -227,17 +227,14 @@ export const getInitialRecomendations = async (
     const params = new URLSearchParams({
       source,
       provider: provider?.toString() ?? "0",
-      genre: genre?.toString() || '',
-      region: watchRegion || 'AR',
-      gte: gte?.toString() || "6"
-    })
+      genre: genre?.toString() || "",
+      region: watchRegion || "AR",
+      gte: gte?.toString() || "6",
+    });
 
-    const { data } = await axios.get(
-      `/api/recomendation-initial?${params}`,
-      {
-        timeout,
-      }
-    );
+    const { data } = await axios.get(`/api/recomendation-initial?${params}`, {
+      timeout,
+    });
 
     dispatch({
       type: types.SET_INITIAL_RECOMENDATIONS,
@@ -306,7 +303,7 @@ export const getRecomendation = async (
   genre?: number | null,
   watchRegion?: string,
   gte?: number,
-  saveContent?: boolean,
+  saveContent?: boolean
 ) => {
   try {
     dispatch({ type: types.FETCHING, value: true });
@@ -318,10 +315,10 @@ export const getRecomendation = async (
       source,
       recomended: formated,
       provider: provider ?? "0",
-      genre: genre?.toString() || '',
-      region: watchRegion || 'AR',
-      gte: gte?.toString() || "6"
-    })
+      genre: genre?.toString() || "",
+      region: watchRegion || "AR",
+      gte: gte?.toString() || "6",
+    });
 
     const { data } = await axios.get(
       `/api/recomendation?${params.toString()}`,

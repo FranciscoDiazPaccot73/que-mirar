@@ -3,6 +3,7 @@ import { FC, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { FilterIcon, FilterXIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import {
   Sheet,
   SheetContent,
@@ -109,10 +110,9 @@ const ContentTitle: FC<ContentTitleProps> = ({
     );
   };
 
-  const handleFilters = async (isReset?: boolean) => {
+  const applyFilters = async (selectedFiltersToSave: any) => {
     if (!fetching) {
       window.scrollTo(0, 0);
-      const selectedFiltersToSave = isReset ? DEFAULT_FILTERS : appliedFilter;
 
       setSelectedGenre(dispatch, selectedFiltersToSave.genre!);
       setProvider(dispatch, selectedFiltersToSave.provider!);
@@ -144,6 +144,14 @@ const ContentTitle: FC<ContentTitleProps> = ({
     }
   };
 
+  const handleFilters = () => {
+    applyFilters(appliedFilter);
+  };
+
+  const resetFilters = () => {
+    applyFilters(DEFAULT_FILTERS);
+  };
+
   const handleFilterChange = (filter: Filter) => {
     setAppliedFilter((prevValues) => ({ ...prevValues, ...filter }));
   };
@@ -159,7 +167,7 @@ const ContentTitle: FC<ContentTitleProps> = ({
   return (
     <div className="flex text-white flex-col items-center justify-between md:mb-8">
       <div className="w-full px-3 md:px-0 md:flex md:gap-10 md:items-end">
-        <div className="w-full flex justify-center mb-5 md:mb-0 md:block">
+        <div className="w-full mb-0 hidden md:block">
           <Switcher
             isLeftActiveTab={search === "trends"}
             left={trendigsWording}
@@ -167,6 +175,23 @@ const ContentTitle: FC<ContentTitleProps> = ({
             onClick={handleNewSource}
           />
         </div>
+        <header className="w-full flex items-center justify-between mb-5 md:hidden">
+          <div className="flex items-center justify-center">
+            <Image
+              priority
+              alt="Logo"
+              height={80}
+              src="/logo.webp"
+              width={100}
+            />
+          </div>
+          <Switcher
+            isLeftActiveTab={search === "trends"}
+            left={trendigsWording}
+            right={recomendationsWording}
+            onClick={handleNewSource}
+          />
+        </header>
         <div className="flex gap-3 justify-end md:ml-auto md:mr-2">
           <SearchBox region={watchRegion} source={source} />
           <Sheet open={sheetOpen} onOpenChange={handleOpenChange}>
@@ -233,7 +258,7 @@ const ContentTitle: FC<ContentTitleProps> = ({
                   }
                   size="default"
                   variant="ghost"
-                  onClick={() => handleFilters(true)}
+                  onClick={resetFilters}
                 >
                   Limpiar filtros
                 </Button>
@@ -247,7 +272,7 @@ const ContentTitle: FC<ContentTitleProps> = ({
                   }
                   size="default"
                   variant="outline"
-                  onClick={() => handleFilters()}
+                  onClick={handleFilters}
                 >
                   Aplicar
                 </Button>

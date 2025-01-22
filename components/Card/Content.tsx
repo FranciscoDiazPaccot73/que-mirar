@@ -15,6 +15,7 @@ import { Rating } from "../Rating";
 import { Share } from "../Share";
 import { Button } from "../Button/Button";
 import { GteInfo } from "./GteInfo";
+import { BadgeTypeEnum, InlineBadge } from "../InlineBadge/InlineBadge";
 
 type ContentProps = {
   source: string;
@@ -113,6 +114,16 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
                   </p>
                 </span>
               )}
+              <InlineBadge
+                className={cn("ml-auto")}
+                type={
+                  search === "recomendations"
+                    ? BadgeTypeEnum.RECOMMENDATION
+                    : BadgeTypeEnum.TREND
+                }
+              >
+                {search === "recomendations" ? "Recomendación" : "Tendencia"}
+              </InlineBadge>
             </div>
             {content?.vote_average && (
               <Rating

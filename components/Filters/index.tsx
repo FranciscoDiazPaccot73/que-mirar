@@ -2,12 +2,9 @@ import { FC, memo, useContext, useEffect, useRef } from "react";
 
 import Genres from "./Genres";
 import { Providers } from "./Providers";
-import { Gte } from "./Gte";
 
 import { PageContext } from "../../context";
-import {
-  getGenres,
-} from "../../context/actions";
+import { getGenres } from "../../context/actions";
 import type { Filter } from "../ContentTitle";
 
 interface FilterProps {
@@ -16,20 +13,10 @@ interface FilterProps {
   onChangeFilter: (arg: Filter) => void;
 }
 
-const Filters: FC<FilterProps> = ({
-  onChangeFilter,
-  source,
-  localFilters,
-}) => {
+const Filters: FC<FilterProps> = ({ onChangeFilter, source, localFilters }) => {
   const {
     dispatch,
-    state: {
-      selectedProvider = 0,
-      selectedGenre = 0,
-      selectedGte = 6,
-      fetching,
-      genres,
-    },
+    state: { selectedProvider = 0, selectedGenre = 0, fetching, genres },
   } = useContext(PageContext);
   const sourceFetched = useRef<string>();
 
@@ -56,19 +43,26 @@ const Filters: FC<FilterProps> = ({
     }
   };
 
-  const handleGte = async (id: number) => {
-    if (!fetching) {
-      onChangeFilter({ gte: id });
-    }
-  };
+  // const handleGte = async (id: number) => {
+  //   if (!fetching) {
+  //     onChangeFilter({ gte: id });
+  //   }
+  // };
 
   return (
     <section className="mt-2">
       <div className="flex gap-4 mb-10 w-full">
-        <Genres handleGenre={handleGenre} selectedGenre={localFilters.genre || selectedGenre} source={source} />
-        <Gte handleGte={handleGte} selectedGte={localFilters.gte || selectedGte} />
+        <Genres
+          handleGenre={handleGenre}
+          selectedGenre={localFilters.genre || selectedGenre}
+          source={source}
+        />
+        {/* <Gte handleGte={handleGte} selectedGte={localFilters.gte || selectedGte} /> */}
       </div>
-      <Providers handleFilter={handleFilter} selectedProvider={localFilters.provider || selectedProvider} />
+      <Providers
+        handleFilter={handleFilter}
+        selectedProvider={localFilters.provider || selectedProvider}
+      />
     </section>
   );
 };

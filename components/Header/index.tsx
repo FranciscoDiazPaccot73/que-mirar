@@ -57,7 +57,7 @@ const Header = () => {
 
   return (
     <header className="max-w-[1000px] w-full flex md:px-4 md:pt-3 md:pb-4 z-10 md:fixed left-0 right-0 top-0 bg-main-bg mx-auto">
-      <div className="flex items-center justify-center mt-6 md:mt-0 w-36 mx-auto md:mx-0 md:mr-6">
+      <div className="hidden items-center justify-center mt-6 md:mt-0 w-36 mx-auto md:flex md:mx-0 md:mr-6">
         <Image priority alt="Logo" height={80} src="/logo.webp" width={125} />
       </div>
       <div className="hidden w-full relative md:flex justify-start">
