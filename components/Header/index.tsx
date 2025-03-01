@@ -9,7 +9,10 @@ import { useRouter } from "next/router";
 
 import { PageContext } from "@/context";
 import { resetGenres, resetValues } from "@/context/actions";
-import { Monitor, Clapperboard } from "lucide-react";
+import { ClapperboardOutlined } from "../icons/ClapperboardOutlined";
+import { Monitor } from "../icons/Monitor";
+import { MonitorOutlined } from "../icons/MonitorOutlined";
+import { Clapperboard } from "../icons/Clapperboard";
 
 const transition = {
   duration: 0.2,
@@ -35,14 +38,14 @@ const Header = () => {
     {
       name: "Series",
       link: "/",
-      icon: Monitor,
+      icon: isMovies ? MonitorOutlined : Monitor,
       color: !isMovies ? "#B794F4" : "#ffffff",
       bgColor: !isMovies ? "#B794F412" : "",
     },
     {
       name: "Peliculas",
       link: "/movies",
-      icon: Clapperboard,
+      icon: isMovies ? Clapperboard : ClapperboardOutlined,
       color: isMovies ? "#B794F4" : "#ffffff",
       bgColor: isMovies ? "#B794F412" : "",
     },
@@ -106,7 +109,7 @@ const Header = () => {
                     href={link.link}
                     style={{ color: link.color }}
                   >
-                    <link.icon className="w-8 h-8" />
+                    <link.icon />
                     {link.name}
                   </Link>
                   <span className="hidden">{link.name}</span>

@@ -76,7 +76,7 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
 
   return (
     <Element {...elementProps} className="w-full">
-      <section className="min-h-[620px] max-h-[620px] md:min-h-[430px] md:max-h-[950px] relative w-full overflow-hidden md:flex md:relative">
+      <section className="min-h-[650px] max-h-[650px] md:min-h-[430px] md:max-h-[950px] relative w-full overflow-hidden md:flex md:relative">
         <div className="relative min-h-[240px] max-h-[240px] md:mr-3 md:min-h-[550px] md:max-h-[550px] md:min-w-[346px] md:w-full after:h-10 after:bg-gradient-to-t after:left-0 after:-bottom-2 md:after:w-9/10 md:after:h-full md:after:bg-gradient-to-r md:after:bottom-0">
           <Image
             priority
@@ -88,8 +88,20 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
             src={`${BASE_IMAGE_URL}${imageUrl}`}
             width={600}
           />
+          <div className="flex absolute -bottom-6 right-2 md:hidden">
+            <InlineBadge
+              className={cn("ml-auto")}
+              type={
+                search === "recomendations"
+                  ? BadgeTypeEnum.RECOMMENDATION
+                  : BadgeTypeEnum.TREND
+              }
+            >
+              {search === "recomendations" ? "Recomendación" : "Tendencia"}
+            </InlineBadge>
+          </div>
         </div>
-        <div className="px-4 pt-2 pb-3 md:pt-2 md:w-3/5 md:pr-8 md:pl-3 md:mb-16 md:absolute md:left-0">
+        <div className="px-4 pt-7 pb-3 md:pt-2 md:w-3/5 md:pr-8 md:pl-3 md:mb-16 md:absolute md:left-0">
           <p className="mb-3 text-3xl text-white md:text-4xl md:mb-6">
             {content.title ?? content.name}
             <div className="flex gap-2 items-center text-xs mb-3 mt-1">
@@ -115,7 +127,7 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
                 </span>
               )}
               <InlineBadge
-                className={cn("ml-auto")}
+                className={cn("ml-auto hidden md:flex")}
                 type={
                   search === "recomendations"
                     ? BadgeTypeEnum.RECOMMENDATION
@@ -137,8 +149,9 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
           </p>
           <p
             className={cn(
-              "text-sm overflow-scroll max-h-[185px] text-gray-300 md:line-clamp-[10] md:max-h-[200px]",
-              showAllText && "line-clamp-none overflow-scroll"
+              "text-sm overflow-scroll max-h-[160px] text-gray-300 md:line-clamp-[10] md:max-h-[200px]",
+              showAllText && "line-clamp-none overflow-scroll",
+              content.providers?.length > 4 && "md:line-clamp-[6]"
             )}
             id="overview"
             title={content.overview}
@@ -158,7 +171,11 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
             </div>
           ) : null}
           <div
-            className={cn("flex gap-6 mt-10", showSeeMore && "mt-10 md:mt-4")}
+            className={cn(
+              "flex gap-6 mt-6",
+              content.providers?.length > 4 && "mt-4",
+              showSeeMore && "mt-10 md:mt-4"
+            )}
           >
             {content.link && content.providers?.length ? (
               <div className="ml-4 hidden first-line:hidden md:flex">
@@ -196,7 +213,7 @@ const Content: FC<ContentProps> = ({ search, source, nextRecomendation }) => {
                 ))}
               </div>
             ) : (
-              <p className="hidden md:block text-gray-400 text-sm font-semibold mt-6">
+              <p className="text-gray-400 text-sm font-semibold mt-6">
                 Puede que este contenido no este disponible en tu región
               </p>
             )}
